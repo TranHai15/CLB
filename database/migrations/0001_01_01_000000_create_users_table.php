@@ -13,12 +13,24 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('google_id')->nullable();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('avatar_url', 512)->nullable();
+            $table->enum('status', ['inactive', 'active', 'suspended'])->default('active');
+            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('last_login')->nullable();
+            $table->string('student_code', 100)->unique()->nullable();
+            $table->integer('enrollment_year')->nullable();
+            $table->string('major')->nullable();
+            $table->string('position')->nullable();
+            $table->string('phone', 50)->nullable();
+            $table->enum('gender', ['male', 'female', 'other'])->nullable();
+            $table->enum('account_type', ['user', 'club_member'])->default('user');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
