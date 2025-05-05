@@ -4,89 +4,115 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/atom-one-dark.min.css">
 <style>
     #post-content {
-        color: #333;
-        font-size: 16px;
-        line-height: 1.6;
+        color: #2d3748;
+        font-size: 1.125rem;
+        line-height: 1.8;
+        max-width: 65ch;
+        margin: 0 auto;
     }
 
     #post-content h1 {
-        font-size: 2em;
-        margin: 1em 0 0.5em;
-        font-weight: bold;
-        color: #111;
+        font-size: 2.25rem;
+        margin: 2rem 0 1rem;
+        font-weight: 700;
+        color: #1a202c;
+        line-height: 1.2;
     }
 
     #post-content h2 {
-        font-size: 1.5em;
-        margin: 1em 0 0.5em;
-        font-weight: bold;
-        color: #111;
+        font-size: 1.875rem;
+        margin: 1.75rem 0 1rem;
+        font-weight: 700;
+        color: #1a202c;
+        line-height: 1.3;
     }
 
     #post-content h3 {
-        font-size: 1.17em;
-        margin: 1em 0 0.5em;
-        font-weight: bold;
-        color: #111;
+        font-size: 1.5rem;
+        margin: 1.5rem 0 0.75rem;
+        font-weight: 600;
+        color: #1a202c;
     }
 
     #post-content h4 {
-        font-size: 1em;
-        margin: 1em 0 0.5em;
-        font-weight: bold;
-        color: #111;
+        font-size: 1.25rem;
+        margin: 1.25rem 0 0.75rem;
+        font-weight: 600;
+        color: #1a202c;
     }
 
     #post-content p {
-        margin-bottom: 1em;
+        margin-bottom: 1.5rem;
         line-height: 1.8;
     }
 
     #post-content strong {
         font-weight: 600;
-        color: #111;
+        color: #1a202c;
     }
 
     #post-content em {
         font-style: italic;
     }
 
+    #post-content ul,
+    #post-content ol {
+        margin: 1.5rem 0;
+        padding-left: 1.75rem;
+    }
+
     #post-content ul {
         list-style-type: disc;
-        margin: 1em 0 1em 1.5em;
     }
 
     #post-content ol {
         list-style-type: decimal;
-        margin: 1em 0 1em 1.5em;
     }
 
     #post-content li {
-        margin-bottom: 0.5em;
+        margin-bottom: 0.75rem;
+        line-height: 1.6;
     }
 
     #post-content blockquote {
-        border-left: 4px solid #e5e7eb;
-        padding: 0.5em 0 0.5em 1em;
-        margin: 1em 0;
+        border-left: 4px solid #4299e1;
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
         font-style: italic;
         color: #4a5568;
-        background: #f7fafc;
+        background: #ebf8ff;
+        border-radius: 0.5rem;
     }
 
     #post-content a {
-        color: #2563eb;
-        text-decoration: underline;
+        color: #3182ce;
+        text-decoration: none;
+        border-bottom: 1px solid #3182ce;
+        transition: all 0.2s ease;
+    }
+
+    #post-content a:hover {
+        color: #2c5282;
+        border-bottom-color: #2c5282;
     }
 
     #post-content img {
         max-width: 100%;
         height: auto;
-        margin: 1.5em 0;
-        border-radius: 8px;
+        margin: 2rem auto;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        display: block;
     }
 
     #post-content pre {
+        margin: 1.5rem 0;
+        padding: 1.25rem;
+        border-radius: 0.75rem;
+        overflow-x: auto;
+        background-color: #1a202c;
+        color: #e2e8f0;
+        font-size: 0.875rem;
         margin: 1em 0;
         padding: 1em;
         border-radius: 8px;

@@ -1,22 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
     //
+
     public function index()
     {
         $topPosts = [
-            ['id' => 1, 'title' => '10 mẹo học lập trình hiệu quả', 'thumbnail' => 'https://via.placeholder.com/80', 'link' => '/posts/1'],
-            ['id' => 2, 'title' => 'Hướng dẫn cài đặt Laravel 10', 'thumbnail' => 'https://via.placeholder.com/80', 'link' => '/posts/2'],
-            ['id' => 3, 'title' => 'CSS Grid vs Flexbox: Khi nào dùng gì?', 'thumbnail' => 'https://via.placeholder.com/80', 'link' => '/posts/3'],
-            ['id' => 4, 'title' => 'Tối ưu hoá hiệu năng React App', 'thumbnail' => 'https://via.placeholder.com/80', 'link' => '/posts/4'],
-            ['id' => 5, 'title' => 'Xây dựng REST API với Node.js', 'thumbnail' => 'https://via.placeholder.com/80', 'link' => '/posts/5'],
+            ['id' => 1, 'title' => '10 mẹo học lập trình hiệu quả', 'thumbnail' => 'https://via.placeholder.com/80', 'link' => '/posts/1', 'createdAt' => '2025-04-15',],
+            ['id' => 2, 'title' => 'Hướng dẫn cài đặt Laravel 10', 'thumbnail' => 'https://via.placeholder.com/80', 'link' => '/posts/2', 'createdAt' => '2025-04-15',],
+            ['id' => 3, 'title' => 'CSS Grid vs Flexbox: Khi nào dùng gì?', 'thumbnail' => 'https://via.placeholder.com/80', 'link' => '/posts/3', 'createdAt' => '2025-04-15',],
+            ['id' => 4, 'title' => 'Tối ưu hoá hiệu năng React App', 'thumbnail' => 'https://via.placeholder.com/80', 'link' => '/posts/4', 'createdAt' => '2025-04-15',],
+            ['id' => 5, 'title' => 'Xây dựng REST API với Node.js', 'thumbnail' => 'https://via.placeholder.com/80', 'link' => '/posts/5', 'createdAt' => '2025-04-15',],
         ];
 
         $posts = [
@@ -181,7 +183,181 @@ class HomeController extends Controller
         $unreadNotifications = collect($notifications)->where('read', false)->count();
         $latestNotifications = collect($notifications)->take(5);
 
-        return view('client.home', compact('topPosts', 'posts', 'categories', 'unreadNotifications', 'latestNotifications'));
+        return view('client.home.home', compact('topPosts', 'posts', 'categories', 'unreadNotifications', 'latestNotifications'));
+    }
+    public function blog()
+    {
+        $topPosts = [
+            ['id' => 1, 'title' => '10 mẹo học lập trình hiệu quả', 'thumbnail' => 'https://via.placeholder.com/80', 'link' => '/posts/1', 'createdAt' => '2025-04-15',],
+            ['id' => 2, 'title' => 'Hướng dẫn cài đặt Laravel 10', 'thumbnail' => 'https://via.placeholder.com/80', 'link' => '/posts/2', 'createdAt' => '2025-04-15',],
+            ['id' => 3, 'title' => 'CSS Grid vs Flexbox: Khi nào dùng gì?', 'thumbnail' => 'https://via.placeholder.com/80', 'link' => '/posts/3', 'createdAt' => '2025-04-15',],
+            ['id' => 4, 'title' => 'Tối ưu hoá hiệu năng React App', 'thumbnail' => 'https://via.placeholder.com/80', 'link' => '/posts/4', 'createdAt' => '2025-04-15',],
+            ['id' => 5, 'title' => 'Xây dựng REST API với Node.js', 'thumbnail' => 'https://via.placeholder.com/80', 'link' => '/posts/5', 'createdAt' => '2025-04-15',],
+        ];
+
+        $posts = [
+            [
+                'id' => 101,
+                'title' => 'Khởi đầu với JavaScript ES6',
+                'excerpt' => 'Tìm hiểu arrow functions, template literals…',
+                'thumbnail' => 'https://media.istockphoto.com/id/1386341272/vi/anh/tr%E1%BB%ABu-t%C6%B0%E1%BB%A3ng-c%C3%B4ng-ngh%E1%BB%87-hi%E1%BB%87n-%C4%91%E1%BA%A1i-c%E1%BB%A7a-nh%C3%A0-ph%C3%A1t-tri%E1%BB%83n-m%C3%A0n-h%C3%ACnh-m%C3%A3-l%E1%BA%ADp-tr%C3%ACnh.jpg?s=612x612&w=0&k=20&c=qiLbI9QhLCMyoG0foDM14LGR0OTHJMnK5tnXK0epQHc=',
+                'views' => 342,
+                'createdAt' => '2025-04-15',
+                'author' => [
+                    'id' => 1,
+                    'name' => 'Trần Văn Hải',
+                    'avatar' => 'https://statictuoitre.mediacdn.vn/thumb_w/640/2017/7-1512755474943.jpg',
+                ],
+                'categories' => [
+                    ['id' => 1, 'name' => 'JavaScript'],
+                    ['id' => 2, 'name' => 'Frontend'],
+                ],
+                'tags' => [
+                    ['id' => 1, 'name' => 'ES6'],
+                    ['id' => 2, 'name' => 'Arrow Functions'],
+                ],
+                'link' => '/posts/101',
+            ],
+            // Thêm các bài viết khác tương tự
+        ];
+        $categories = [
+            [
+                'id' => 1,
+                'name' => 'Laravel',
+                'slug' => 'laravel',
+                'count' => 15,
+                'description' => 'Framework PHP phổ biến',
+                'icon' => 'fab fa-laravel',
+                'color' => '#FF2D20'
+            ],
+            [
+                'id' => 2,
+                'name' => 'Frontend',
+                'slug' => 'frontend',
+                'count' => 23,
+                'description' => 'Phát triển giao diện người dùng',
+                'icon' => 'fas fa-code',
+                'color' => '#61DAFB'
+            ],
+            [
+                'id' => 3,
+                'name' => 'Backend',
+                'slug' => 'backend',
+                'count' => 18,
+                'description' => 'Phát triển phía máy chủ',
+                'icon' => 'fas fa-server',
+                'color' => '#4CAF50'
+            ],
+            [
+                'id' => 4,
+                'name' => 'Database',
+                'slug' => 'database',
+                'count' => 12,
+                'description' => 'Quản lý và tối ưu cơ sở dữ liệu',
+                'icon' => 'fas fa-database',
+                'color' => '#00758F'
+            ],
+            [
+                'id' => 5,
+                'name' => 'DevOps',
+                'slug' => 'devops',
+                'count' => 8,
+                'description' => 'Tự động hóa và quản lý hệ thống',
+                'icon' => 'fas fa-cogs',
+                'color' => '#F7DF1E'
+            ],
+            [
+                'id' => 6,
+                'name' => 'Mobile',
+                'slug' => 'mobile',
+                'count' => 14,
+                'description' => 'Phát triển ứng dụng di động',
+                'icon' => 'fas fa-mobile-alt',
+                'color' => '#000000'
+            ],
+            [
+                'id' => 7,
+                'name' => 'Security',
+                'slug' => 'security',
+                'count' => 9,
+                'description' => 'Bảo mật và bảo vệ ứng dụng',
+                'icon' => 'fas fa-shield-alt',
+                'color' => '#FFD700'
+            ],
+            [
+                'id' => 8,
+                'name' => 'Testing',
+                'slug' => 'testing',
+                'count' => 11,
+                'description' => 'Kiểm thử và đảm bảo chất lượng',
+                'icon' => 'fas fa-vial',
+                'color' => '#28A745'
+            ]
+        ];
+
+        // Mock data for notifications
+        $notifications = [
+            [
+                'id' => 1,
+                'type' => 'answer',
+                'read' => false,
+                'sender' => [
+                    'name' => 'Nguyễn Văn A',
+                    'avatar' => 'https://ui-avatars.com/api/?name=Nguyen+Van+A'
+                ],
+                'action' => 'đã trả lời câu hỏi của bạn',
+                'target' => 'Làm thế nào để tối ưu hiệu suất Laravel?',
+                'content' => 'Bạn có thể thử một số cách sau: 1. Sử dụng cache 2. Tối ưu queries 3. Sử dụng eager loading',
+                'link' => '/questions/1',
+                'created_at' => now()->subHours(2)
+            ],
+            [
+                'id' => 2,
+                'type' => 'like',
+                'read' => false,
+                'sender' => [
+                    'name' => 'Trần Thị B',
+                    'avatar' => 'https://ui-avatars.com/api/?name=Tran+Thi+B'
+                ],
+                'action' => 'đã thích câu trả lời của bạn',
+                'target' => 'Cách sử dụng Redis với Laravel',
+                'link' => '/questions/2',
+                'created_at' => now()->subHours(5)
+            ],
+            [
+                'id' => 3,
+                'type' => 'comment',
+                'read' => true,
+                'sender' => [
+                    'name' => 'Lê Văn C',
+                    'avatar' => 'https://ui-avatars.com/api/?name=Le+Van+C'
+                ],
+                'action' => 'đã bình luận bài viết của bạn',
+                'target' => 'Hướng dẫn cài đặt Laravel trên Windows',
+                'content' => 'Bài viết rất hữu ích, cảm ơn bạn!',
+                'link' => '/posts/1',
+                'created_at' => now()->subDay()
+            ],
+            [
+                'id' => 4,
+                'type' => 'mention',
+                'read' => true,
+                'sender' => [
+                    'name' => 'Phạm Thị D',
+                    'avatar' => 'https://ui-avatars.com/api/?name=Pham+Thi+D'
+                ],
+                'action' => 'đã đề cập bạn trong một bình luận',
+                'target' => 'Tối ưu hóa MySQL cho ứng dụng Laravel',
+                'content' => '@username Bạn có thể giúp tôi với vấn đề này không?',
+                'link' => '/posts/2',
+                'created_at' => now()->subDays(2)
+            ]
+        ];
+
+        $unreadNotifications = collect($notifications)->where('read', false)->count();
+        $latestNotifications = collect($notifications)->take(5);
+
+        return view('client.home.blog', compact('topPosts', 'posts', 'categories', 'unreadNotifications', 'latestNotifications'));
     }
     public function show($id)
     {
@@ -377,7 +553,7 @@ class HomeController extends Controller
         $unreadNotifications = collect($notifications)->where('read', false)->count();
         $latestNotifications = collect($notifications)->take(5);
 
-        return view('client.post', compact('post', 'unreadNotifications', 'latestNotifications'));
+        return view('client.post.post', compact('post', 'unreadNotifications', 'latestNotifications'));
     }
     public function createPost()
     {
@@ -441,7 +617,7 @@ class HomeController extends Controller
 
         $unreadNotifications = collect($notifications)->where('read', false)->count();
         $latestNotifications = collect($notifications)->take(5);
-        return view('client.createPost', compact('unreadNotifications', 'latestNotifications'));
+        return view('client.post.createPost', compact('unreadNotifications', 'latestNotifications'));
     }
     public function store(Request $request)
     {

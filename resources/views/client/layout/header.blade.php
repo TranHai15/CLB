@@ -23,7 +23,7 @@
         <!-- Right: Search + Authentication -->
         <div class="flex items-center space-x-6">
             <!-- Search -->
-            <form action="#" method="GET" class="relative  lg:block">
+            <form action="#" method="GET" class="relative  lg:block m-0">
                 <input
                     type="text"
                     name="q"
@@ -140,8 +140,8 @@
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
-                        <a href="{{ route('create.post') }}" class="block px-4 py-2 text-gray-800 hover:text-blue-600 transition">
-                            Tạo bài viết
+                        <a href="{{ route('questions.create') }}" class="block px-4 py-2 text-gray-800 hover:text-blue-600 transition">
+                            Tạo Câu Hỏi
                         </a>
                     </x-slot>
                 </x-dropdown>

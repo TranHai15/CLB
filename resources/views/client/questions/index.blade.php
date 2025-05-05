@@ -7,7 +7,7 @@
         <div class="lg:col-span-3 space-y-8">
             <div class="flex justify-between items-center mb-8">
                 <h1 class="text-3xl font-bold">Câu hỏi</h1>
-                <a href="{{ route('create.post') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                <a href="{{ route('questions.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
                     Đặt câu hỏi
                 </a>
             </div>

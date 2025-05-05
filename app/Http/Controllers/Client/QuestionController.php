@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -165,22 +166,142 @@ class QuestionController extends Controller
 
     public function create()
     {
-        // Mock data for categories
-        $categories = [
+        // Sample categories data
+        $categories = collect([
+            (object)[
+                'id' => 1,
+                'name' => 'Lập trình Web'
+            ],
+            (object)[
+                'id' => 2,
+                'name' => 'Lập trình Mobile'
+            ],
+            (object)[
+                'id' => 3,
+                'name' => 'Cơ sở dữ liệu'
+            ],
+            (object)[
+                'id' => 4,
+                'name' => 'DevOps'
+            ],
+            (object)[
+                'id' => 5,
+                'name' => 'UI/UX Design'
+            ]
+        ]);
+
+        // Sample tags data
+        $tags = collect([
+            (object)[
+                'id' => 1,
+                'name' => 'PHP'
+            ],
+            (object)[
+                'id' => 2,
+                'name' => 'Laravel'
+            ],
+            (object)[
+                'id' => 3,
+                'name' => 'JavaScript'
+            ],
+            (object)[
+                'id' => 4,
+                'name' => 'Vue.js'
+            ],
+            (object)[
+                'id' => 5,
+                'name' => 'React'
+            ],
+            (object)[
+                'id' => 6,
+                'name' => 'MySQL'
+            ],
+            (object)[
+                'id' => 7,
+                'name' => 'Docker'
+            ],
+            (object)[
+                'id' => 8,
+                'name' => 'Git'
+            ]
+        ]);
+        $notifications = [
             [
                 'id' => 1,
-                'name' => 'Laravel',
-                'slug' => 'laravel'
+                'type' => 'answer',
+                'read' => false,
+                'sender' => [
+                    'name' => 'Nguyễn Văn A',
+                    'avatar' => 'https://ui-avatars.com/api/?name=Nguyen+Van+A'
+                ],
+                'action' => 'đã trả lời câu hỏi của bạn',
+                'target' => 'Làm thế nào để tối ưu hiệu suất Laravel?',
+                'content' => 'Bạn có thể thử một số cách sau: 1. Sử dụng cache 2. Tối ưu queries 3. Sử dụng eager loading',
+                'link' => '/questions/1',
+                'created_at' => now()->subHours(2)
             ],
             [
                 'id' => 2,
-                'name' => 'Frontend',
-                'slug' => 'frontend'
+                'type' => 'like',
+                'read' => false,
+                'sender' => [
+                    'name' => 'Trần Thị B',
+                    'avatar' => 'https://ui-avatars.com/api/?name=Tran+Thi+B'
+                ],
+                'action' => 'đã thích câu trả lời của bạn',
+                'target' => 'Cách sử dụng Redis với Laravel',
+                'link' => '/questions/2',
+                'created_at' => now()->subHours(5)
             ],
-            // Thêm các danh mục khác...
+            [
+                'id' => 3,
+                'type' => 'comment',
+                'read' => true,
+                'sender' => [
+                    'name' => 'Lê Văn C',
+                    'avatar' => 'https://ui-avatars.com/api/?name=Le+Van+C'
+                ],
+                'action' => 'đã bình luận bài viết của bạn',
+                'target' => 'Hướng dẫn cài đặt Laravel trên Windows',
+                'content' => 'Bài viết rất hữu ích, cảm ơn bạn!',
+                'link' => '/posts/1',
+                'created_at' => now()->subDay()
+            ],
+            [
+                'id' => 4,
+                'type' => 'mention',
+                'read' => true,
+                'sender' => [
+                    'name' => 'Phạm Thị D',
+                    'avatar' => 'https://ui-avatars.com/api/?name=Pham+Thi+D'
+                ],
+                'action' => 'đã đề cập bạn trong một bình luận',
+                'target' => 'Tối ưu hóa MySQL cho ứng dụng Laravel',
+                'content' => '@username Bạn có thể giúp tôi với vấn đề này không?',
+                'link' => '/posts/2',
+                'created_at' => now()->subDays(2)
+            ]
         ];
+        $unreadNotifications = collect($notifications)->where('read', false)->count();
+        $latestNotifications = collect($notifications)->take(5);
 
-        return view('client.questions.create', compact('categories'));
+
+        return view('client.questions.createQuestions', compact('categories', 'tags', 'unreadNotifications', 'latestNotifications'));
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'tags' => 'array',
+            'tags.*' => 'exists:tags,id',
+            'content' => 'required|string'
+        ]);
+
+        // Here you would typically save the question to the database
+        // For now, we'll just redirect back with a success message
+        return redirect()->back()->with('success', 'Câu hỏi đã được đăng thành công!');
     }
 
     public function show($id)
