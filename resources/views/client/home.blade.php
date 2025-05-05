@@ -1,9 +1,9 @@
 @extends('layouts.home')
 
 @section('content')
-<div class="container mx-auto max-w-7xl px-4 py-8 grid grid-cols-1 lg:grid-cols-7 gap-8">
+<div class="container mx-auto max-w-7xl px-4 py-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
     <!-- Main List -->
-    <main class="lg:col-span-5 space-y-8">
+    <main class="lg:col-span-3 space-y-8">
         <h2 class="text-2xl font-semibold">Bài viết mới nhất</h2>
         @foreach($posts as $post)
         <article class="flex bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden">
@@ -49,16 +49,15 @@
 
     </main>
     <!-- Sidebar -->
-    <aside class="space-y-8 lg:col-span-2">
+    <aside class="space-y-8 lg:col-span-1">
         <!-- Widget lọc giả lập -->
-        <div class="bg-gray-50 p-4 rounded-lg shadow">
-            <h2 class="text-xl font-semibold mb-3">Lọc theo chuyên mục</h2>
-            <select class="w-full border border-gray-300 rounded p-2 focus:outline-none">
-                <option>All</option>
-                <option>JavaScript</option>
-                <option>CSS</option>
-                <option>WebSocket</option>
-                <option>DevOps</option>
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h3 class="text-lg font-bold mb-4">Danh mục</h3>
+            <select id="categorySelect" class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Tất cả danh mục</option>
+                @foreach($categories as $category)
+                <option value="{{ $category['slug'] }}">{{ $category['name'] }} ({{ $category['count'] }})</option>
+                @endforeach
             </select>
         </div>
         <!-- Top Posts -->
@@ -69,7 +68,7 @@
                 <li class="flex items-center space-x-3">
                     <img src="{{ $post['thumbnail'] }}" alt=""
                         class="h-10 w-10 rounded object-cover">
-                    <a href="{{ $post['link'] }}"
+                    <a href="{{ route('questions.show', $post['id']) }}"
                         class="font-medium text-gray-800 truncate">{{ $post['title'] }}</a>
                 </li>
                 @endforeach
