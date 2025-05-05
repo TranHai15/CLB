@@ -89,4 +89,8 @@ MD
 
         return view('client.post', compact('post'));
     }
+    public function createPost()
+    {
+        return view('client.createPost');
+    }
 }

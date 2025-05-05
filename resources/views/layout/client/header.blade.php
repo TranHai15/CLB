@@ -88,6 +88,9 @@
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
+                        <a href="{{ route('create.post') }}" class="block px-4 py-2 text-gray-800 hover:text-blue-600 transition">
+                            Tạo bài viết
+                        </a>
                     </x-slot>
                 </x-dropdown>
                 @endguest
