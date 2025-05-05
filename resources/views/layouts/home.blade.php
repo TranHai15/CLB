@@ -10,20 +10,22 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     {{-- Nơi view con thêm CSS --}}
     @yield('css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-gray-50 text-gray-800">
 
 
     {{-- Header --}}
-
+    @include('layout.client.header')
 
     {{-- Main Content --}}
-    <main class="container px-4 py-8">
+    <main class="px-4 py-8 min-h-screen">
         @yield('content')
     </main>
 
     {{-- Footer --}}
+    @include('layout.client.footer')
 
 </body>
 @yield('js')

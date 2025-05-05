@@ -25,7 +25,6 @@ class GoogleController extends Controller
                     'google_id' => $googleUser->getId(),
                     'name' => $googleUser->getName(),
                     'email' => $googleUser->getEmail(),
-                    'password' => Str::random(10),
                     'avatar_url' => $googleUser->getAvatar(),
                     'status' => 1
                 ]);
@@ -44,7 +43,7 @@ class GoogleController extends Controller
             // $user->assignRole('user'); // hoặc 'student', 'teacher' tùy theo logic của bạn
             Auth::login($user);
 
-            return redirect('/dashboard');
+            return redirect('/');
         } catch (\Exception $e) {
             return redirect('/login')->withErrors(['msg' => 'Đăng nhập bằng Google thất bại.']);
         }
