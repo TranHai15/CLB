@@ -24,3 +24,4 @@ Route::get('/questions/{id}', [QuestionController::class, 'show'])->name('questi
 Route::get('/notifications', [HomeController::class, 'notifications'])->name('notifications');
 Route::get('blog', [HomeController::class, 'blog'])->name('blog');
 require __DIR__ . '/auth.php';
+require __DIR__ . '/admin.php';
