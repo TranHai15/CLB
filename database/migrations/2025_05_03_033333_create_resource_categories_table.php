@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('resource_categories', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('resource_id')->constrained('resources');
             $table->foreignId('category_id')->constrained('categories');
+            $table->timestamps();
             $table->softDeletes();
-            $table->primary(['resource_id', 'category_id']);
         });
     }
 

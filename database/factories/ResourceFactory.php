@@ -1,0 +1,24 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Models\User;
+use App\Models\ResourceCategory;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class ResourceFactory extends Factory
+{
+    public function definition(): array
+    {
+        return [
+            'title' => fake()->sentence(),
+            'description' => fake()->paragraph(),
+            'url' => 'resources/' . fake()->uuid() . '.pdf',
+            'status' => fake()->randomElement(['draft', 'published', 'published']),
+            'created_by' => User::factory(),
+            'updated_by' => User::factory(),
+
+
+        ];
+    }
+}
