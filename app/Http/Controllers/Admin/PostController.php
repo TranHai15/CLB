@@ -1,119 +1,210 @@
 <?php
 
-// namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
-// use App\Http\Controllers\Controller;
-// use App\Models\Post;
-// use App\Models\Category;
-// use App\Models\Tag;
-// use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\Auth;
-// use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
+use App\Models\Post;
+use App\Models\Category;
+use App\Models\Tag;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
-// class PostController extends Controller
-// {
-//     public function index()
-//     {
-//         $posts = Post::with(['category', 'tags', 'creator'])
-//             ->orderBy('created_at', 'desc')
-//             ->paginate(10);
+class PostController extends Controller
+{
+    /**
+     * Display a listing of the posts.
+     */
+    public function index()
+    {
+        $posts = Post::with(['creator', 'category'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
-//         return view('admin.posts.index', compact('posts'));
-//     }
+        return view('admin.post.index', compact('posts'));
+    }
 
-//     public function create()
-//     {
-//         $categories = Category::all();
-//         $tags = Tag::all();
+    /**
+     * Show the form for creating a new post.
+     */
+    public function create()
+    {
+        $categories = Category::all();
+        $tags = Tag::all();
 
-//         return view('admin.posts.create', compact('categories', 'tags'));
-//     }
+        return view('admin.post.create', compact('categories', 'tags'));
+    }
 
-//     public function store(Request $request)
-//     {
-//         $validated = $request->validate([
-//             'title' => 'required|string|max:255',
-//             'content' => 'required|string',
-//             'category_id' => 'required|exists:categories,id',
-//             'tag_ids' => 'nullable|array',
-//             'tag_ids.*' => 'exists:tags,id',
-//             'status' => 'required|in:draft,published,archived'
-//         ]);
+    /**
+     * Store a newly created post in storage.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'category_id' => 'nullable|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'type' => 'required|in:post,question',
+            'status' => 'required|in:draft,published,archived',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
+        ]);
 
-//         $post = Post::create([
-//             'title' => $validated['title'],
-//             'slug' => Str::slug($validated['title']) . '-' . Str::random(5),
-//             'content' => $validated['content'],
-//             'status' => $validated['status'],
-//             'created_by' => Auth::id(),
-//             'updated_by' => Auth::id(),
-//             'category_id' => $validated['category_id']
-//         ]);
+        // Handle slug
+        $slug = Str::slug($validated['title']);
+        $count = 1;
 
-//         if (isset($validated['tag_ids'])) {
-//             $post->tags()->sync($validated['tag_ids']);
-//         }
+        while (Post::where('slug', $slug)->exists()) {
+            $slug = Str::slug($validated['title']) . '-' . $count++;
+        }
 
-//         return redirect()->route('admin.posts.index')->with('success', 'Bài viết đã được tạo thành công!');
-//     }
+        // Handle image upload
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = 'post-' . time() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('public/posts', $filename);
+            $imagePath = '/storage/posts/' . $filename;
+        }
 
-//     public function show(Post $post)
-//     {
-//         $post->load(['category', 'tags', 'creator']);
-//         return view('admin.posts.show', compact('post'));
-//     }
+        $post = Post::create([
+            'title' => $validated['title'],
+            'slug' => $slug,
+            'content' => $validated['content'],
+            'category_id' => $validated['category_id'],
+            'image' => $imagePath,
+            'type' => $validated['type'],
+            'status' => $validated['status'],
+            'views' => 0,
+            'likes' => 0,
+            'created_by' => Auth::id(),
+            'updated_by' => Auth::id(),
+        ]);
 
-//     public function edit(Post $post)
-//     {
-//         $categories = Category::all();
-//         $tags = Tag::all();
+        // Attach tags
+        if (!empty($validated['tags'])) {
+            $post->tags()->attach($validated['tags']);
+        }
 
-//         $post->load(['category', 'tags']);
+        return redirect()->route('admin.posts.index')
+            ->with('success', 'Bài viết đã được tạo thành công.');
+    }
 
-//         return view('admin.posts.edit', compact('post', 'categories', 'tags'));
-//     }
+    /**
+     * Display the specified post.
+     */
+    public function show(Post $post)
+    {
+        $post->load(['creator', 'updater', 'category', 'tags']);
 
-//     public function update(Request $request, Post $post)
-//     {
-//         $validated = $request->validate([
-//             'title' => 'required|string|max:255',
-//             'content' => 'required|string',
-//             'category_id' => 'required|exists:categories,id',
-//             'tag_ids' => 'nullable|array',
-//             'tag_ids.*' => 'exists:tags,id',
-//             'status' => 'required|in:draft,published,archived'
-//         ]);
+        return view('admin.post.show', compact('post'));
+    }
 
-//         $post->update([
-//             'title' => $validated['title'],
-//             'content' => $validated['content'],
-//             'status' => $validated['status'],
-//             'updated_by' => Auth::id(),
-//             'category_id' => $validated['category_id']
-//         ]);
+    /**
+     * Show the form for editing the specified post.
+     */
+    public function edit(Post $post)
+    {
+        $categories = Category::all();
+        $tags = Tag::all();
+        $post->load('tags');
 
-//         if (isset($validated['tag_ids'])) {
-//             $post->tags()->sync($validated['tag_ids']);
-//         } else {
-//             $post->tags()->detach();
-//         }
+        return view('admin.post.edit', compact('post', 'categories', 'tags'));
+    }
 
-//         return redirect()->route('admin.posts.index')->with('success', 'Bài viết đã được cập nhật thành công!');
-//     }
+    /**
+     * Update the specified post in storage.
+     */
+    public function update(Request $request, Post $post)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'category_id' => 'nullable|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'type' => 'required|in:post,question',
+            'status' => 'required|in:draft,published,archived',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
+        ]);
 
-//     public function destroy(Post $post)
-//     {
-//         $post->tags()->detach();
-//         $post->delete();
+        // Update slug if title changed
+        if ($post->title !== $validated['title']) {
+            $slug = Str::slug($validated['title']);
+            $count = 1;
 
-//         return redirect()->route('admin.posts.index')->with('success', 'Bài viết đã được xóa thành công!');
-//     }
+            while (Post::where('slug', $slug)->where('id', '!=', $post->id)->exists()) {
+                $slug = Str::slug($validated['title']) . '-' . $count++;
+            }
 
-//     public function toggleStatus(Post $post)
-//     {
-//         $newStatus = $post->status === 'published' ? 'draft' : 'published';
-//         $post->update(['status' => $newStatus]);
+            $post->slug = $slug;
+        }
 
-//         return redirect()->back()->with('success', 'Đã thay đổi trạng thái bài viết!');
-//     }
-// }
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($post->image && Storage::exists('public' . str_replace('/storage', '', $post->image))) {
+                Storage::delete('public' . str_replace('/storage', '', $post->image));
+            }
+
+            $image = $request->file('image');
+            $filename = 'post-' . time() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('public/posts', $filename);
+            $post->image = '/storage/posts/' . $filename;
+        }
+
+        $post->title = $validated['title'];
+        $post->content = $validated['content'];
+        $post->category_id = $validated['category_id'];
+        $post->type = $validated['type'];
+        $post->status = $validated['status'];
+        $post->updated_by = Auth::id();
+        $post->save();
+
+        // Sync tags
+        if (isset($validated['tags'])) {
+            $post->tags()->sync($validated['tags']);
+        } else {
+            $post->tags()->detach();
+        }
+
+        return redirect()->route('admin.posts.index')
+            ->with('success', 'Bài viết đã được cập nhật thành công.');
+    }
+
+    /**
+     * Remove the specified post from storage.
+     */
+    public function destroy(Post $post)
+    {
+        // Delete image if exists
+        if ($post->image && Storage::exists('public' . str_replace('/storage', '', $post->image))) {
+            Storage::delete('public' . str_replace('/storage', '', $post->image));
+        }
+
+        $post->tags()->detach();
+        $post->delete();
+
+        return redirect()->route('admin.posts.index')
+            ->with('success', 'Bài viết đã được xóa thành công.');
+    }
+
+    /**
+     * Toggle the status of the specified post.
+     */
+    public function toggleStatus(Post $post)
+    {
+        if ($post->status === 'published') {
+            $post->status = 'archived';
+        } else {
+            $post->status = 'published';
+        }
+
+        $post->updated_by = Auth::id();
+        $post->save();
+
+        return back()->with('success', 'Trạng thái bài viết đã được cập nhật.');
+    }
+}

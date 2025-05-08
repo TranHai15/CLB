@@ -27,7 +27,6 @@
                                     {{ $question->title }}
                                 </a>
                             </h2>
-                            <p class="text-gray-600 mb-4 line-clamp-2">{{ $question->content }}</p>
 
                             <div class="flex items-center gap-4 text-sm text-gray-500">
                                 <a href="/category/{{ $question->category->slug }}"

@@ -74,7 +74,7 @@
             <div class="bg-white rounded-lg shadow-lg p-6">
                 <h3 class="text-lg font-bold mb-4">Menu</h3>
                 <nav class="space-y-2">
-                    <a href="{{ route('questions.index') }}" class="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition">
+                    <a href="{{ route('user.show', auth()->user()->slug) }}" class="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>

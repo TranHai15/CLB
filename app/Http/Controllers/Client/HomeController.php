@@ -61,15 +61,8 @@ class HomeController extends BaseController
             ->get();
 
         // Lấy thông báo
-        $notifications = Notification::with('sender')
-            ->orderBy('created_at', 'desc')
-            ->take(5)
-            ->get();
 
-        $unreadNotifications = $notifications->where('read', false)->count();
-        $latestNotifications = $notifications->take(5);
-
-        return view('client.home.blog', compact('topPosts', 'posts', 'categories', 'unreadNotifications', 'latestNotifications'));
+        return view('client.home.blog', compact('topPosts', 'posts', 'categories'));
     }
 
     public function show(Post $post)

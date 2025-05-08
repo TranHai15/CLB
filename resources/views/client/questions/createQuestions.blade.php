@@ -59,7 +59,7 @@
     <div class="container mx-auto max-w-7xl px-4 py-8">
         <h2 class="text-2xl font-bold mb-6">Đăng câu hỏi mới</h2>
 
-        <form action="{{ route('content.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('questions.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="type" value="question">
 

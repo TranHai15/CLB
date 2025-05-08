@@ -3,59 +3,146 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Comment;
+use App\Models\Plan;
+use App\Models\Post;
+use App\Models\Resource;
+use App\Models\Transaction;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // Summary statistics with sample data
+        // Summary statistics from database
         $stats = [
-            'users' => 150,
-            'club_members' => 45,
-            'posts' => 78,
-            'resources' => 34,
-            'plans' => 12,
-            'transactions' => 245,
-            'total_income' => 15000000,
-            'total_expense' => 8500000,
+            'users' => User::count(),
+            'club_members' => User::where('account_type', 'user')->count(),
+            'posts' => Post::count(),
+            'resources' => Resource::count(),
+            'plans' => Plan::count(),
+            'transactions' => Transaction::count(),
+            'total_income' => Transaction::where('amount', '>', 0)->sum('amount'),
+            'total_expense' => abs(Transaction::where('amount', '<', 0)->sum('amount')),
         ];
 
-        // Sample recent users
-        $recent_users = [
-            ['id' => 1, 'name' => 'Nguyễn Văn A', 'email' => 'nguyenvana@gmail.com', 'created_at' => '2024-01-15'],
-            ['id' => 2, 'name' => 'Trần Thị B', 'email' => 'tranthib@gmail.com', 'created_at' => '2024-01-14'],
-            ['id' => 3, 'name' => 'Lê Văn C', 'email' => 'levanc@gmail.com', 'created_at' => '2024-01-13'],
-            ['id' => 4, 'name' => 'Phạm Thị D', 'email' => 'phamthid@gmail.com', 'created_at' => '2024-01-12'],
-            ['id' => 5, 'name' => 'Hoàng Văn E', 'email' => 'hoangvane@gmail.com', 'created_at' => '2024-01-11']
-        ];
+        // Recent users
+        $recent_users = User::select('id', 'name', 'email', 'created_at', 'avatar_url')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get()
+            ->map(function ($user) {
+                return [
+                    'id' => $user->id,
+                    'name' => $user->name ?: 'Không xác định',
+                    'email' => $user->email ?: 'Không có email',
+                    'avatar' => $user->avatar_url ?: '/images/default-avatar.png',
+                    'created_at' => $user->created_at ? $user->created_at->format('d/m/Y') : Carbon::now()->format('d/m/Y')
+                ];
+            });
 
-        // Sample recent posts
-        $recent_posts = [
-            ['id' => 1, 'title' => 'Bài viết mới nhất 1', 'created_at' => '2024-01-15', 'status' => 'published'],
-            ['id' => 2, 'title' => 'Bài viết mới nhất 2', 'created_at' => '2024-01-14', 'status' => 'published'],
-            ['id' => 3, 'title' => 'Bài viết mới nhất 3', 'created_at' => '2024-01-13', 'status' => 'draft'],
-            ['id' => 4, 'title' => 'Bài viết mới nhất 4', 'created_at' => '2024-01-12', 'status' => 'published'],
-            ['id' => 5, 'title' => 'Bài viết mới nhất 5', 'created_at' => '2024-01-11', 'status' => 'archived']
-        ];
+        // Recent posts
+        $recent_posts = Post::select('id', 'title', 'created_at', 'status', 'slug', 'image', 'created_by')
+            ->with('creator:id,name,avatar_url')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get()
+            ->map(function ($post) {
+                return [
+                    'id' => $post->id,
+                    'title' => $post->title,
+                    'slug' => $post->slug,
+                    'image' => $post->image,
+                    'created_at' => $post->created_at->format('d/m/Y'),
+                    'status' => $post->status,
+                    'creator' => $post->creator ? [
+                        'name' => $post->creator->name,
+                        'avatar' => $post->creator->avatar_url
+                    ] : [
+                        'name' => 'Không xác định',
+                        'avatar' => '/images/default-avatar.png'
+                    ]
+                ];
+            });
 
-        // Sample recent transactions
-        $recent_transactions = [
-            ['id' => 1, 'description' => 'Thu phí thành viên', 'amount' => 1500000, 'created_at' => '2024-01-15'],
-            ['id' => 2, 'description' => 'Chi phí văn phòng phẩm', 'amount' => -500000, 'created_at' => '2024-01-14'],
-            ['id' => 3, 'description' => 'Thu phí khóa học', 'amount' => 2500000, 'created_at' => '2024-01-13'],
-            ['id' => 4, 'description' => 'Chi phí tổ chức sự kiện', 'amount' => -1500000, 'created_at' => '2024-01-12'],
-            ['id' => 5, 'description' => 'Thu phí dịch vụ', 'amount' => 800000, 'created_at' => '2024-01-11']
-        ];
+        // Recent transactions
+        $recent_transactions = Transaction::select('id', 'description', 'amount', 'created_at', 'type')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get()
+            ->map(function ($transaction) {
+                return [
+                    'id' => $transaction->id,
+                    'description' => $transaction->description ?: 'Không có mô tả',
+                    'amount' => $transaction->amount,
+                    'type' => $transaction->type ?: 'other',
+                    'created_at' => $transaction->created_at ? $transaction->created_at->format('d/m/Y') : Carbon::now()->format('d/m/Y')
+                ];
+            });
 
-        // Sample upcoming plans
-        $upcoming_plans = [
-            ['id' => 1, 'title' => 'Họp thành viên tháng 1', 'start_date' => '2024-01-20', 'status' => 'pending'],
-            ['id' => 2, 'title' => 'Workshop kỹ năng', 'start_date' => '2024-01-25', 'status' => 'pending'],
-            ['id' => 3, 'title' => 'Tổ chức sự kiện networking', 'start_date' => '2024-02-01', 'status' => 'pending'],
-            ['id' => 4, 'title' => 'Đào tạo nhân viên mới', 'start_date' => '2024-02-05', 'status' => 'pending'],
-            ['id' => 5, 'title' => 'Hội thảo chuyên đề', 'start_date' => '2024-02-10', 'status' => 'pending']
+        // Upcoming plans
+        $upcoming_plans = Plan::select('id', 'title', 'start_date', 'status')
+            ->where('start_date', '>=', Carbon::today())
+            ->orderBy('start_date', 'asc')
+            ->limit(5)
+            ->get()
+            ->map(function ($plan) {
+                return [
+                    'id' => $plan->id,
+                    'title' => $plan->title ?: 'Không có tiêu đề',
+                    'start_date' => $plan->start_date ? Carbon::parse($plan->start_date)->format('d/m/Y') : Carbon::now()->format('d/m/Y'),
+                    'status' => $plan->status ?: 'pending'
+                ];
+            });
+
+        // Activity data
+        $last30Days = collect(range(0, 29))->map(function ($days) {
+            return Carbon::today()->subDays($days)->format('Y-m-d');
+        });
+
+        $post_activity = DB::table('posts')
+            ->select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as count'))
+            ->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get()
+            ->pluck('count', 'date')
+            ->toArray();
+
+        $comment_activity = DB::table('comments')
+            ->select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as count'))
+            ->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get()
+            ->pluck('count', 'date')
+            ->toArray();
+
+        $user_activity = DB::table('users')
+            ->select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as count'))
+            ->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get()
+            ->pluck('count', 'date')
+            ->toArray();
+
+        $activity_data = [
+            'labels' => $last30Days->map(function ($date) {
+                return Carbon::parse($date)->format('d/m');
+            })->toArray(),
+            'posts' => $last30Days->map(function ($date) use ($post_activity) {
+                return $post_activity[$date] ?? 0;
+            })->toArray(),
+            'comments' => $last30Days->map(function ($date) use ($comment_activity) {
+                return $comment_activity[$date] ?? 0;
+            })->toArray(),
+            'users' => $last30Days->map(function ($date) use ($user_activity) {
+                return $user_activity[$date] ?? 0;
+            })->toArray(),
         ];
 
         return view('admin.dashboard', compact(
@@ -63,7 +150,8 @@ class DashboardController extends Controller
             'recent_users',
             'recent_posts',
             'recent_transactions',
-            'upcoming_plans'
+            'upcoming_plans',
+            'activity_data'
         ));
     }
 }

@@ -15,45 +15,47 @@
                 @foreach($posts as $post)
                 <article class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
                     <div class="flex flex-col md:flex-row">
-                        <a href="{{ $post['link'] }}" class="md:w-1/3 h-64 md:h-auto overflow-hidden">
-                            <img src="{{ $post['thumbnail'] }}"
-                                alt="{{ $post['title'] }}"
+                        <a href="{{ route('posts.show', $post->slug) }}" class="md:w-1/3 h-64 md:h-auto overflow-hidden">
+                            <img src="{{ $post->image ?? '' }}"
+                                alt="{{ $post->title }}"
                                 class="h-full w-full object-cover transform hover:scale-105 transition duration-500">
                         </a>
                         <div class="flex-1 p-6">
                             <div class="flex flex-wrap gap-2 mb-4">
-                                @foreach($post['categories'] as $category)
-                                <a href="#" class="inline-block bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium hover:bg-blue-100 transition">
-                                    {{ $category['name'] }}
+                                @if($post->category)
+                                <a href="{{ route('category.show', $post->category->slug) }}" class="inline-block bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium hover:bg-blue-100 transition">
+                                    {{ $post->category->name }}
                                 </a>
-                                @endforeach
+                                @endif
                             </div>
 
                             <h3 class="text-xl font-bold mb-2 hover:text-blue-600 transition-colors">
-                                <a href="{{ $post['link'] }}">{{ $post['title'] }}</a>
+                                <a href="{{ route('posts.show', $post->slug) }}">{{ $post->title }}</a>
                             </h3>
 
-                            <p class="text-gray-600 mb-4 line-clamp-3">{{ $post['excerpt'] }}</p>
+
 
                             <div class="flex flex-wrap gap-2 mb-4">
-                                @foreach($post['tags'] as $tag)
-                                <a href="#" class="text-sm text-gray-600 hover:text-blue-600 transition-colors">
-                                    #{{ $tag['name'] }}
+                                @foreach($post->tags as $tag)
+                                <a href="{{ route('tag.show', $tag->slug) }}" class="text-sm text-gray-600 hover:text-blue-600 transition-colors">
+                                    #{{ $tag->name }}
                                 </a>
                                 @endforeach
                             </div>
 
                             <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
                                 <div class="flex items-center space-x-3">
-                                    <img src="{{ $post['author']['avatar'] ?? 'https://ui-avatars.com/api/?name='.$post['author']['name'] }}"
-                                        alt="{{ $post['author']['name'] }}"
-                                        class="h-10 w-10 rounded-full object-cover">
+                                    <a href="{{ route('user.show', $post->creator->slug ) }}">
+                                        <img src="{{ $post->creator->avatar_url ?? 'https://ui-avatars.com/api/?name='.urlencode($post->creator->name) }}"
+                                            alt="{{ $post->creator->name }}"
+                                            class="h-10 w-10 rounded-full object-cover">
+                                    </a>
                                     <div>
-                                        <p class="font-medium text-gray-900">{{ $post['author']['name'] }}</p>
-                                        <p class="text-sm text-gray-500">{{ $post['createdAt'] }}</p>
+                                        <p class="font-medium text-gray-900">{{ $post->creator->name }}</p>
+                                        <p class="text-sm text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
                                     </div>
                                 </div>
-                                <a href="{{ $post['link'] }}" class="text-blue-600 hover:text-blue-800 font-medium">
+                                <a href="{{ route('posts.show', $post->slug) }}" class="text-blue-600 hover:text-blue-800 font-medium">
                                     Đọc thêm →
                                 </a>
                             </div>

@@ -30,7 +30,7 @@
             <h1 class="mt-4 text-2xl font-bold text-gray-900">{{ $question->title }}</h1>
 
             <div class="mt-4 prose max-w-none">
-                {!! $question['content'] !!}
+                {!! $question->content !!}
             </div>
 
             <div class="mt-6 flex items-center space-x-4">
@@ -45,6 +45,7 @@
                             Thích <span>{{ $question->likes }}</span>
                         </span>
                     </button>
+
                 </form>
                 @else
                 <a href="{{ route('login') }}" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
@@ -86,9 +87,12 @@
                 @else
                 <div class="text-center py-4">
                     <p class="text-gray-600 mb-3">Vui lòng đăng nhập để bình luận</p>
-                    <a href="{{ route('login') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                        Đăng nhập
-                    </a>
+                    <form action="{{ route('auth.demo') }}" method="get">
+                        @csrf
+                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                            Đăng nhập
+                        </button>
+                    </form>
                 </div>
                 @endauth
             </div>
@@ -102,7 +106,6 @@
 
             <div class="mt-6 space-y-6">
                 @foreach($question->comments as $answer)
-
                 <div class="border-b border-gray-200 pb-6 last:border-0 last:pb-0" id="comment-{{ $answer->id }}">
                     <div class="flex items-center space-x-3">
                         <img class="h-8 w-8 rounded-full object-cover" src="{{ $answer->creator->avatar_url }}" alt="{{ $answer->creator->name }}">
@@ -113,7 +116,11 @@
                     </div>
 
                     <div class="mt-4 prose max-w-none">
+                        @if(strpos($answer->comment, '@') === 0)
+                        {!! preg_replace('/@(\w+)/', '<span class="text-blue-600 font-medium">@$1</span>', $answer->comment, 1) !!}
+                        @else
                         {!! $answer->comment !!}
+                        @endif
                     </div>
 
                     <div class="mt-4 flex items-center space-x-4">
@@ -121,9 +128,7 @@
                         <form action="{{ route('comments.like', $answer->id) }}" method="POST" class="inline">
                             @csrf
                             <button type="submit" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                                <svg class="-ml-0.5 mr-1.5 h-4 w-4 {{ DB::table('user_comment_likes')->where('user_id', Auth::id())->where('comment_id', $answer->id)->exists() ? 'text-red-500 fill-current' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path>
-                                </svg>
+
                                 <span>
                                     Thích <span>{{ $answer->like_count }}</span>
                                 </span>
@@ -144,7 +149,7 @@
                             <svg class="-ml-0.5 mr-1.5 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                             </svg>
-                            Bình luận
+                            Phản hồi
                         </button>
                     </div>
 
@@ -154,17 +159,17 @@
                         <form action="{{ route('comments.storeReply', $answer) }}" method="POST">
                             @csrf
                             <div>
-                                <textarea name="comment" rows="2" class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Viết bình luận của bạn..."></textarea>
+                                <textarea name="comment" rows="2" class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Viết phản hồi của bạn..."></textarea>
                             </div>
                             <div class="mt-2 flex justify-end">
                                 <button type="submit" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                                    Gửi bình luận
+                                    Gửi phản hồi
                                 </button>
                             </div>
                         </form>
                         @else
                         <div class="text-center py-3">
-                            <p class="text-gray-600 text-sm mb-2">Vui lòng đăng nhập để bình luận</p>
+                            <p class="text-gray-600 text-sm mb-2">Vui lòng đăng nhập để phản hồi</p>
                             <a href="{{ route('login') }}" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
                                 Đăng nhập
                             </a>

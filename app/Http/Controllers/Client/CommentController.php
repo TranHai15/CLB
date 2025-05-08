@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,12 +15,10 @@ class CommentController extends Controller
     {
         $request->validate([
             'comment' => 'required|string',
-            'parent_id' => 'nullable|exists:comments,id'
         ]);
 
         $comment = new Comment();
         $comment->post_id = $post->id;
-        $comment->parent_id = $request->parent_id;
         $comment->comment = $request->comment;
         $comment->created_by = Auth::id();
         $comment->save();
@@ -33,10 +32,16 @@ class CommentController extends Controller
             'comment' => 'required|string',
         ]);
 
+        // Get the username of the comment creator we're replying to
+        $replyToUser = $comment->creator->slug;
+
+        // Add the @username mention to the beginning of the comment
+        $commentText = '@' . $replyToUser . ' ' . $request->comment;
+
         $reply = new Comment();
         $reply->post_id = $comment->post_id;
-        $reply->parent_id = $comment->id;
-        $reply->comment = $request->comment;
+        $reply->reply_to_username = $replyToUser;
+        $reply->comment = $commentText;
         $reply->created_by = Auth::id();
         $reply->save();
 

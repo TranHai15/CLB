@@ -25,7 +25,7 @@ class GoogleController extends Controller
                 $user = User::create([
                     'google_id' => $googleUser->getId(),
                     'name' => $googleUser->getName(),
-                    'slug' => str_replace('-', '', Str::slug($googleUser->getName())) . rand(1000, 9999),
+                    'slug' => str_replace('-', '', Str::slug($googleUser->getName())),
                     'email' => $googleUser->getEmail(),
                     'avatar_url' => $googleUser->getAvatar(),
                     'status' => 1
@@ -34,7 +34,7 @@ class GoogleController extends Controller
                 $user->update([
                     'google_id' => $googleUser->getId(),
                     'name' => $googleUser->getName(),
-                    'slug' => str_replace('-', '', Str::slug($googleUser->getName())) . rand(1000, 9999),
+                    'slug' => str_replace('-', '', Str::slug($googleUser->getName())),
                     'email' => $googleUser->getEmail(),
                     'avatar_url' => $googleUser->getAvatar(),
                     'email_verified_at' => now(),

@@ -17,6 +17,7 @@ Route::middleware('login.with.return')->group(function () {
     Route::post('/upload-image', [HomeController::class, 'uploadImage'])
         ->name('content.uploadImage');
     Route::get('/questions/create', [QuestionController::class, 'create'])->name('questions.create');
+    Route::post('/questions', [QuestionController::class, 'store'])->name('questions.store');
     Route::post('/user/{user}/follow', [HomeController::class, 'follow'])->name('user.follow');
     Route::delete('/user/{user}/unfollow', [HomeController::class, 'unfollow'])->name('user.unfollow');
 

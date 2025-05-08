@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\BaseController;
-use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Symfony\Component\Console\Question\Question;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
 
 class QuestionController extends BaseController
 {
@@ -46,6 +46,15 @@ class QuestionController extends BaseController
             'tags.*' => 'exists:tags,id',
             'content' => 'required|string'
         ]);
+        $slug = Str::slug($validated['title']);
+        $post = new Post();
+        $post->title = $validated['title'];
+        $post->slug = $slug;
+        $post->category_id = $validated['category_id'];
+        $post->content = $validated['content'];
+        $post->type = 'question';
+        $post->created_by = Auth::id();
+        $post->save();
 
         // Here you would typically save the question to the database
         // For now, we'll just redirect back with a success message
@@ -61,16 +70,8 @@ class QuestionController extends BaseController
         $post->load([
             'creator',
             'category',
-            'comments' => function ($q) {
-                $q->whereNull('parent_id')
-                    ->withCount('replies')
-                    ->orderBy('like_count', 'desc')
-                    ->limit(7);
-            },
-            'comments.creator',
-            'comments.replies.creator',
+            'comments.creator'
         ]);
-
         // Lấy câu hỏi liên quan
         $relatedQuestions = Post::where('category_id', $post->category_id)
             ->where('id', '!=', $post->id)
@@ -86,7 +87,6 @@ class QuestionController extends BaseController
                 ->get();
         }
 
-        dd($relatedQuestions);
         return view('client.questions.show', [
             'question' => $post,
             'relatedQuestions' => $relatedQuestions,

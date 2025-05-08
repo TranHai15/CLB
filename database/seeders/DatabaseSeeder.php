@@ -27,7 +27,6 @@ class DatabaseSeeder extends Seeder
             NotificationSeeder::class,
             PostTagSeeder::class,
             FactorySeed::class,
-            LikeSeed::class,
             UserLikeSeed::class,
         ]);
     }

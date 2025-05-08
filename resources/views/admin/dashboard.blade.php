@@ -111,18 +111,18 @@
                 <div class="px-4 py-4 flex items-center sm:px-6">
                     <div class="min-w-0 flex-1 flex items-center">
                         <div class="flex-shrink-0">
-                            <img class="h-12 w-12 rounded-full" src="" alt="">
+                            <img class="h-12 w-12 rounded-full" src="{{ $user['avatar'] }}" alt="{{ $user['name'] }}">
                         </div>
                         <div class="min-w-0 flex-1 px-4">
                             <div>
-                                <p class="text-sm font-medium text-indigo-600 truncate"></p>
-                                <p class=" mt-1 text-sm text-gray-500"></p>
+                                <p class="text-sm font-medium text-indigo-600 truncate">{{ $user['name'] }}</p>
+                                <p class="mt-1 text-sm text-gray-500">{{ $user['email'] }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="ml-5 flex-shrink-0">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ">
-
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            {{ $user['created_at'] }}
                         </span>
                     </div>
                 </div>
@@ -145,15 +145,15 @@
                 <div class="px-4 py-4 flex items-center justify-between sm:px-6">
                     <div class="min-w-0 flex-1">
                         <p class="text-sm font-medium text-gray-900 truncate">
-
+                            {{ $transaction['description'] }}
                         </p>
                         <p class="mt-1 text-sm text-gray-500">
-
+                            {{ $transaction['created_at'] }}
                         </p>
                     </div>
                     <div class="ml-5 flex-shrink-0">
-                        <span class="text-sm font-medium ">
-
+                        <span class="text-sm font-medium {{ $transaction['amount'] > 0 ? 'text-green-600' : 'text-red-600' }}">
+                            {{ number_format($transaction['amount'], 0, ',', '.') }} đ
                         </span>
                     </div>
                 </div>
@@ -178,11 +178,11 @@
                 <div class="px-4 py-4 sm:px-6">
                     <div class="flex items-center justify-between">
                         <p class="text-sm font-medium text-indigo-600 truncate">
-
+                            {{ $post['title'] }}
                         </p>
                         <div class="ml-2 flex-shrink-0 flex">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ">
-
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $post['status'] == 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                {{ $post['status'] }}
                             </span>
                         </div>
                     </div>
@@ -192,7 +192,7 @@
                                 <svg class="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
-
+                                {{ $post['created_at'] }}
                             </p>
                         </div>
                         <div class="flex items-center text-sm text-gray-500">
@@ -200,7 +200,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                             </svg>
-
+                            {{ $post['creator']['name'] ?? 'Không xác định' }}
                         </div>
                     </div>
                 </div>
@@ -218,17 +218,16 @@
             <h3 class="text-lg font-medium leading-6 text-gray-900">Kế hoạch sắp tới</h3>
         </div>
         <ul class="divide-y divide-gray-200">
-
             @foreach($upcoming_plans as $plan)
             <li>
                 <div class="px-4 py-4 sm:px-6">
                     <div class="flex items-center justify-between">
                         <p class="text-sm font-medium text-indigo-600 truncate">
-
+                            {{ $plan['title'] }}
                         </p>
                         <div class="ml-2 flex-shrink-0 flex">
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-
+                                {{ $plan['status'] }}
                             </span>
                         </div>
                     </div>
@@ -238,18 +237,109 @@
                                 <svg class="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
-
+                                {{ $plan['start_date'] }}
                             </p>
                         </div>
                     </div>
                 </div>
             </li>
             @endforeach
-
         </ul>
         <div class="bg-gray-50 px-4 py-4 sm:px-6">
             <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-900">Xem tất cả kế hoạch</a>
         </div>
     </div>
 </div>
+
+<!-- Activity Chart -->
+<div class="mt-6 bg-white shadow rounded-lg overflow-hidden">
+    <div class="px-4 py-5 sm:px-6 bg-gray-50">
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Hoạt động 30 ngày gần đây</h3>
+    </div>
+    <div class="p-6">
+        <canvas id="activityChart" height="100"></canvas>
+    </div>
+</div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('activityChart').getContext('2d');
+
+        // Pass data from PHP to JavaScript
+        const labels = {
+            {
+                Js::from($activity_data['labels'])
+            }
+        };
+        const postsData = {
+            {
+                Js::from($activity_data['posts'])
+            }
+        };
+        const commentsData = {
+            {
+                Js::from($activity_data['comments'])
+            }
+        };
+        const usersData = {
+            {
+                Js::from($activity_data['users'])
+            }
+        };
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                        label: 'Bài viết',
+                        data: postsData,
+                        borderColor: 'rgb(34, 197, 94)',
+                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Bình luận',
+                        data: commentsData,
+                        borderColor: 'rgb(59, 130, 246)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Người dùng mới',
+                        data: usersData,
+                        borderColor: 'rgb(249, 115, 22)',
+                        backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+@endpush
 @endsection

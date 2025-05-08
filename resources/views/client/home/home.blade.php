@@ -97,7 +97,7 @@
                                 <a href="{{ route('posts.show', $post->slug) }}">{{ $post->title }}</a>
                             </h3>
 
-                            <p class="text-gray-600 mb-4 line-clamp-3">{{ \Illuminate\Support\Str::limit(strip_tags($post->content), 150) }}</p>
+
 
                             <div class="flex flex-wrap gap-2 mb-4">
                                 @foreach($post->tags as $tag)
