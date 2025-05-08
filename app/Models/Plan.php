@@ -11,12 +11,14 @@ class Plan extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name',
+        'title',
         'description',
-        'price',
-        'duration',
-        'features',
-        'status'
+        'start_date',
+        'end_date',
+        'status',
+        'plan_note',
+        'created_by',
+        'updated_by'
     ];
 
     protected $casts = [
@@ -26,8 +28,18 @@ class Plan extends Model
     ];
 
     // Relationships
-    public function transactions()
+    public function creator()
     {
-        return $this->hasMany(Transaction::class);
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updater()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'plan_id');
     }
 }

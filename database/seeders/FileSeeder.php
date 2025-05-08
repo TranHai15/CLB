@@ -12,8 +12,6 @@ class FileSeeder extends Seeder
     {
 
 
-        File::factory(3)->create();
-        // Create files for each user
-
+        File::factory(7)->create();
     }
 }

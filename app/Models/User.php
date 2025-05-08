@@ -22,6 +22,7 @@ class User extends Authenticatable
     protected $fillable = [
         'google_id',
         'name',
+        'slug',
         'email',
         'avatar_url',
         'status',
@@ -32,6 +33,7 @@ class User extends Authenticatable
         'phone',
         'gender',
         'account_type',
+        'remember_token'
     ];
 
     /**
@@ -49,21 +51,92 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password'          => 'hashed',
+    ];
+    public function getRouteKeyName()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return 'slug'; // Laravel sẽ dùng 'slug' thay vì 'id'
     }
 
-    /**
-     * Check if the user is an admin.
-     *
-     * @return bool
-     */
+
+    // Người mà tôi đang theo dõi
+
+
+    // Người đang theo dõi tôi
+    public function followedBy()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'target_user_id', 'user_id');
+    }
+
+    // Người mà tôi đang theo dõi
+    public function follows()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'user_id', 'target_user_id');
+    }
+
     public function isAdmin(): bool
     {
         return $this->hasRole('admin');
+    }
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'created_by');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'created_by');
+    }
+
+    public function categories()
+    {
+        return $this->hasMany(Category::class, 'created_by');
+    }
+
+    public function tags()
+    {
+        return $this->hasMany(Tag::class, 'created_by');
+    }
+
+    public function resources()
+    {
+        return $this->hasMany(Resource::class, 'created_by');
+    }
+
+    public function plans()
+    {
+        return $this->hasMany(Plan::class, 'created_by');
+    }
+
+    public function tasksCreated()
+    {
+        return $this->hasMany(Task::class, 'created_by');
+    }
+
+    public function tasksAssigned()
+    {
+        return $this->hasMany(Task::class, 'assignee_id');
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'created_by');
+    }
+
+    public function files()
+    {
+        return $this->hasMany(File::class, 'created_by');
+    }
+
+    public function notificationsSent()
+    {
+        return $this->hasMany(Notification::class, 'user_id');
+    }
+
+    public function notificationsReceived()
+    {
+        return $this->hasMany(Notification::class, 'to_user_id');
     }
 }

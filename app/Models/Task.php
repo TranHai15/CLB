@@ -11,13 +11,19 @@ class Task extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'plan_id',
+        'stt',
         'title',
         'description',
+        'start_date',
         'due_date',
         'status',
-        'priority',
-        'assigned_to',
-        'created_by'
+        'issue_text',
+        'solution_text',
+        'evidence_url',
+        'created_by',
+        'assignee_id',
+        'updated_by'
     ];
 
     protected $casts = [
@@ -25,13 +31,23 @@ class Task extends Model
     ];
 
     // Relationships
-    public function assignedUser()
+    public function plan()
     {
-        return $this->belongsTo(User::class, 'assigned_to');
+        return $this->belongsTo(Plan::class, 'plan_id');
     }
 
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function assignee()
+    {
+        return $this->belongsTo(User::class, 'assignee_id');
+    }
+
+    public function updater()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
     }
 }

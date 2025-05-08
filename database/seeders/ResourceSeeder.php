@@ -12,9 +12,6 @@ class ResourceSeeder extends Seeder
     public function run(): void
     {
         // Get all users and categories
-        Resource::factory(3)->create();
-
-        // Create resources for each user
-
+        Resource::factory(5)->create();
     }
 }

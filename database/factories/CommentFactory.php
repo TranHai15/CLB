@@ -15,7 +15,7 @@ class CommentFactory extends Factory
             'created_by' => User::factory(),
             'updated_by' => User::factory(),
             'post_id' => Post::factory(),
-            'parent_id' => null,
+            'reply_to_username' => null,
         ];
     }
 }

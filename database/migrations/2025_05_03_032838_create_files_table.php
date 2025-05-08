@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('files', function (Blueprint $table) {
             $table->id();
             $table->enum('fileable_type', ['post', 'resource', 'user_avatar', 'task_evidence', 'other']);
-            $table->unsignedBigInteger('fileable_id');
+            $table->foreignId('fileable_id')->nullable()->constrained('posts', 'id')->onDelete('cascade');
             $table->string('storage_path', 1024);
-            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });

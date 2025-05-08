@@ -13,13 +13,17 @@ class TaskFactory extends Factory
         return [
             'title' => fake()->sentence(),
             'plan_id' => Plan::factory(),
-            'stt' => fake()->randomElement(['1', '2', '3', '4']),
+            'stt' => fake()->numberBetween(1, 100), // Số nguyên ngẫu nhiên
             'description' => fake()->paragraph(),
             'start_date' => fake()->dateTimeBetween('now'),
             'due_date' => fake()->dateTimeBetween('now', '+1 month'),
             'status' => fake()->randomElement(['not_started', 'in_progress', 'completed']),
+            'issue_text' => fake()->optional()->sentence(), // Có thể null
+            'solution_text' => fake()->optional()->sentence(), // Có thể null
+            'evidence_url' => fake()->optional()->url(), // Có thể null
             'created_by' => User::factory(),
-
+            'assignee_id' => User::factory(), // Người được giao nhiệm vụ
+            'updated_by' => User::factory(),
         ];
     }
 }

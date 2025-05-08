@@ -13,6 +13,7 @@ class CategoryFactory extends Factory
         $name = fake()->unique()->words(2, true);
         return [
             'name' => $name,
+            'slug' => Str::slug($name),
             'image_url' => fake()->imageUrl(),
             'created_by' => User::factory(),
             'updated_by' => User::factory(),

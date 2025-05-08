@@ -19,7 +19,7 @@
     @endpush
 </head>
 
-<body class="font-sans antialiased bg-gray-50">
+<body class="font-sans antialiased bg-gray-50" data-auth="{{ Auth::check() ? 'true' : 'false' }}" data-login-url="{{ route('login') }}">
     <div x-data="{ showHeader: true, lastScrollPosition: 0 }"
         @scroll.window="
             const currentScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
@@ -41,6 +41,7 @@
     @include('client.layout.footer')
     <!-- Alpine.js -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    @stack('scripts')
 </body>
 
 </html>

@@ -13,6 +13,6 @@ class TransactionSeeder extends Seeder
     {
         // Get all users and plans
 
-        Transaction::factory(2)->create();
+        Transaction::factory(22)->create();
     }
 }

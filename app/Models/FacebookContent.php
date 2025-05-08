@@ -15,20 +15,19 @@ class FacebookContent extends Model
         'content',
         'image_url',
         'created_by',
-        'updated_by',
-
+        'updated_by'
     ];
 
     protected $casts = [];
 
     // Relationships
-    public function user()
+    public function creator()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function post()
+    public function updater()
     {
-        return $this->belongsTo(Post::class);
+        return $this->belongsTo(User::class, 'updated_by');
     }
 }

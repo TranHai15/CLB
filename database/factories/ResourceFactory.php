@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
+use App\Models\Resource;
 use App\Models\User;
 use App\Models\ResourceCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -14,11 +16,17 @@ class ResourceFactory extends Factory
             'title' => fake()->sentence(),
             'description' => fake()->paragraph(),
             'url' => 'resources/' . fake()->uuid() . '.pdf',
-            'status' => fake()->randomElement(['draft', 'published', 'published']),
+            'status' => fake()->randomElement(['draft', 'published']),
             'created_by' => User::factory(),
             'updated_by' => User::factory(),
-
-
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Resource $resource) {
+            $categories = Category::factory()->count(2)->create(); // Tạo 2 categories
+            $resource->categories()->attach($categories); // Gán categories
+        });
     }
 }

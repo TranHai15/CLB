@@ -14,10 +14,10 @@ class PlanFactory extends Factory
             'description' => fake()->paragraph(),
             'start_date' => fake()->dateTimeBetween('now'),
             'end_date' => fake()->dateTimeBetween('now', '+1 month'),
-            'status' => fake()->randomElement(['pending', 'ongoing']),
-            'plan_note' => fake()->randomElement(['monthly', 'yearly']),
+            'status' => fake()->randomElement(['pending', 'ongoing', 'completed']),
+            'plan_note' => fake()->paragraph(), // Chuỗi text ngẫu nhiên
             'created_by' => User::factory(),
-
+            'updated_by' => User::factory(),
         ];
     }
 }

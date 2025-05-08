@@ -12,11 +12,10 @@ class FileMetadata extends Model
 
     protected $fillable = [
         'file_id',
-        'mime_type',
         'original_name',
-        'file_size',
-
-
+        'checksum',
+        'mime_type',
+        'file_size'
     ];
 
     protected $casts = [
@@ -27,6 +26,6 @@ class FileMetadata extends Model
     // Relationships
     public function file()
     {
-        return $this->belongsTo(File::class);
+        return $this->belongsTo(File::class, 'file_id');
     }
 }

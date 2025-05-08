@@ -12,7 +12,7 @@ class TaskSeeder extends Seeder
     {
         // Get all users
 
-        Task::factory(3)->create();
+        Task::factory(5)->create();
 
 
         // Create tasks for each user

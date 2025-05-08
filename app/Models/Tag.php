@@ -16,10 +16,22 @@ class Tag extends Model
         'created_by',
         'updated_by'
     ];
-
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
     // Relationships
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+    public function updater()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
     public function posts()
     {
-        return $this->belongsToMany(Post::class);
+        return $this->belongsToMany(Post::class, 'post_tags');
     }
 }

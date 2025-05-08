@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('file_metadata', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('file_id')->constrained('files');
+            $table->foreignId('file_id')->nullable()->constrained('files');
             $table->string('original_name', 512);
+            $table->string('checksum', 64);
             $table->string('mime_type', 100);
             $table->bigInteger('file_size');
             $table->timestamps();

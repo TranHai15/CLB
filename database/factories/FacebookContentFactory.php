@@ -16,7 +16,6 @@ class FacebookContentFactory extends Factory
             'image_url' => fake()->imageUrl(),
             'created_by' => User::factory(),
             'updated_by' => User::factory(),
-
         ];
     }
 }

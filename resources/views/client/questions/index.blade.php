@@ -17,26 +17,26 @@
                 <div class="bg-white rounded-lg shadow-lg p-6">
                     <div class="flex items-start gap-4">
                         <div class="flex-shrink-0">
-                            <img src="{{ $question['author']['avatar'] }}"
-                                alt="{{ $question['author']['name'] }}"
+                            <img src="{{ $question->creator->avatar_url }}"
+                                alt="{{ $question->creator->name        }}"
                                 class="w-12 h-12 rounded-full">
                         </div>
                         <div class="flex-1">
                             <h2 class="text-xl font-semibold mb-2">
-                                <a href="{{ route('questions.show', $question['id']) }}" class="hover:text-blue-600">
-                                    {{ $question['title'] }}
+                                <a href="{{ route('questions.show', $question->slug     ) }}" class="hover:text-blue-600">
+                                    {{ $question->title }}
                                 </a>
                             </h2>
-                            <p class="text-gray-600 mb-4 line-clamp-2">{{ $question['content'] }}</p>
+                            <p class="text-gray-600 mb-4 line-clamp-2">{{ $question->content }}</p>
 
                             <div class="flex items-center gap-4 text-sm text-gray-500">
-                                <a href="/category/{{ $question['category']['slug'] }}"
+                                <a href="/category/{{ $question->category->slug }}"
                                     class="bg-gray-100 px-3 py-1 rounded-full hover:bg-gray-200">
-                                    {{ $question['category']['name'] }}
+                                    {{ $question->category->name }}
                                 </a>
-                                <span>{{ $question['answers_count'] }} câu trả lời</span>
-                                <span>{{ number_format($question['views']) }} lượt xem</span>
-                                <span>{{ \Carbon\Carbon::parse($question['created_at'])->diffForHumans() }}</span>
+                                <span>{{ $question->comments->count() }} câu trả lời</span>
+                                <span>{{ number_format($question->views) }} lượt xem</span>
+                                <span>{{ \Carbon\Carbon::parse($question->created_at)->diffForHumans() }}</span>
                             </div>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                 <select id="categorySelect" class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="">Tất cả danh mục</option>
                     @foreach($categories as $category)
-                    <option value="{{ $category['slug'] }}">{{ $category['name'] }} ({{ $category['count'] }})</option>
+                    <option value="{{ $category->id }}">{{ $category->name }} ({{ $category->posts->count() }})</option>
                     @endforeach
                 </select>
             </div>
@@ -64,19 +64,19 @@
                 <div class="space-y-4">
                     @foreach($latestPosts as $post)
                     <div class="flex gap-4">
-                        <img src="{{ $post['thumbnail'] }}"
-                            alt="{{ $post['title'] }}"
+                        <img src="{{ $post->image   }}"
+                            alt="{{ $post->title }}"
                             class="w-20 h-20 object-cover rounded-lg">
                         <div>
                             <h4 class="font-medium text-sm mb-1 line-clamp-2">
-                                <a href="{{ route('posts.show', $post['id']) }}" class="hover:text-blue-600">
-                                    {{ $post['title'] }}
+                                <a href="{{ route('posts.show', $post->slug) }}" class="hover:text-blue-600">
+                                    {{ $post->title }}
                                 </a>
                             </h4>
                             <div class="text-xs text-gray-500">
-                                <span>{{ $post['author'] }}</span>
+                                <span>{{ $post->creator->name }}</span>
                                 <span class="mx-1">•</span>
-                                <span>{{ \Carbon\Carbon::parse($post['created_at'])->diffForHumans() }}</span>
+                                <span>{{ \Carbon\Carbon::parse($post->created_at)->diffForHumans() }}</span>
                             </div>
                         </div>
                     </div>

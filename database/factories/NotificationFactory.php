@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -11,15 +12,11 @@ class NotificationFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
+            'to_user_id' => User::factory(), // Đổi từ to_user
             'title' => fake()->sentence(),
-            'message' => fake()->paragraph(),
+            'post_id' => Post::factory(), // Thêm post_id
             'type' => fake()->randomElement(['info', 'success', 'warning', 'error']),
             'is_read' => fake()->boolean(),
-            'data' => [
-                'action' => fake()->randomElement(['post_created', 'comment_added', 'task_assigned']),
-                'action_id' => fake()->numberBetween(1, 100),
-                'action_by' => fake()->name()
-            ]
         ];
     }
 }

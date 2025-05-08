@@ -12,19 +12,26 @@ class Post extends Model
 
     protected $fillable = [
         'title',
+        'image',
+        'type',
         'slug',
         'content',
         'status',
         'views',
+        'likes',
         'created_by',
         'updated_by',
-        'tag_id',
         'category_id'
     ];
 
     protected $casts = [
         'views' => 'integer',
+        'likes' => 'integer',
     ];
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     // Relationships
     public function creator()
@@ -39,16 +46,16 @@ class Post extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     public function comments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class, 'post_id');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'post_tags');
     }
 }

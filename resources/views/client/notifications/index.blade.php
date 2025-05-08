@@ -48,33 +48,31 @@
                     <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition {{ $notification['read'] ? '' : 'bg-blue-50' }}">
                         <div class="flex items-start gap-4">
                             <div class="flex-shrink-0">
-                                <img src="{{ $notification['sender']['avatar'] }}"
-                                    alt="{{ $notification['sender']['name'] }}"
+                                <img src="{{ $notification->sender->avatar_url }}"
+                                    alt="{{ $notification->sender->name }}"
                                     class="w-10 h-10 rounded-full">
                             </div>
                             <div class="flex-1">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-2">
-                                        <span class="font-medium">{{ $notification['sender']['name'] }}</span>
-                                        <span class="text-gray-500">{{ $notification['action'] }}</span>
-                                        <a href="{{ $notification['link'] }}" class="text-blue-600 hover:underline">
-                                            {{ $notification['target'] }}
-                                        </a>
+                                        <span class="font-medium">{{ $notification->sender->name }}</span>
+                                        <span class="text-gray-500">{{ $notification->type }}</span>
+
                                     </div>
                                     <div class="flex items-center gap-4">
                                         <span class="text-sm text-gray-500">
-                                            {{ \Carbon\Carbon::parse($notification['created_at'])->diffForHumans() }}
+                                            {{ $notification->created_at->format('d/m/Y H:i') }}
                                         </span>
                                         @if(!$notification['read'])
                                         <button class="text-sm text-blue-600 hover:text-blue-800 mark-read"
-                                            data-id="{{ $notification['id'] }}">
+                                            data-id="{{ $notification->id }}">
                                             Đánh dấu đã đọc
                                         </button>
                                         @endif
                                     </div>
                                 </div>
-                                @if($notification['content'])
-                                <p class="mt-2 text-gray-600">{{ $notification['content'] }}</p>
+                                @if($notification->content)
+                                <p class="mt-2 text-gray-600">{{ $notification->content }}</p>
                                 @endif
                             </div>
                         </div>

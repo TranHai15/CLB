@@ -25,6 +25,10 @@ class DatabaseSeeder extends Seeder
             PlanSeeder::class,
             TransactionSeeder::class,
             NotificationSeeder::class,
+            PostTagSeeder::class,
+            FactorySeed::class,
+            LikeSeed::class,
+            UserLikeSeed::class,
         ]);
     }
 }

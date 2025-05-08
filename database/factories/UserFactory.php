@@ -17,12 +17,14 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $name = fake()->name();
         return [
-            'name' => fake()->name(),
+            'name' => $name,
+            'slug' => str_replace('-', '', Str::slug($name)) . rand(1000, 9999),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(), // password
+            'email_verified_at' => now(),
             'remember_token' => Str::random(10),
-            'avatar_url' => fake()->imageUrl(),
+            'avatar_url' => env('DEFAULT_AVATAR'),
             'status' => fake()->randomElement(['active', 'inactive', 'suspended']),
             'student_code' => fake()->unique()->numerify('SV####'),
             'enrollment_year' => fake()->numberBetween(2018, 2024),
@@ -33,9 +35,6 @@ class UserFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
     public function unverified(): static
     {
         return $this->state(fn(array $attributes) => [

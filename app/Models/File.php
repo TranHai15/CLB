@@ -14,7 +14,7 @@ class File extends Model
         'fileable_type',
         'fileable_id',
         'storage_path',
-        'created_by',
+        'created_by'
     ];
 
     protected $casts = [
@@ -22,13 +22,17 @@ class File extends Model
     ];
 
     // Relationships
-    public function user()
+    public function creator()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function fileable()
+    {
+        return $this->morphTo();
+    }
     public function metadata()
     {
-        return $this->hasOne(FileMetadata::class);
+        return $this->hasOne(FileMetadata::class, 'file_id');
     }
 }

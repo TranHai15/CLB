@@ -13,9 +13,9 @@ class Transaction extends Model
     protected $fillable = [
         'amount',
         'description',
+        'type',
         'created_by',
-        'updated_by',
-
+        'updated_by'
     ];
 
     protected $casts = [
@@ -23,13 +23,13 @@ class Transaction extends Model
     ];
 
     // Relationships
-    public function user()
+    public function creator()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function plan()
+    public function updater()
     {
-        return $this->belongsTo(Plan::class);
+        return $this->belongsTo(User::class, 'updated_by');
     }
 }

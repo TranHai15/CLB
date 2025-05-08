@@ -12,11 +12,11 @@ class Notification extends Model
 
     protected $fillable = [
         'user_id',
+        'to_user_id',
         'title',
-        'message',
+        'post_id',
         'type',
-        'is_read',
-        'data'
+        'is_read'
     ];
 
     protected $casts = [
@@ -25,8 +25,18 @@ class Notification extends Model
     ];
 
     // Relationships
-    public function user()
+    public function sender()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function receiver()
+    {
+        return $this->belongsTo(User::class, 'to_user_id');
+    }
+
+    public function post()
+    {
+        return $this->belongsTo(Post::class, 'post_id');
     }
 }

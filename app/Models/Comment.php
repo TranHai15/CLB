@@ -11,31 +11,27 @@ class Comment extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'comment',
         'post_id',
-        'parent_id',
+        'comment',
+        'like_count',
         'created_by',
-        'updated_by'
+        'updated_by',
+        'reply_to_username',
     ];
 
     // Relationships
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function post()
     {
-        return $this->belongsTo(Post::class);
+        return $this->belongsTo(Post::class, 'post_id');
     }
 
-    public function parent()
+    public function creator()
     {
-        return $this->belongsTo(Comment::class, 'parent_id');
+        return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function replies()
+    public function updater()
     {
-        return $this->hasMany(Comment::class, 'parent_id');
+        return $this->belongsTo(User::class, 'updated_by');
     }
 }

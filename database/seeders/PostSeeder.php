@@ -11,9 +11,6 @@ class PostSeeder extends Seeder
     public function run(): void
     {
         // Create 15 posts
-        $posts = Post::factory(15)->create();
-
-        // Attach random tags to each post
-
+        Post::factory(15)->create();
     }
 }

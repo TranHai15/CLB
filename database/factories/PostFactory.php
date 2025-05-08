@@ -16,15 +16,24 @@ class PostFactory extends Factory
         $title = fake()->sentence();
         return [
             'title' => $title,
+            'image' => 'https://hoanghamobile.com/tin-tuc/wp-content/uploads/2024/04/anh-hacker.jpg',
             'slug' => Str::slug($title),
+            'type' => fake()->randomElement(['question', 'post']),
             'content' => fake()->paragraphs(3, true),
             'status' => fake()->randomElement(['draft', 'published', 'archived']),
             'views' => fake()->numberBetween(0, 1000),
+            'likes' => fake()->numberBetween(0, 1000),
             'created_by' => User::factory(),
             'updated_by' => User::factory(),
             'category_id' => Category::factory(),
-            'tag_id' => Tag::factory(),
-
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Post $post) {
+            $tags = Tag::factory()->count(3)->create(); // Tạo 3 tags
+            $post->tags()->attach($tags); // Gán tags cho bài viết
+        });
     }
 }

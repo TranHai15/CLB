@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('plan_id')->constrained('plans');
+            $table->foreignId('plan_id')->nullable()->constrained('plans')->nullOnDelete();
             $table->integer('stt');
             $table->string('title');
             $table->text('description')->nullable();
@@ -23,7 +23,9 @@ return new class extends Migration
             $table->string('issue_text', 1000)->nullable();
             $table->string('solution_text', 1000)->nullable();
             $table->string('evidence_url', 512)->nullable();
-            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('assignee_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });

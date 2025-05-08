@@ -12,7 +12,7 @@ class ResourceCategoryFactory extends Factory
     {
         return [
             'resource_id' => Resource::factory(),
-            'category_id' => Category::factory()
+            'category_id' => Category::factory(),
         ];
     }
 }

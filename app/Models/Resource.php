@@ -18,25 +18,23 @@ class Resource extends Model
         'created_by',
         'updated_by'
     ];
-
     protected $casts = [
-        'file_size' => 'integer',
         'download_count' => 'integer',
     ];
 
     // Relationships
-    public function user()
+    public function creator()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function category()
+    public function updater()
     {
-        return $this->belongsTo(ResourceCategory::class, 'category_id');
+        return $this->belongsTo(User::class, 'updated_by');
     }
 
-    public function metadata()
+    public function categories()
     {
-        return $this->hasOne(FileMetadata::class);
+        return $this->belongsToMany(Category::class, 'resource_categories');
     }
 }

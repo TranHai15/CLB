@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('resource_categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('resource_id')->constrained('resources');
-            $table->foreignId('category_id')->constrained('categories');
+            $table->foreignId('resource_id')->nullable()->constrained('resources')->nullOnDelete();
+            $table->foreignId('category_id')->nullable()->constrained('categories')->nullOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });

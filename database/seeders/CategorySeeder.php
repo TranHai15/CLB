@@ -11,9 +11,6 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         // Create parent categories
-        $parentCategories = Category::factory(3)->create();
-
-        // Create child categories for each parent
-
+        Category::factory(5)->create();
     }
 }
