@@ -14,12 +14,14 @@ class Transaction extends Model
         'amount',
         'description',
         'type',
+        'balance',
         'created_by',
         'updated_by'
     ];
 
     protected $casts = [
         'amount' => 'decimal:2',
+        'balance' => 'decimal:2',
     ];
 
     // Relationships

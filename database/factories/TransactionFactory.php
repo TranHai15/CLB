@@ -13,7 +13,8 @@ class TransactionFactory extends Factory
         return [
             'amount' => fake()->numberBetween(100, 10000), // Số tiền ngẫu nhiên
             'description' => fake()->sentence(),
-            'type' => fake()->randomElement(['in', 'out']), // Thêm type
+            'type' => fake()->randomElement(['in', 'out']),
+            'balance' => fake()->numberBetween(100, 10000),
             'created_by' => User::factory(),
             'updated_by' => User::factory(),
         ];

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->decimal('amount', 15, 0);
             $table->text('description')->nullable();
             $table->enum('type', ['in', 'out'])->default('out');
+            $table->decimal('balance', 15, 0)->default(0);
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
