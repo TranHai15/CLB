@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\TaskController;
+use App\Http\Controllers\Admin\CommentController;
 // use App\Http\Controllers\Admin\ResourceController;
 // use App\Http\Controllers\Admin\FinanceController;
 // use App\Http\Controllers\Admin\PostController;
@@ -48,6 +49,13 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::put('/{post}', [PostController::class, 'update'])->name('update');
         Route::delete('/{post}', [PostController::class, 'destroy'])->name('destroy');
         Route::post('/{post}/toggle-status', [PostController::class, 'toggleStatus'])->name('toggle-status');
+    });
+
+    // Comments Management
+    Route::prefix('comments')->name('comments.')->group(function () {
+        Route::get('/', [CommentController::class, 'index'])->name('index');
+        Route::get('/{comment}', [CommentController::class, 'show'])->name('show');
+        Route::delete('/{comment}', [CommentController::class, 'destroy'])->name('destroy');
     });
 
     // Transactions Management
