@@ -38,7 +38,7 @@
                 </svg>
                 <div class="ml-4">
                     <h2 class="text-sm font-medium text-gray-500">Tổng thu</h2>
-                    <p class="text-xl font-bold text-gray-900">{{ number_format($allTransactions->where('type', 'income')->sum('amount'), 0, ',', '.') }} VNĐ</p>
+                    <p class="text-xl font-bold text-gray-900">{{ number_format($allTransactions->where('type', 'in')->sum('amount'), 0, ',', '.') }} VNĐ</p>
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
                 </svg>
                 <div class="ml-4">
                     <h2 class="text-sm font-medium text-gray-500">Tổng chi</h2>
-                    <p class="text-xl font-bold text-gray-900">{{ number_format($allTransactions->where('type', 'expense')->sum('amount'), 0, ',', '.') }} VNĐ</p>
+                    <p class="text-xl font-bold text-gray-900">{{ number_format($allTransactions->where('type', 'out')->sum('amount'), 0, ',', '.') }} VNĐ</p>
                 </div>
             </div>
         </div>
@@ -64,7 +64,7 @@
                 </svg>
                 <div class="ml-4">
                     <h2 class="text-sm font-medium text-gray-500">Số dư</h2>
-                    <p class="text-xl font-bold text-gray-900">{{ number_format($allTransactions->where('type', 'income')->sum('amount') - $allTransactions->where('type', 'expense')->sum('amount'), 0, ',', '.') }} VNĐ</p>
+                    <p class="text-xl font-bold text-gray-900">{{ number_format($allTransactions->where('type', 'in')->sum('amount') - $allTransactions->where('type', 'out')->sum('amount'), 0, ',', '.') }} VNĐ</p>
                 </div>
             </div>
         </div>
@@ -112,13 +112,13 @@
                             <div class="font-medium text-gray-800 truncate max-w-xs">{{ $transaction->description }}</div>
                         </td>
                         <td class="px-4 py-3 whitespace-nowrap">
-                            <div class="text-left font-medium {{ $transaction->type === 'income' ? 'text-green-600' : 'text-red-600' }}">
+                            <div class="text-left font-medium {{ $transaction->type === 'in' ? 'text-green-600' : 'text-red-600' }}">
                                 {{ number_format($transaction->amount, 0, ',', '.') }} VNĐ
                             </div>
                         </td>
                         <td class="px-4 py-3 whitespace-nowrap">
                             <div class="text-left">
-                                @if($transaction->type === 'income')
+                                @if($transaction->type === 'in')
                                 <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
                                     Thu
                                 </span>

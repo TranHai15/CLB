@@ -43,7 +43,7 @@
                     <div class="mb-4">
                         <label for="amount" class="block text-sm font-medium text-gray-700">Số tiền <span class="text-red-500">*</span></label>
                         <div class="mt-1 flex rounded-md shadow-sm">
-                            <input type="number" name="amount" id="amount" value="{{ old('amount', $transaction->amount) }}" min="0" step="1000" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                            <input type="number" name="amount" id="amount" value="{{ old('amount', $transaction->amount) }}" min="0" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
                             <span class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
                                 VNĐ
                             </span>
@@ -58,7 +58,7 @@
                         <label for="type" class="block text-sm font-medium text-gray-700">Loại giao dịch <span class="text-red-500">*</span></label>
                         <div class="mt-2 space-y-2">
                             <div class="flex items-center">
-                                <input id="income" name="type" type="radio" value="income" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300" {{ old('type', $transaction->type) == 'income' ? 'checked' : '' }} required>
+                                <input id="income" name="type" type="radio" value="in" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300" {{ old('type', $transaction->type) == 'income' ? 'checked' : '' }} required>
                                 <label for="income" class="ml-3 block text-sm font-medium text-gray-700">
                                     <span class="flex items-center">
                                         <svg class="w-5 h-5 text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -69,7 +69,7 @@
                                 </label>
                             </div>
                             <div class="flex items-center">
-                                <input id="expense" name="type" type="radio" value="expense" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300" {{ old('type', $transaction->type) == 'expense' ? 'checked' : '' }}>
+                                <input id="expense" name="type" type="radio" value="out" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300" {{ old('type', $transaction->type) == 'expense' ? 'checked' : '' }}>
                                 <label for="expense" class="ml-3 block text-sm font-medium text-gray-700">
                                     <span class="flex items-center">
                                         <svg class="w-5 h-5 text-red-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

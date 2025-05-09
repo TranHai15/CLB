@@ -41,8 +41,17 @@ class TransactionController extends Controller
         $validated = $request->validate([
             'amount' => 'required|numeric',
             'description' => 'required|string|max:255',
-            'type' => 'required|in:income,expense',
+            'type' => 'required|in:in,out',
         ]);
+
+        if ($validated['type'] === 'out') {
+            $balance = Transaction::where('type', 'in')->sum('amount') - Transaction::where('type', 'out')->sum('amount');
+
+            if ($validated['amount'] > $balance || $balance < 0) {
+                return redirect()->back()
+                    ->withErrors(['amount' => 'Số dư tài khoản không đủ.']);
+            }
+        }
 
         Transaction::create([
             'amount' => $validated['amount'],
@@ -52,7 +61,7 @@ class TransactionController extends Controller
             'updated_by' => Auth::id(),
         ]);
 
-        return redirect()->route('admin.transactions.index')
+        return to_route('admin.transactions.index')
             ->with('success', 'Giao dịch đã được tạo thành công.');
     }
 
@@ -82,8 +91,17 @@ class TransactionController extends Controller
         $validated = $request->validate([
             'amount' => 'required|numeric',
             'description' => 'required|string|max:255',
-            'type' => 'required|in:income,expense',
+            'type' => 'required|in:in,out',
         ]);
+
+        if ($validated['type'] === 'out') {
+            $balance = Transaction::where('type', 'in')->sum('amount') - Transaction::where('type', 'out')->sum('amount');
+
+            if ($validated['amount'] > $balance || $balance < 0) {
+                return redirect()->back()
+                    ->withErrors(['amount' => 'Số dư tài khoản không đủ.']);
+            }
+        }
 
         $transaction->amount = $validated['amount'];
         $transaction->description = $validated['description'];
@@ -91,7 +109,7 @@ class TransactionController extends Controller
         $transaction->updated_by = Auth::id();
         $transaction->save();
 
-        return redirect()->route('admin.transactions.index')
+        return to_route('admin.transactions.index')
             ->with('success', 'Giao dịch đã được cập nhật thành công.');
     }
 
