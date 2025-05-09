@@ -3,74 +3,96 @@
 @section('title', 'Quản lý bình luận')
 
 @section('content')
-<div class="px-4 py-6">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-semibold text-gray-800">Quản lý bình luận</h1>
+<div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+    <!-- Page header -->
+    <div class="sm:flex sm:justify-between sm:items-center mb-8">
+        <!-- Left: Title -->
+        <div class="mb-4 sm:mb-0">
+            <h1 class="text-2xl md:text-3xl text-gray-800 font-bold">Quản lý bình luận</h1>
+        </div>
     </div>
 
+    <!-- Alert if any -->
     @if(session('success'))
-    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded shadow" role="alert">
-        <div class="flex">
-            <div class="py-1">
-                <svg class="w-6 h-6 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-            </div>
-            <div>
-                <p>{{ session('success') }}</p>
-            </div>
-        </div>
+    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6" role="alert">
+        <p>{{ session('success') }}</p>
     </div>
     @endif
 
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-        <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-            <h2 class="text-lg font-medium text-gray-800">Danh sách bình luận</h2>
-        </div>
-        <div class="p-6">
+    <!-- Table -->
+    <div class="bg-white shadow-lg rounded-sm border border-gray-200 mb-8">
+        <header class="px-5 py-4 border-b border-gray-100 flex justify-between items-center">
+            <h2 class="font-semibold text-gray-800">Danh sách bình luận</h2>
+        </header>
+        <div class="p-3">
             <div class="overflow-x-auto">
-                <table id="commentsTable" class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-100">
+                <table id="commentsTable" class="table-auto w-full">
+                    <thead class="text-xs font-semibold uppercase text-gray-500 bg-gray-50 border-t border-b border-gray-200">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nội dung</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tác giả</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Likes</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày tạo</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thao tác</th>
+                            <th class="px-4 py-3 whitespace-nowrap">
+                                <div class="font-semibold text-left">ID</div>
+                            </th>
+                            <th class="px-4 py-3">
+                                <div class="font-semibold text-left">Nội dung</div>
+                            </th>
+                            <th class="px-4 py-3 whitespace-nowrap">
+                                <div class="font-semibold text-left">Tác giả</div>
+                            </th>
+                            <th class="px-4 py-3 whitespace-nowrap">
+                                <div class="font-semibold text-left">Lượt thích</div>
+                            </th>
+                            <th class="px-4 py-3 whitespace-nowrap">
+                                <div class="font-semibold text-left">Ngày tạo</div>
+                            </th>
+                            <th class="px-4 py-3 whitespace-nowrap">
+                                <div class="font-semibold text-right">Thao tác</div>
+                            </th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tbody class="text-sm divide-y divide-gray-200">
                         @foreach($comments as $comment)
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $comment->id }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">{{ Str::limit($comment->comment, 80) }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                @if($comment->creator)
-                                <span class="font-medium">{{ $comment->creator->name }}</span>
-                                @else
-                                <span class="text-gray-500">Ẩn danh</span>
-                                @endif
+                        <tr>
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                <div class="text-left">{{ $comment->id }}</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $comment->like_count }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $comment->created_at->format('d/m/Y H:i') }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <div class="flex space-x-2">
-                                    <a href="{{ route('admin.comments.show', $comment) }}" class="text-indigo-600 hover:text-indigo-900 bg-indigo-100 hover:bg-indigo-200 px-3 py-1 rounded-md">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                            <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                            <td class="px-4 py-3">
+                                <div class="text-left max-w-xs overflow-hidden">{{ Str::limit($comment->comment, 80) }}</div>
+                            </td>
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                <div class="text-left">
+                                    @if($comment->creator)
+                                    <div class="font-medium text-gray-800">{{ $comment->creator->name }}</div>
+                                    @else
+                                    <span class="text-gray-500">Ẩn danh</span>
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                <div class="text-left flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                                    </svg>
+                                    {{ $comment->like_count }}
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                <div class="text-left">{{ $comment->created_at->format('d/m/Y H:i') }}</div>
+                            </td>
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                <div class="text-right flex justify-end items-center space-x-2">
+                                    <a href="{{ route('admin.comments.show', $comment) }}" class="text-indigo-600 hover:text-indigo-900" title="Xem chi tiết">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                         </svg>
-                                        Xem
                                     </a>
-                                    <form action="{{ route('admin.comments.destroy', $comment) }}" method="POST" class="inline-block">
+                                    <form action="{{ route('admin.comments.destroy', $comment) }}" method="POST" class="inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa bình luận này?')" class="text-red-600 hover:text-red-900 bg-red-100 hover:bg-red-200 px-3 py-1 rounded-md">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        <button type="submit" class="text-red-600 hover:text-red-900" title="Xóa">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                             </svg>
-                                            Xóa
                                         </button>
                                     </form>
                                 </div>
@@ -96,6 +118,7 @@
                 infoEmpty: "Hiển thị 0 đến 0 của 0 bản ghi",
                 infoFiltered: "(lọc từ _MAX_ bản ghi)",
                 zeroRecords: "Không tìm thấy bản ghi nào",
+                emptyTable: "Không có dữ liệu",
                 paginate: {
                     first: "Đầu",
                     previous: "Trước",
@@ -108,10 +131,47 @@
                 [0, 'desc']
             ],
             pageLength: 10,
+            lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, "Tất cả"]
+            ],
             columnDefs: [{
                 orderable: false,
                 targets: 5
-            }]
+            }],
+            initComplete: function() {
+                // Add a select filter for the author column (index 2)
+                this.api().columns(2).every(function() {
+                    var column = this;
+                    var select = $('<select class="ml-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm"><option value="">-- Tất cả tác giả --</option></select>')
+                        .appendTo($(column.header()).find('div'))
+                        .on('change', function() {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search(val ? val : '', true, false)
+                                .draw();
+                        });
+
+                    // Get unique author names and add to select options
+                    var authors = new Set();
+                    column.data().each(function(d, j) {
+                        var authorName = $(d).text().trim();
+                        if (authorName && authorName !== 'Ẩn danh') {
+                            authors.add(authorName);
+                        }
+                    });
+
+                    authors.forEach(function(author) {
+                        select.append('<option value="' + author + '">' + author + '</option>');
+                    });
+
+                    // Add an option for anonymous comments
+                    select.append('<option value="Ẩn danh">Ẩn danh</option>');
+                });
+            }
         });
     });
 </script>
