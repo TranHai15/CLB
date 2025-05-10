@@ -11,8 +11,9 @@ use Illuminate\Support\Facades\DB;
 
 class LikeController extends Controller
 {
-    public function toggleLike(Post $post)
+    public function toggleLike($id)
     {
+        $post = Post::find($id);
 
         // Sử dụng bảng user_likes để lưu thông tin người dùng đã like bài viết nào
         $isLiked = DB::table('user_likes')
@@ -30,6 +31,7 @@ class LikeController extends Controller
             // Giảm số lượt like trong bảng posts
             $post->decrement('likes');
             $message = 'Đã bỏ thích bài viết';
+            $liked = false;
         } else {
             // Chưa like, giờ like
             DB::table('user_likes')->insert([
@@ -42,6 +44,16 @@ class LikeController extends Controller
             // Tăng số lượt like trong bảng posts
             $post->increment('likes');
             $message = 'Đã thích bài viết';
+            $liked = true;
+        }
+
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+                'likes' => $post->likes,
+                'liked' => $liked
+            ]);
         }
 
         return back()->with('success', $message);
@@ -65,6 +77,7 @@ class LikeController extends Controller
             // Giảm số lượt like trong bảng comments
             $comment->decrement('like_count');
             $message = 'Đã bỏ thích bình luận';
+            $liked = false;
         } else {
             // Chưa like, giờ like
             DB::table('user_likes')->insert([
@@ -77,6 +90,16 @@ class LikeController extends Controller
             // Tăng số lượt like trong bảng comments
             $comment->increment('like_count');
             $message = 'Đã thích bình luận';
+            $liked = true;
+        }
+
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+                'likes' => $comment->like_count,
+                'liked' => $liked
+            ]);
         }
 
         return back()->with('success', $message);

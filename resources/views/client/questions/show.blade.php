@@ -14,6 +14,22 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-2">
+                    @auth
+                    @if(Auth::id() === $question->creator->id)
+                    <a href="{{ route('questions.edit', $question->slug) }}" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                        <svg class="-ml-0.5 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Sửa
+                    </a>
+                    <button type="button" id="delete-question-btn" data-question-id="{{ $question->id }}" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-red-600 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200">
+                        <svg class="-ml-0.5 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        Xóa
+                    </button>
+                    @endif
+                    @endauth
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                         {{ $question->category->name }}
                     </span>
@@ -35,18 +51,14 @@
 
             <div class="mt-6 flex items-center space-x-4">
                 @auth
-                <form action="{{ route('posts.like', $question->id) }}" method="POST" class="inline">
-                    @csrf
-                    <button type="submit" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                        <svg class="-ml-0.5 mr-2 h-4 w-4 {{ DB::table('user_likes')->where('user_id', Auth::id())->where('post_id', $question->id)->exists() ? 'text-red-500 fill-current' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path>
-                        </svg>
-                        <span>
-                            Thích <span>{{ $question->likes }}</span>
-                        </span>
-                    </button>
-
-                </form>
+                <button id="post-like-btn" data-post-id="{{ $question->id }}" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                    <svg id="like-icon" class="-ml-0.5 mr-2 h-4 w-4 {{ DB::table('user_likes')->where('user_id', Auth::id())->where('post_id', $question->id)->exists() ? 'text-red-500 fill-current' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path>
+                    </svg>
+                    <span>
+                        Thích <span id="post-likes-count">{{ $question->likes }}</span>
+                    </span>
+                </button>
                 @else
                 <a href="{{ route('login') }}" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
                     <svg class="-ml-0.5 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -69,7 +81,7 @@
             <!-- Comment Form (Hidden by default) -->
             <div id="commentForm" class="mt-4 hidden">
                 @auth
-                <form action="{{ route('comments.store', $question) }}" method="POST">
+                <form id="comment-form" action="{{ route('comments.store', $question->id) }}" method="POST">
                     @csrf
                     <div>
                         <label for="comment" class="sr-only">Câu trả lời</label>
@@ -100,92 +112,16 @@
     </div>
 
     <!-- Answers Section -->
-    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
-        <div class="p-6">
-            <h2 class="text-lg font-medium text-gray-900">{{ count($question->comments) }} câu trả lời</h2>
-
-            <div class="mt-6 space-y-6">
-                @foreach($question->comments as $answer)
-                <div class="border-b border-gray-200 pb-6 last:border-0 last:pb-0" id="comment-{{ $answer->id }}">
-                    <div class="flex items-center space-x-3">
-                        <img class="h-8 w-8 rounded-full object-cover" src="{{ $answer->creator->avatar_url }}" alt="{{ $answer->creator->name }}">
-                        <div>
-                            <p class="text-sm font-medium text-gray-900">{{ $answer->creator->name }}</p>
-                            <p class="text-sm text-gray-500">{{ $answer->created_at->diffForHumans() }}</p>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 prose max-w-none">
-                        @if(strpos($answer->comment, '@') === 0)
-                        {!! preg_replace('/@(\w+)/', '<span class="text-blue-600 font-medium">@$1</span>', $answer->comment, 1) !!}
-                        @else
-                        {!! $answer->comment !!}
-                        @endif
-                    </div>
-
-                    <div class="mt-4 flex items-center space-x-4">
-                        @auth
-                        <form action="{{ route('comments.like', $answer->id) }}" method="POST" class="inline">
-                            @csrf
-                            <button type="submit" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-
-                                <span>
-                                    Thích <span>{{ $answer->like_count }}</span>
-                                </span>
-                            </button>
-                        </form>
-                        @else
-                        <a href="{{ route('login') }}" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                            <svg class="-ml-0.5 mr-1.5 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path>
-                            </svg>
-                            <span>
-                                Thích <span>{{ $answer->like_count }}</span>
-                            </span>
-                        </a>
-                        @endauth
-
-                        <button type="button" onclick="toggleReplyForm('{{ $answer->id }}')" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                            <svg class="-ml-0.5 mr-1.5 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                            </svg>
-                            Phản hồi
-                        </button>
-                    </div>
-
-                    <!-- Reply Form (Hidden by default) -->
-                    <div id="replyForm{{ $answer->id }}" class="mt-4 hidden">
-                        @auth
-                        <form action="{{ route('comments.storeReply', $answer) }}" method="POST">
-                            @csrf
-                            <div>
-                                <textarea name="comment" rows="2" class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Viết phản hồi của bạn..."></textarea>
-                            </div>
-                            <div class="mt-2 flex justify-end">
-                                <button type="submit" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                                    Gửi phản hồi
-                                </button>
-                            </div>
-                        </form>
-                        @else
-                        <div class="text-center py-3">
-                            <p class="text-gray-600 text-sm mb-2">Vui lòng đăng nhập để phản hồi</p>
-                            <a href="{{ route('login') }}" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                                Đăng nhập
-                            </a>
-                        </div>
-                        @endauth
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
+    <div id="comments-container" class="space-y-6">
+        @foreach($question->comments as $comment)
+        @include('client.partials.comment', ['comment' => $comment])
+        @endforeach
     </div>
 
     <!-- Related Questions -->
     <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
         <div class="p-6">
-            <h2 class="text-lg font-medium text-gray-900">Câu hỏi liên quan</h2>
+            <h3 class="text-lg font-medium text-gray-900">Câu hỏi liên quan</h3>
             <div class="mt-4 space-y-4 divide-y divide-gray-100">
                 @foreach($relatedQuestions as $relatedQuestion)
                 <div class="flex items-center justify-between pt-4 first:pt-0">
@@ -215,16 +151,175 @@
 </div>
 
 @push('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     function toggleCommentForm() {
         const form = document.getElementById('commentForm');
         form.classList.toggle('hidden');
     }
 
-    function toggleReplyForm(answerId) {
-        const form = document.getElementById('replyForm' + answerId);
-        form.classList.toggle('hidden');
-    }
+    // Handle reply button clicks
+    $(document).on('click', '[onclick^="toggleReplyForm"]', function(e) {
+        e.preventDefault();
+        const commentId = $(this).closest('[id^="comment-"]').attr('id').replace('comment-', '');
+        $(`#replyForm${commentId}`).toggleClass('hidden');
+    });
+
+    // Handle post like button clicks
+    $('#post-like-btn').on('click', function() {
+        const postId = $(this).data('post-id');
+
+        $.ajax({
+            url: `/posts/${postId}/like`,
+            type: 'POST',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                if (response.success) {
+                    $('#post-likes-count').text(response.likes);
+
+                    if (response.liked) {
+                        $('#like-icon').addClass('text-red-500 fill-current');
+                    } else {
+                        $('#like-icon').removeClass('text-red-500 fill-current');
+                    }
+                }
+            }
+        });
+    });
+
+    // Handle comment like button clicks
+    $(document).on('click', '.comment-like-btn', function() {
+        const commentId = $(this).data('comment-id');
+        const $btn = $(this);
+        const $icon = $btn.find('.comment-like-icon');
+        const $count = $btn.find('.comment-likes-count');
+
+        $.ajax({
+            url: `/comments/${commentId}/like`,
+            type: 'POST',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                if (response.success) {
+                    $count.text(response.likes);
+
+                    if (response.liked) {
+                        $icon.addClass('text-red-500 fill-current');
+                    } else {
+                        $icon.removeClass('text-red-500 fill-current');
+                    }
+                }
+            }
+        });
+    });
+
+    // Handle comment submission
+    $('#comment-form').on('submit', function(e) {
+        e.preventDefault();
+
+        const postId = "{{ $question->id }}";
+        const commentText = $(this).find('textarea[name="comment"]').val();
+
+        if (!commentText.trim()) {
+            return;
+        }
+
+        $.ajax({
+            url: `/posts/${postId}/comments`,
+            type: 'POST',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                comment: commentText
+            },
+            success: function(response) {
+                if (response.success) {
+                    // Add the new comment to the top of the comments list
+                    $('#comments-container').prepend(response.html);
+
+                    // Clear the comment form
+                    $('#comment-form textarea').val('');
+
+                    // Update the comment count
+                    const countText = $('h2.text-lg.font-medium.text-gray-900');
+                    const currentCount = parseInt(countText.text());
+                    countText.text(`${currentCount + 1} câu trả lời`);
+
+                    // Hide the comment form
+                    $('#commentForm').addClass('hidden');
+                }
+            }
+        });
+    });
+
+    // Handle reply submission
+    $(document).on('submit', '.reply-form', function(e) {
+        e.preventDefault();
+
+        const commentId = $(this).closest('[id^="replyForm"]').attr('id').replace('replyForm', '');
+        const replyText = $(this).find('textarea[name="comment"]').val();
+
+        if (!replyText.trim()) {
+            return;
+        }
+
+        $.ajax({
+            url: `/comments/${commentId}/reply`,
+            type: 'POST',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                comment: replyText
+            },
+            success: function(response) {
+                if (response.success) {
+                    // Add the new reply after the parent comment
+                    $(`#comment-${commentId}`).after(response.html);
+
+                    // Clear the reply form
+                    $(`#replyForm${commentId} textarea`).val('');
+
+                    // Hide the reply form
+                    $(`#replyForm${commentId}`).addClass('hidden');
+
+                    // Update the comment count
+                    const countText = $('h2.text-lg.font-medium.text-gray-900');
+                    const currentCount = parseInt(countText.text());
+                    countText.text(`${currentCount + 1} câu trả lời`);
+                }
+            }
+        });
+    });
+
+    // Handle question deletion
+    $('#delete-question-btn').on('click', function() {
+        if (!confirm('Bạn có chắc chắn muốn xóa câu hỏi này?')) {
+            return;
+        }
+
+        const questionId = $(this).data('question-id');
+        const $button = $(this);
+
+        $.ajax({
+            url: `/questions/${questionId}`,
+            type: 'DELETE',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                if (response.success) {
+                    window.location.href = '/questions';
+                } else {
+                    alert(response.message || 'Có lỗi xảy ra khi xóa câu hỏi');
+                }
+            },
+            error: function(xhr) {
+                const response = xhr.responseJSON;
+                alert(response?.message || 'Có lỗi xảy ra khi xóa câu hỏi');
+            }
+        });
+    });
 </script>
 @endpush
 @endsection

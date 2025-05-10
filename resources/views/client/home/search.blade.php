@@ -28,7 +28,7 @@
                 <h2 class="text-lg font-semibold text-gray-800 mb-4">Bộ lọc tìm kiếm</h2>
 
                 <!-- Search Form -->
-                <form action="{{ route('home.search') }}" method="GET" class="mb-6">
+                <form id="search-form" action="{{ route('home.search') }}" method="GET" class="mb-6">
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Tìm kiếm</label>
                         <input type="text" name="search" value="{{ request('search') }}"
@@ -91,25 +91,13 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                        <i class="fas fa-filter mr-2"></i>Áp dụng bộ lọc
-                    </button>
-                </form>
+                    <div class="flex gap-4">
 
-                <!-- Popular Tags -->
-                <div class="border-t pt-4">
-                    <h3 class="text-sm font-medium text-gray-700 mb-3">Tags phổ biến</h3>
-                    <div class="flex flex-wrap gap-2">
-                        @foreach($popularTags ?? [] as $tag)
-                        <a href="{{ route('tag.show', $tag->slug) }}"
-                            class="inline-flex items-center bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm hover:bg-gray-200 transition-colors">
-                            <i class="fas fa-tag text-xs mr-1"></i>
-                            {{ $tag->name }}
-                            <span class="ml-1 text-xs text-gray-500">({{ $tag->posts_count }})</span>
+                        <a href="{{ route('home.search') }}" class="flex-1 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+                            <i class="fas fa-undo mr-2"></i>Khôi phục
                         </a>
-                        @endforeach
                     </div>
-                </div>
+                </form>
             </div>
         </div>
 
@@ -249,4 +237,156 @@
         @apply bg-blue-500 text-white;
     }
 </style>
+@endpush
+
+@push('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        const searchForm = $('#search-form');
+        const resultsContainer = $('.space-y-6');
+        const paginationContainer = $('.mt-8');
+        const searchHeader = $('.mb-8.bg-white');
+        let allPosts = []; // Store all posts
+
+        // Store initial posts when page loads
+        $('.space-y-6 > div').each(function() {
+            const post = {
+                element: $(this),
+                type: $(this).find('.inline-flex.items-center.px-3.py-1.rounded-full').first().text().trim(),
+                category: $(this).find('.bg-gray-100.px-3.py-1.rounded-full a').text().trim(),
+                date: new Date($(this).find('.bg-gray-50.px-3.py-1.rounded-full:last-child').text().trim().split('/').reverse().join('-')),
+                title: $(this).find('h2 a').text().trim(),
+                content: $(this).find('p.text-gray-600').text().trim()
+            };
+            allPosts.push(post);
+        });
+
+        // Function to filter posts
+        function filterPosts() {
+            const searchTerm = $('input[name="search"]').val().toLowerCase();
+            const selectedTypes = $('input[name="type[]"]:checked').map(function() {
+                return $(this).val();
+            }).get();
+            const selectedCategory = $('select[name="category"]').val();
+            const selectedTime = $('select[name="time"]').val();
+            const selectedSort = $('select[name="sort"]').val();
+
+            // Filter posts
+            let filteredPosts = allPosts.filter(post => {
+                // Search term filter
+                if (searchTerm && !post.title.toLowerCase().includes(searchTerm) && !post.content.toLowerCase().includes(searchTerm)) {
+                    return false;
+                }
+
+                // Type filter
+                if (selectedTypes.length > 0) {
+                    const postType = post.type === 'Câu hỏi' ? 'question' : 'post';
+                    if (!selectedTypes.includes(postType)) {
+                        return false;
+                    }
+                }
+
+                // Category filter
+                if (selectedCategory && post.category !== selectedCategory) {
+                    return false;
+                }
+
+                // Time filter
+                if (selectedTime) {
+                    const now = new Date();
+                    const postDate = post.date;
+                    const timeRanges = {
+                        'day': now.setDate(now.getDate() - 1),
+                        'week': now.setDate(now.getDate() - 7),
+                        'month': now.setMonth(now.getMonth() - 1),
+                        'year': now.setFullYear(now.getFullYear() - 1)
+                    };
+                    if (postDate < timeRanges[selectedTime]) {
+                        return false;
+                    }
+                }
+
+                return true;
+            });
+
+            // Sort posts
+            switch (selectedSort) {
+                case 'popular':
+                    filteredPosts.sort((a, b) => {
+                        const likesA = parseInt(a.element.find('.bg-gray-50.px-3.py-1.rounded-full:nth-last-child(2)').text().trim());
+                        const likesB = parseInt(b.element.find('.bg-gray-50.px-3.py-1.rounded-full:nth-last-child(2)').text().trim());
+                        return likesB - likesA;
+                    });
+                    break;
+                case 'views':
+                    filteredPosts.sort((a, b) => {
+                        const viewsA = parseInt(a.element.find('.bg-gray-50.px-3.py-1.rounded-full:first-child').text().trim());
+                        const viewsB = parseInt(b.element.find('.bg-gray-50.px-3.py-1.rounded-full:first-child').text().trim());
+                        return viewsB - viewsA;
+                    });
+                    break;
+                case 'likes':
+                    filteredPosts.sort((a, b) => {
+                        const likesA = parseInt(a.element.find('.bg-gray-50.px-3.py-1.rounded-full:nth-last-child(2)').text().trim());
+                        const likesB = parseInt(b.element.find('.bg-gray-50.px-3.py-1.rounded-full:nth-last-child(2)').text().trim());
+                        return likesB - likesA;
+                    });
+                    break;
+                default: // latest
+                    filteredPosts.sort((a, b) => b.date - a.date);
+                    break;
+            }
+
+            // Update results
+            resultsContainer.empty();
+            if (filteredPosts.length > 0) {
+                filteredPosts.forEach(post => {
+                    resultsContainer.append(post.element.clone());
+                });
+            } else {
+                resultsContainer.html('<div class="text-center py-12 bg-white rounded-lg shadow-sm"><div class="text-gray-500 text-lg"><i class="fas fa-search mb-4 text-4xl text-gray-400"></i><p class="text-xl">Không tìm thấy kết quả phù hợp</p><p class="text-sm mt-2">Hãy thử tìm kiếm với từ khóa khác</p></div></div>');
+            }
+
+            // Update search header
+            const totalResults = filteredPosts.length;
+            searchHeader.find('span:first-child').html(`<i class="fas fa-list-ul mr-2"></i>Tổng số: ${totalResults} kết quả`);
+        }
+
+        // Handle form submission
+        searchForm.on('submit', function(e) {
+            e.preventDefault();
+            filterPosts();
+        });
+
+        // Handle input changes
+        $('input[name="search"]').on('input', function() {
+            filterPosts();
+        });
+
+        // Handle filter changes
+        $('input[name="type[]"], select[name="category"], select[name="time"], select[name="sort"]').on('change', function() {
+            filterPosts();
+        });
+
+        // Handle reset button click
+        $('#reset-filters').on('click', function() {
+            // Reset form fields
+            $('input[name="search"]').val('');
+            $('input[name="type[]"]').prop('checked', false);
+            $('select[name="category"]').val('');
+            $('select[name="time"]').val('');
+            $('select[name="sort"]').val('latest');
+
+            // Reset results to initial state
+            resultsContainer.empty();
+            allPosts.forEach(post => {
+                resultsContainer.append(post.element.clone());
+            });
+
+            // Update search header
+            searchHeader.find('span:first-child').html(`<i class="fas fa-list-ul mr-2"></i>Tổng số: ${allPosts.length} kết quả`);
+        });
+    });
+</script>
 @endpush

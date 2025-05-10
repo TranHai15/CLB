@@ -56,9 +56,9 @@ class QuestionController extends BaseController
         $post->created_by = Auth::id();
         $post->save();
 
-        // Here you would typically save the question to the database
-        // For now, we'll just redirect back with a success message
-        return redirect()->back()->with('success', 'Câu hỏi đã được đăng thành công!');
+        // Chuyển hướng đến trang chi tiết câu hỏi vừa tạo
+        return redirect()->route('questions.show', $post->slug)
+            ->with('success', 'Câu hỏi đã được đăng thành công!');
     }
 
     public function show(Post $post)
@@ -91,5 +91,78 @@ class QuestionController extends BaseController
             'question' => $post,
             'relatedQuestions' => $relatedQuestions,
         ]);
+    }
+
+    public function edit(Post $post)
+    {
+        // Kiểm tra quyền chỉnh sửa
+        if (Auth::id() !== $post->creator->id) {
+            return redirect()->back()->with('error', 'Bạn không có quyền chỉnh sửa câu hỏi này');
+        }
+
+        $categories = Category::all();
+        $tags = Tag::all();
+
+        return view('client.questions.edit', [
+            'question' => $post,
+            'categories' => $categories,
+            'tags' => $tags
+        ]);
+    }
+
+    public function update(Request $request,  $id)
+    {
+        // Kiểm tra quyền chỉnh sửa
+        $post = Post::with('creator')->where('slug', $id)->first();
+        if (Auth::id() !== $post->creator->id) {
+            return redirect()->back()->with('error', 'Bạn không có quyền chỉnh sửa câu hỏi này');
+        }
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'tags' => 'array',
+            'tags.*' => 'exists:tags,id',
+            'content' => 'required|string'
+        ]);
+
+        $post->title = $validated['title'];
+        $post->slug = Str::slug($validated['title']);
+        $post->category_id = $validated['category_id'];
+        $post->content = $validated['content'];
+        $post->save();
+
+        // Cập nhật tags
+        if (isset($validated['tags'])) {
+            $post->tags()->sync($validated['tags']);
+        }
+
+        return redirect()->route('questions.show', $post->slug)
+            ->with('success', 'Câu hỏi đã được cập nhật thành công!');
+    }
+
+    public function destroy($id)
+    {
+        $post = Post::with('creator')->find($id);
+        // Kiểm tra quyền xóa
+        if (Auth::id() !== $post->creator->id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Bạn không có quyền xóa câu hỏi này'
+            ], 403);
+        }
+
+        try {
+            $post->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Câu hỏi đã được xóa thành công'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi xóa câu hỏi'
+            ], 500);
+        }
     }
 }

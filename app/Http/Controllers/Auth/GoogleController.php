@@ -44,6 +44,7 @@ class GoogleController extends Controller
 
             // Gán vai trò mặc định nếu cần
             // $user->assignRole('user'); // hoặc 'student', 'teacher' tùy theo logic của bạn
+
             Auth::login($user);
             session()->regenerate();
 

@@ -14,6 +14,7 @@ use App\Models\Comment;
 use App\Models\Notification;
 use App\Models\Tag;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends BaseController
 {
@@ -222,9 +223,21 @@ class HomeController extends BaseController
 
     public function search(Request $request)
     {
-        $posts = Post::where('title', 'like', '%' . $request->search . '%')->paginate(10);
-        return view('client.home.search', compact('posts'));
+        // Get all published posts with relationships
+        $posts = Post::with(['creator', 'category', 'tags'])
+            ->where('status', 'published')
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        // Get categories for filter
+        $categories = Category::withCount('posts')
+            ->orderBy('posts_count', 'desc')
+            ->get();
+
+        return view('client.home.search', compact('posts', 'categories'));
     }
+
     public function follow(User $user)
     {
         // Không cho phép tự theo dõi chính mình

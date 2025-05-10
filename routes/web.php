@@ -18,17 +18,20 @@ Route::middleware('login.with.return')->group(function () {
         ->name('content.uploadImage');
     Route::get('/questions/create', [QuestionController::class, 'create'])->name('questions.create');
     Route::post('/questions', [QuestionController::class, 'store'])->name('questions.store');
+    Route::get('/questions/{post}/edit', [QuestionController::class, 'edit'])->name('questions.edit');
+    Route::put('/questions/{post}', [QuestionController::class, 'update'])->name('questions.update');
+    Route::delete('/questions/{id}', [QuestionController::class, 'destroy'])->name('questions.destroy');
     Route::post('/user/{user}/follow', [HomeController::class, 'follow'])->name('user.follow');
     Route::delete('/user/{user}/unfollow', [HomeController::class, 'unfollow'])->name('user.unfollow');
 
     // Comment routes
-    Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::post('/posts/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::post('/comments/{comment}/reply', [CommentController::class, 'storeReply'])->name('comments.storeReply');
     Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
     // Like routes
-    Route::post('/posts/{post}/like', [LikeController::class, 'toggleLike'])->name('posts.like');
+    Route::post('/posts/{id}/like', [LikeController::class, 'toggleLike'])->name('posts.like');
     Route::post('/comments/{comment}/like', [LikeController::class, 'toggleCommentLike'])->name('comments.like');
 });
 Route::get('/posts/{post:slug}', [HomeController::class, 'show'])->name('posts.show');

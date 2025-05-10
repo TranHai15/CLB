@@ -2,79 +2,78 @@
 
 namespace App\Http\Controllers\Client;
 
-use App\Http\Controllers\Controller;
-
-use Illuminate\Http\RedirectResponse;
+use App\Http\Controllers\BaseController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class ProfileController extends Controller
+class ProfileController extends BaseController
 {
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): View
+    public function edit()
     {
-        // Mock data for notifications
-
-        return view('profile.edit', [
-            'user' => $request->user()
-        ]);
+        return view('profile.edit');
     }
 
     /**
      * Update the user's profile information.
      */
-    public function update(Request $request): RedirectResponse
+    public function update(Request $request)
     {
-        $request->validate([
+        $user = User::find(Auth::id());
+
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'bio' => 'nullable|string|max:1000',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        $user = $request->user();
+        // Update name and bio
+        $user->name = $validated['name'];
+        $user->bio = $validated['bio'];
 
+        // Handle avatar upload
         if ($request->hasFile('avatar')) {
             // Delete old avatar if exists
-            if ($user->avatar && !Str::contains($user->avatar, 'ui-avatars.com')) {
-                Storage::delete($user->avatar);
+            if ($user->avatar && Storage::exists('public/avatars/' . basename($user->avatar))) {
+                Storage::delete('public/avatars/' . basename($user->avatar));
             }
 
             // Store new avatar
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $user->avatar = $path;
+            $avatar = $request->file('avatar');
+            $filename = Str::slug($user->name) . '-' . time() . '.' . $avatar->getClientOriginalExtension();
+            $avatar->storeAs('public/avatars', $filename);
+
+            // Update avatar path
+            $user->avatar = '/storage/avatars/' . $filename;
         }
 
-        $user->name = $request->name;
-        $user->bio = $request->bio;
         $user->save();
 
-        return redirect()->route('profile.edit')->with('success', 'Thông tin cá nhân đã được cập nhật.');
+        return redirect()->back()->with('success', 'Thông tin cá nhân đã được cập nhật thành công!');
     }
 
     /**
      * Delete the user's account.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy()
     {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
+        $user = User::find(Auth::id());
 
-        $user = $request->user();
+        // Delete avatar if exists
+        if ($user->avatar && Storage::exists('public/avatars/' . basename($user->avatar))) {
+            Storage::delete('public/avatars/' . basename($user->avatar));
+        }
+
+        // Delete user
+        $user->delete();
 
         Auth::logout();
 
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
+        return redirect()->route('home')->with('success', 'Tài khoản đã được xóa thành công!');
     }
 }

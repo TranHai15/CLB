@@ -2,6 +2,12 @@
 
 @section('content')
 <div class="container mx-auto max-w-7xl px-4 py-8">
+    @if(session('success'))
+    <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+        <span class="block sm:inline">{{ session('success') }}</span>
+    </div>
+    @endif
+
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
         <!-- Main Content -->
         <div class="lg:col-span-3">
@@ -59,10 +65,18 @@
                         </div>
 
                         <!-- Submit Button -->
-                        <div>
+                        <div class="flex items-center justify-between">
                             <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
                                 Lưu thay đổi
                             </button>
+
+                            <form action="{{ route('profile.destroy') }}" method="POST" class="inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài khoản?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 hover:text-red-800 transition">
+                                    Xóa tài khoản
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </form>
