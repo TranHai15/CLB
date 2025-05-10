@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
-            $table->unique(['user_id', 'post_id']);
             $table->enum('type', ['post', 'comment']);
             $table->timestamps();
         });
