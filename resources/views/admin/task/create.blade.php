@@ -98,7 +98,7 @@
                         <div class="mb-4">
                             <label for="status" class="block text-sm font-medium text-gray-700">Trạng thái <span class="text-red-500">*</span></label>
                             <select name="status" id="status" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                                <option value="todo" {{ old('status') == 'todo' ? 'selected' : '' }}>Cần làm</option>
+                                <option value="not_started" {{ old('status') == 'not_started' ? 'selected' : '' }}>Cần làm</option>
                                 <option value="in_progress" {{ old('status') == 'in_progress' ? 'selected' : '' }}>Đang làm</option>
                                 <option value="completed" {{ old('status') == 'completed' ? 'selected' : '' }}>Hoàn thành</option>
                             </select>

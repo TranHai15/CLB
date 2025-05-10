@@ -69,7 +69,7 @@ class TaskController extends Controller
             'description' => 'nullable|string',
             'start_date' => 'nullable|date',
             'due_date' => 'nullable|date|after_or_equal:start_date',
-            'status' => 'required|in:todo,in_progress,completed',
+            'status' => 'required|in:not_started,in_progress,completed',
             'issue_text' => 'nullable|string',
             'solution_text' => 'nullable|string',
             'evidence_url' => 'nullable|string|url',
@@ -109,7 +109,7 @@ class TaskController extends Controller
             'description' => 'nullable|string',
             'start_date' => 'nullable|date',
             'due_date' => 'nullable|date|after_or_equal:start_date',
-            'status' => 'required|in:todo,in_progress,completed',
+            'status' => 'required|in:not_started,in_progress,completed',
             'issue_text' => 'nullable|string',
             'solution_text' => 'nullable|string',
             'evidence_url' => 'nullable|string|url',
@@ -171,7 +171,7 @@ class TaskController extends Controller
             'description' => 'nullable|string',
             'start_date' => 'nullable|date',
             'due_date' => 'nullable|date|after_or_equal:start_date',
-            'status' => 'required|in:todo,in_progress,completed',
+            'status' => 'required|in:not_started,in_progress,completed',
             'issue_text' => 'nullable|string',
             'solution_text' => 'nullable|string',
             'evidence_url' => 'nullable|string|url',
@@ -220,7 +220,7 @@ class TaskController extends Controller
     public function updateStatus(Request $request, Task $task)
     {
         $validated = $request->validate([
-            'status' => 'required|in:todo,in_progress,completed',
+            'status' => 'required|in:not_started,in_progress,completed',
         ]);
 
         $task->update([
