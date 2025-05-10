@@ -62,21 +62,14 @@ class PostController extends Controller
 
         // Xử lý upload ảnh
         $imagePath = null;
-        if ($request->hasFile('image')) {
-            $folder = 'posts'; // Thư mục lưu trữ trong disk 'public'
 
-            // Kiểm tra và tạo thư mục nếu chưa tồn tại
-            if (!Storage::disk('public')->exists($folder)) {
-                Storage::disk('public')->makeDirectory($folder);
-            }
+        $folder = 'uploads/posts';
+        $image = $request->file('image');
+        $filename = 'post-' . time() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path($folder), $filename);
 
-            $image    = $request->file('image');
-            $filename = 'post-' . time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('public/' . $folder, $filename);
-
-            // Đường dẫn truy cập từ trình duyệt
-            $imagePath = '/storage/' . $folder . '/' . $filename;
-        }
+        // 3. Cập nhật URL avatar
+        $imagePath = '/' . $folder . '/' . $filename;
 
         // Tạo bài viết mới
         $post = Post::create([

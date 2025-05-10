@@ -1,5 +1,5 @@
 @extends('layouts.home')
-@auth
+
 <style>
     @keyframes typing {
         0% {
@@ -129,7 +129,7 @@
         }
     }
 </style>
-@endauth
+
 @section('content')
 <!-- Hero Section -->
 <div class="hero-section relative bg-gradient-to-r from-blue-900 to-blue-800 overflow-hidden">
