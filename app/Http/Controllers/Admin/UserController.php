@@ -46,14 +46,17 @@ class UserController extends Controller
         while (User::where('slug', $slug)->exists()) {
             $slug = Str::slug($validated['name']) . '-' . $count++;
         }
-
+        $folder = 'uploads/avatars';
+        if (!file_exists(public_path($folder))) {
+            mkdir(public_path($folder), 0755, true); // 0755 là quyền truy cập, true để tạo cả thư mục cha nếu cần
+        }
         // Handle avatar upload
         $avatarUrl = null;
         if ($request->hasFile('avatar')) {
             $avatar = $request->file('avatar');
             $filename = 'avatar-' . time() . '.' . $avatar->getClientOriginalExtension();
-            $avatar->storeAs('public/avatars', $filename);
-            $avatarUrl = '/storage/avatars/' . $filename;
+            $avatar->move(public_path($folder), $filename);
+            $avatarUrl = '/' . $folder . '/' . $filename;
         }
 
         $user = User::create([
@@ -108,15 +111,16 @@ class UserController extends Controller
 
         // Handle avatar upload
         if ($request->hasFile('avatar')) {
+            $folder = 'uploads/avatars';
             // Delete old avatar if exists
-            if ($user->avatar_url && Storage::exists('public' . str_replace('/storage', '', $user->avatar_url))) {
-                Storage::delete('public' . str_replace('/storage', '', $user->avatar_url));
+            if ($user->avatar_url && file_exists(public_path($user->avatar_url))) {
+                unlink(public_path($user->avatar_url));
             }
 
             $avatar = $request->file('avatar');
             $filename = 'avatar-' . time() . '.' . $avatar->getClientOriginalExtension();
-            $avatar->storeAs('public/avatars', $filename);
-            $user->avatar_url = '/storage/avatars/' . $filename;
+            $avatar->move(public_path($folder), $filename);
+            $user->avatar_url = '/' . $folder . '/' . $filename;
         }
 
         $user->name = $validated['name'];
@@ -139,8 +143,8 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         // Delete avatar if exists
-        if ($user->avatar_url && Storage::exists('public' . str_replace('/storage', '', $user->avatar_url))) {
-            Storage::delete('public' . str_replace('/storage', '', $user->avatar_url));
+        if ($user->avatar_url && file_exists(public_path($user->avatar_url))) {
+            unlink(public_path($user->avatar_url));
         }
 
         $user->delete();
@@ -160,7 +164,7 @@ class UserController extends Controller
     // Club Members Management
     public function memberIndex()
     {
-        $members = User::where('account_type', 'member')
+        $members = User::where('account_type', 'club_member')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -169,6 +173,7 @@ class UserController extends Controller
 
     public function memberCreate()
     {
+
         return view('admin.member.create');
     }
 
@@ -194,14 +199,18 @@ class UserController extends Controller
         while (User::where('slug', $slug)->exists()) {
             $slug = Str::slug($validated['name']) . '-' . $count++;
         }
+        $folder = 'uploads/avatars';
+        if (!file_exists(public_path($folder))) {
+            mkdir(public_path($folder), 0755, true); // 0755 là quyền truy cập, true để tạo cả thư mục cha nếu cần
+        }
 
         // Handle avatar upload
         $avatarUrl = null;
         if ($request->hasFile('avatar')) {
             $avatar = $request->file('avatar');
             $filename = 'avatar-' . time() . '.' . $avatar->getClientOriginalExtension();
-            $avatar->storeAs('public/avatars', $filename);
-            $avatarUrl = '/storage/avatars/' . $filename;
+            $avatar->move(public_path($folder), $filename);
+            $avatarUrl = '/' . $folder . '/' . $filename;
         }
 
         $member = User::create([
@@ -216,7 +225,7 @@ class UserController extends Controller
             'enrollment_year' => $validated['enrollment_year'],
             'major' => $validated['major'],
             'status' => $validated['status'] ?? 'active',
-            'account_type' => 'member',
+            'account_type' => 'club_member',
         ]);
 
         return redirect()->route('admin.member.index')
@@ -262,15 +271,16 @@ class UserController extends Controller
 
         // Handle avatar upload
         if ($request->hasFile('avatar')) {
+            $folder = 'uploads/avatars';
             // Delete old avatar if exists
-            if ($member->avatar_url && Storage::exists('public' . str_replace('/storage', '', $member->avatar_url))) {
-                Storage::delete('public' . str_replace('/storage', '', $member->avatar_url));
+            if ($member->avatar_url && file_exists(public_path($member->avatar_url))) {
+                unlink(public_path($member->avatar_url));
             }
 
             $avatar = $request->file('avatar');
             $filename = 'avatar-' . time() . '.' . $avatar->getClientOriginalExtension();
-            $avatar->storeAs('public/avatars', $filename);
-            $member->avatar_url = '/storage/avatars/' . $filename;
+            $avatar->move(public_path($folder), $filename);
+            $member->avatar_url = '/' . $folder . '/' . $filename;
         }
 
         $member->name = $validated['name'];
@@ -296,8 +306,8 @@ class UserController extends Controller
     public function memberDestroy(User $member)
     {
         // Delete avatar if exists
-        if ($member->avatar_url && Storage::exists('public' . str_replace('/storage', '', $member->avatar_url))) {
-            Storage::delete('public' . str_replace('/storage', '', $member->avatar_url));
+        if ($member->avatar_url && file_exists(public_path($member->avatar_url))) {
+            unlink(public_path($member->avatar_url));
         }
 
         $member->delete();
