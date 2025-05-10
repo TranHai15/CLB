@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
     public function destroy(Comment $comment)
     {
         // Kiểm tra quyền xóa
-        if (auth()->id() !== $comment->user_id) {
+        if (Auth::id() !== $comment->user_id) {
             return response()->json([
                 'success' => false,
                 'message' => 'Bạn không có quyền xóa bình luận này'
