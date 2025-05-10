@@ -41,7 +41,7 @@
                 <div class="flex flex-wrap items-center justify-between mb-2">
                     <h2 class="text-2xl font-bold text-gray-800">{{ $task->title }}</h2>
                     <div class="mt-2 sm:mt-0">
-                        @if($task->status === 'todo')
+                        @if($task->status === 'not_started')
                         <span class="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-800">
                             Cần làm
                         </span>
@@ -73,8 +73,8 @@
                 <div class="flex flex-wrap gap-2">
                     <form action="{{ route('admin.tasks.update-status', $task) }}" method="POST" class="inline">
                         @csrf
-                        <input type="hidden" name="status" value="todo">
-                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium {{ $task->status === 'todo' ? 'text-gray-800 bg-gray-200' : 'text-gray-700 bg-white hover:bg-gray-50' }}">
+                        <input type="hidden" name="status" value="not_started">
+                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium {{ $task->status === 'not_started' ? 'text-gray-800 bg-gray-200' : 'text-gray-700 bg-white hover:bg-gray-50' }}">
                             Cần làm
                         </button>
                     </form>

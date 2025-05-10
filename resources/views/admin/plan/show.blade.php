@@ -113,7 +113,7 @@
                         <div class="bg-white p-3 rounded-md border border-gray-200 shadow-sm">
                             <span class="text-gray-500 text-sm">Cần làm</span>
                             <p class="text-2xl font-bold text-gray-700 mt-1">
-                                {{ $plan->tasks->where('status', 'todo')->count() }}
+                                {{ $plan->tasks->where('status', 'not_started')->count() }}
                             </p>
                         </div>
                         <div class="bg-white p-3 rounded-md border border-gray-200 shadow-sm">
@@ -163,7 +163,7 @@
                                     @endif
                                 </td>
                                 <td class="px-4 py-3 whitespace-nowrap">
-                                    @if($task->status === 'todo')
+                                    @if($task->status === 'not_started')
                                     <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
                                         Cần làm
                                     </span>
@@ -198,8 +198,8 @@
                                         <div class="flex space-x-1">
                                             <form action="{{ route('admin.tasks.update-status', $task) }}" method="POST" class="inline">
                                                 @csrf
-                                                <input type="hidden" name="status" value="todo">
-                                                <button type="submit" class="w-6 h-6 rounded-full {{ $task->status === 'todo' ? 'bg-gray-200 ring-2 ring-gray-400' : 'bg-gray-100 hover:bg-gray-200' }}" title="Cần làm"></button>
+                                                <input type="hidden" name="status" value="not_started">
+                                                <button type="submit" class="w-6 h-6 rounded-full {{ $task->status === 'not_started' ? 'bg-gray-200 ring-2 ring-gray-400' : 'bg-gray-100 hover:bg-gray-200' }}" title="Cần làm"></button>
                                             </form>
                                             <form action="{{ route('admin.tasks.update-status', $task) }}" method="POST" class="inline">
                                                 @csrf
