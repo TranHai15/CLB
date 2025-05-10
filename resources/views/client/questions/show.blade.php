@@ -158,14 +158,8 @@
     }
 
     // Handle reply button clicks
-    $(document).on('click', '.reply-toggle-btn', function() {
-        const commentId = $(this).data('comment-id');
-        $(`#replyForm${commentId}`).toggleClass('hidden');
-    });
-
-    // Handle post like button clicks
     $('#post-like-btn').on('click', function() {
-        const postId = $(this).data('post-id');
+        const postId = "{{ $question->id}}";
 
         $.ajax({
             url: `/posts/${postId}/like`,
@@ -187,34 +181,7 @@
         });
     });
 
-    // Handle comment like button clicks
-    $(document).on('click', '.comment-like-btn', function() {
-        const commentId = $(this).data('comment-id');
-        const $btn = $(this);
-        const $icon = $btn.find('.comment-like-icon');
-        const $count = $btn.find('.comment-likes-count');
-
-        $.ajax({
-            url: `/comments/${commentId}/like`,
-            type: 'POST',
-            data: {
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-                if (response.success) {
-                    $count.text(response.likes);
-
-                    if (response.liked) {
-                        $icon.addClass('text-red-500 fill-current');
-                    } else {
-                        $icon.removeClass('text-red-500 fill-current');
-                    }
-                }
-            }
-        });
-    });
-
-    // Handle comment submission
+    // AJAX for comment submission
     $('#comment-form').on('submit', function(e) {
         e.preventDefault();
 
@@ -241,54 +208,88 @@
                     $('#comment-form textarea').val('');
 
                     // Update the comment count
-                    const countText = $('h2.text-lg.font-medium.text-gray-900');
-                    const currentCount = parseInt(countText.text());
-                    countText.text(`${currentCount + 1} câu trả lời`);
+                    $('#comments-count').text(parseInt($('#comments-count').text()) + 1);
 
-                    // Hide the comment form
-                    $('#commentForm').addClass('hidden');
+                    // Initialize the new comment's functionality
+                    initCommentFunctionality();
                 }
             }
         });
     });
 
-    // Handle reply submission
-    $(document).on('submit', '.reply-form', function(e) {
-        e.preventDefault();
+    // Handle comment like button clicks
+    function initCommentFunctionality() {
+        // Comment like functionality
+        $('.comment-like-btn').off('click').on('click', function() {
+            const commentId = $(this).data('comment-id');
+            const likeCountElement = $(this).find('.like-count');
 
-        const commentId = $(this).closest('[id^="replyForm"]').attr('id').replace('replyForm', '');
-        const replyText = $(this).find('textarea[name="comment"]').val();
-
-        if (!replyText.trim()) {
-            return;
-        }
-
-        $.ajax({
-            url: `/comments/${commentId}/reply`,
-            type: 'POST',
-            data: {
-                _token: $('meta[name="csrf-token"]').attr('content'),
-                comment: replyText
-            },
-            success: function(response) {
-                if (response.success) {
-                    // Add the new reply after the parent comment
-                    $(`#comment-${commentId}`).after(response.html);
-
-                    // Clear the reply form
-                    $(`#replyForm${commentId} textarea`).val('');
-
-                    // Hide the reply form
-                    $(`#replyForm${commentId}`).addClass('hidden');
-
-                    // Update the comment count
-                    const countText = $('h2.text-lg.font-medium.text-gray-900');
-                    const currentCount = parseInt(countText.text());
-                    countText.text(`${currentCount + 1} câu trả lời`);
+            $.ajax({
+                url: `/comments/${commentId}/like`,
+                type: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.success) {
+                        likeCountElement.text(response.likes);
+                        if (response.liked) {
+                            $(this).addClass('text-red-500 fill-current');
+                        } else {
+                            $(this).removeClass('text-red-500 fill-current');
+                        }
+                    }
                 }
-            }
+            });
         });
-    });
+
+        // Toggle reply form
+        $('.reply-toggle-btn').off('click').on('click', function() {
+            const commentId = $(this).data('comment-id');
+            $(`#replyForm${commentId}`).toggleClass('hidden');
+        });
+
+        // Reply form submission
+        $('.reply-form').off('submit').on('submit', function(e) {
+            e.preventDefault();
+
+            const commentId = $(this).data('comment-id');
+            const replyText = $(this).find('textarea[name="comment"]').val();
+
+            if (!replyText.trim()) {
+                return;
+            }
+
+            $.ajax({
+                url: `/comments/${commentId}/reply`,
+                type: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    comment: replyText
+                },
+                success: function(response) {
+                    console.log(response);
+                    if (response.success) {
+                        // Add the new reply after the parent comment
+                        $(`#comment-${commentId}`).after(response.html);
+
+                        // Clear the reply form and hide it
+                        $(`#replyForm${commentId} textarea`).val('');
+                        $(`#replyForm${commentId}`).addClass('hidden');
+
+                        // Update the comment count
+                        $('#comments-count').text(parseInt($('#comments-count').text()) + 1);
+
+                        // Initialize the new reply's functionality
+                        initCommentFunctionality();
+                    }
+                }
+            });
+        });
+    }
+
+    // Initialize comment functionality
+    initCommentFunctionality();
 
     // Handle question deletion
     $('#delete-question-btn').on('click', function() {

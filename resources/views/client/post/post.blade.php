@@ -230,6 +230,12 @@
                         <span>
                             Thích <span id="post-likes-count">{{ $post->likes }}</span>
                         </span>
+                        <button type="button" onclick="toggleCommentForm()" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                            <svg class="-ml-0.5 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                            </svg>
+                            Bình luận
+                        </button>
                     </button>
                     @else
                     <a href="{{ route('login') }}" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
@@ -250,45 +256,47 @@
                             </svg>
                             {{ $post->views }} lượt xem
                         </span>
+
                     </div>
+                </div>
+                <div id="commentForm" class="mt-4 hidden">
+                    @auth
+                    <form id="comment-form" action="{{ route('comments.store', $post->id) }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="type" value="post">
+                        <div>
+                            <label for="comment" class="sr-only">Câu trả lời</label>
+                            <textarea id="comment" name="comment" rows="4" class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Viết câu trả lời của bạn..."></textarea>
+                        </div>
+                        <div class="mt-3 flex justify-end">
+                            <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                </svg>
+                                Gửi câu trả lời
+                            </button>
+                        </div>
+                    </form>
+                    @else
+                    <div class="text-center py-4">
+                        <p class="text-gray-600 mb-3">Vui lòng đăng nhập để bình luận</p>
+                        <form action="{{ route('auth.demo') }}" method="get">
+                            @csrf
+                            <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                                Đăng nhập
+                            </button>
+                        </form>
+                    </div>
+                    @endauth
                 </div>
             </article>
 
             <!-- Comments Section -->
-            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-                <h2 class="text-2xl font-bold mb-6">Bình luận (<span id="comments-count">{{ $post->comments->count() }}</span>)</h2>
-
-                <!-- Comment Form -->
-                @auth
-                <form id="comment-form" class="mb-8">
-                    @csrf
-                    <input type="hidden" name="type" value="post">
-                    <div class="mb-4">
-                        <textarea
-                            name="comment"
-                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            rows="4"
-                            placeholder="Viết bình luận của bạn..."></textarea>
-                    </div>
-                    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
-                        Gửi bình luận
-                    </button>
-                </form>
-                @else
-                <div class="text-center py-4 mb-8 bg-gray-50 rounded-lg">
-                    <p class="text-gray-600 mb-3">Vui lòng đăng nhập để bình luận</p>
-                    <a href="{{ route('login') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                        Đăng nhập
-                    </a>
-                </div>
-                @endauth
-
-                <!-- Comments List -->
-                <div id="comments-container" class="space-y-6">
-                    @foreach($post->comments as $comment)
-                    @include('client.partials.comment', ['comment' => $comment])
-                    @endforeach
-                </div>
+            <!-- Comments List -->
+            <div id="comments-container" class="space-y-6 ">
+                @foreach($post->comments as $comment)
+                @include('client.partials.comment', ['comment' => $comment])
+                @endforeach
             </div>
         </div>
 
@@ -352,6 +360,10 @@
 
 @push('scripts')
 <script>
+    function toggleCommentForm() {
+        const form = document.getElementById('commentForm');
+        form.classList.toggle('hidden');
+    }
     document.addEventListener('DOMContentLoaded', function() {
         // Generate table of contents
         const content = document.getElementById('post-content');
@@ -462,7 +474,11 @@
                     success: function(response) {
                         if (response.success) {
                             likeCountElement.text(response.likes);
-
+                            if (response.liked) {
+                                $(this).addClass('text-red-500 fill-current');
+                            } else {
+                                $(this).removeClass('text-red-500 fill-current');
+                            }
                         }
                     }
                 });

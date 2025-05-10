@@ -1,4 +1,4 @@
-<div class="border-b border-gray-200 pb-6 last:border-0 last:pb-0 bg-white rounded-lg shadow-sm p-5 mb-4" id="comment-{{ $comment->id }}">
+<div class="border-b border-gray-200  last:border-0 last:pb-0 bg-white rounded-lg shadow-sm  p-5" id="comment-{{ $comment->id }}">
     <div class="flex items-center space-x-3">
         <img class="h-10 w-10 rounded-full object-cover border-2 border-gray-100" src="{{ $comment->creator->avatar_url }}" alt="{{ $comment->creator->name }}">
         <div>
@@ -15,7 +15,7 @@
         @endif
     </div>
 
-    <div class="mt-4 flex items-center space-x-4">
+    <div class="mt-4 flex items-center space-x-4 bg-reg-400">
         @auth
         <button type="button" class="comment-like-btn inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
             data-comment-id="{{ $comment->id }}">
@@ -51,7 +51,7 @@
     </div>
 
     <!-- Reply Form (Hidden by default) -->
-    <div id="replyForm{{ $comment->id }}" class="mt-4 hidden">
+    <div id="replyForm{{ $comment->id }}" class="mt-4 mb-4 hidden">
         @auth
         <form class="reply-form bg-gray-50 p-4 rounded-lg" data-comment-id="{{ $comment->id }}">
             @csrf
@@ -121,6 +121,7 @@
                 $button.prop('disabled', false);
             }
         });
+
     });
 </script>
 @endpush
