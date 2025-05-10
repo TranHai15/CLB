@@ -72,6 +72,16 @@ class HomeController extends BaseController
 
         // Tăng lượt xem
         $post->increment('views');
+
+        // Kiểm tra xem người dùng đã like bài viết chưa
+        if (Auth::check()) {
+            $post->is_liked = DB::table('user_likes')
+                ->where('user_id', Auth::id())
+                ->where('post_id', $post->id)
+                ->where('type', 'post')
+                ->exists();
+        }
+
         // Lấy bài viết liên quan
         $relatedPosts = Post::with(['creator', 'category'])
             ->where('category_id', $post->category_id)
@@ -79,6 +89,7 @@ class HomeController extends BaseController
             ->orderBy('created_at', 'desc')
             ->take(4)
             ->get();
+
         // Nếu không có bài viết liên quan thì lấy 4 bài viết có lượt xem nhiều nhất (trừ bài hiện tại)
         if ($relatedPosts->isEmpty()) {
             $relatedPosts = Post::with(['creator', 'category'])
@@ -87,7 +98,6 @@ class HomeController extends BaseController
                 ->take(4)
                 ->get();
         }
-
 
         return view('client.post.post', compact('post', 'relatedPosts'));
     }
