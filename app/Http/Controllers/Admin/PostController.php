@@ -64,6 +64,10 @@ class PostController extends Controller
         $imagePath = null;
 
         $folder = 'uploads/posts';
+        // Kiểm tra nếu thư mục chưa tồn tại thì tạo mới
+        if (!file_exists(public_path($folder))) {
+            mkdir(public_path($folder), 0755, true); // 0755 là quyền truy cập, true để tạo cả thư mục cha nếu cần
+        }
         $image = $request->file('image');
         $filename = 'post-' . time() . '.' . $image->getClientOriginalExtension();
         $image->move(public_path($folder), $filename);
@@ -157,6 +161,24 @@ class PostController extends Controller
             $image->storeAs('public/posts', $filename);
             $post->image = '/storage/posts/' . $filename;
         }
+
+        if ($request->hasFile('image')) {
+            $folder = 'uploads/posts';
+
+            // 1. Xóa avatar cũ nếu có
+            if ($post->image && file_exists(public_path($post->image))) {
+                unlink(public_path($post->image));
+            }
+
+            // 2. Lưu file mới
+            $image = $request->file('image');
+            $filename = 'post-' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path($folder), $filename);
+
+            // 3. Cập nhật URL avatar
+            $post->image = '/' . $folder . '/' . $filename;
+        }
+
 
         $post->title = $validated['title'];
         $post->content = $validated['content'];
