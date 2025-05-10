@@ -41,49 +41,59 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        // Xác thực dữ liệu đầu vào
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
+            'title'       => 'required|string|max:255',
+            'content'     => 'required|string',
             'category_id' => 'nullable|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'type' => 'required|in:post,question',
-            'status' => 'required|in:draft,published,archived',
-            'tags' => 'nullable|array',
-            'tags.*' => 'exists:tags,id',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'type'        => 'required|in:post,question',
+            'status'      => 'required|in:draft,published,archived',
+            'tags'        => 'nullable|array',
+            'tags.*'      => 'exists:tags,id',
         ]);
 
-        // Handle slug
-        $slug = Str::slug($validated['title']);
+        // Tạo slug duy nhất
+        $slug  = Str::slug($validated['title']);
         $count = 1;
-
         while (Post::where('slug', $slug)->exists()) {
             $slug = Str::slug($validated['title']) . '-' . $count++;
         }
 
-        // Handle image upload
+        // Xử lý upload ảnh
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
+            $folder = 'posts'; // Thư mục lưu trữ trong disk 'public'
+
+            // Kiểm tra và tạo thư mục nếu chưa tồn tại
+            if (!Storage::disk('public')->exists($folder)) {
+                Storage::disk('public')->makeDirectory($folder);
+            }
+
+            $image    = $request->file('image');
             $filename = 'post-' . time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('public/posts', $filename);
-            $imagePath = '/storage/posts/' . $filename;
+            $image->storeAs('public/' . $folder, $filename);
+
+            // Đường dẫn truy cập từ trình duyệt
+            $imagePath = '/storage/' . $folder . '/' . $filename;
         }
 
+        // Tạo bài viết mới
         $post = Post::create([
-            'title' => $validated['title'],
-            'slug' => $slug,
-            'content' => $validated['content'],
+            'title'       => $validated['title'],
+            'slug'        => $slug,
+            'content'     => $validated['content'],
             'category_id' => $validated['category_id'],
-            'image' => $imagePath,
-            'type' => $validated['type'],
-            'status' => $validated['status'],
-            'views' => 0,
-            'likes' => 0,
-            'created_by' => Auth::id(),
-            'updated_by' => Auth::id(),
+            'image'       => $imagePath,
+            'type'        => $validated['type'],
+            'status'      => $validated['status'],
+            'views'       => 0,
+            'likes'       => 0,
+            'created_by'  => Auth::id(),
+            'updated_by'  => Auth::id(),
         ]);
 
-        // Attach tags
+        // Gắn thẻ (tags) nếu có
         if (!empty($validated['tags'])) {
             $post->tags()->attach($validated['tags']);
         }

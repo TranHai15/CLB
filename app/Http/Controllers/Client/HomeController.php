@@ -72,7 +72,6 @@ class HomeController extends BaseController
 
         // Tăng lượt xem
         $post->increment('views');
-
         // Lấy bài viết liên quan
         $relatedPosts = Post::with(['creator', 'category'])
             ->where('category_id', $post->category_id)

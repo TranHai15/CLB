@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class ProfileController extends BaseController
 {
@@ -24,37 +25,44 @@ class ProfileController extends BaseController
      */
     public function update(Request $request)
     {
-        $user = User::find(Auth::id());
-
+        // Validate dữ liệu đầu vào
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'bio' => 'nullable|string|max:1000',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'name'   => 'required|string|max:255',
+            'bio'    => 'nullable|string|max:1000',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Update name and bio
-        $user->name = $validated['name'];
-        $user->bio = $validated['bio'];
+        $user = User::find(Auth::id());
 
-        // Handle avatar upload
+        // Update name và bio
+        $user->name = $validated['name'];
+        $user->bio  = $validated['bio'];
+
+        // Xử lý upload avatar
         if ($request->hasFile('avatar')) {
-            // Delete old avatar if exists
-            if ($user->avatar && Storage::exists('public/avatars/' . basename($user->avatar))) {
-                Storage::delete('public/avatars/' . basename($user->avatar));
+            $folder = 'uploads/avatars';
+
+            // 1. Xóa avatar cũ nếu có
+            if ($user->avatar_url && file_exists(public_path($user->avatar_url))) {
+                unlink(public_path($user->avatar_url));
             }
 
-            // Store new avatar
+            // 2. Lưu file mới
             $avatar = $request->file('avatar');
             $filename = Str::slug($user->name) . '-' . time() . '.' . $avatar->getClientOriginalExtension();
-            $avatar->storeAs('public/avatars', $filename);
+            $avatar->move(public_path($folder), $filename);
 
-            // Update avatar path
-            $user->avatar = '/storage/avatars/' . $filename;
+            // 3. Cập nhật URL avatar
+            $user->avatar_url = '/' . $folder . '/' . $filename;
         }
 
         $user->save();
 
-        return redirect()->back()->with('success', 'Thông tin cá nhân đã được cập nhật thành công!');
+        // Giữ nguyên session
+        Auth::login($user);
+
+        return redirect()->back()
+            ->with('success', 'Thông tin cá nhân đã được cập nhật thành công!');
     }
 
     /**
@@ -62,15 +70,15 @@ class ProfileController extends BaseController
      */
     public function destroy()
     {
-        $user = User::find(Auth::id());
+        $user = Auth::user();
 
         // Delete avatar if exists
-        if ($user->avatar && Storage::exists('public/avatars/' . basename($user->avatar))) {
-            Storage::delete('public/avatars/' . basename($user->avatar));
+        if ($user->avatar_url && file_exists(public_path($user->avatar_url))) {
+            unlink(public_path($user->avatar_url));
         }
 
-        // Delete user
-        $user->delete();
+        // Permanently delete user
+        DB::table('users')->where('id', $user->id)->delete();
 
         Auth::logout();
 

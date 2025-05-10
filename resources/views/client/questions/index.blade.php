@@ -1,92 +1,97 @@
 @extends('layouts.home')
 
 @section('content')
-<div class="container mx-auto max-w-7xl px-4 py-8">
-    <div class="container mx-auto max-w-7xl px-4 py-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <!-- Main Content -->
-        <div class="lg:col-span-3 space-y-8">
-            <div class="flex justify-between items-center mb-8">
-                <h1 class="text-3xl font-bold">Câu hỏi</h1>
-                <a href="{{ route('questions.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-                    Đặt câu hỏi
-                </a>
-            </div>
+<div class="bg-gray-100 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Main Content -->
+            <main class="lg:col-span-3 space-y-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Câu hỏi mới nhất</h2>
+                    <a href="{{ route('questions.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-700 hover:bg-blue-800 transition-colors">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Đặt câu hỏi
+                    </a>
+                </div>
 
-            <div class="space-y-6">
-                @foreach($questions as $question)
-                <div class="bg-white rounded-lg shadow-lg p-6">
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0">
-                            <img src="{{ $question->creator->avatar_url }}"
-                                alt="{{ $question->creator->name        }}"
-                                class="w-12 h-12 rounded-full">
+                <div class="grid gap-4">
+                    @foreach($questions as $question)
+                    @include('client.partials.question-card', ['question' => $question])
+                    @endforeach
+                </div>
+
+                <div class="mt-8">
+                    {{ $questions->links() }}
+                </div>
+            </main>
+
+            <!-- Sidebar -->
+            <aside class="lg:col-span-1 space-y-6">
+                <!-- Categories Dropdown -->
+                <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm overflow-hidden" x-data="{ open: false }">
+                    <button @click="open = !open" class="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-gray-50/80 transition-colors">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-gray-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            </svg>
+                            <h3 class="text-lg font-bold text-gray-800">Danh mục</h3>
                         </div>
-                        <div class="flex-1">
-                            <h2 class="text-xl font-semibold mb-2">
-                                <a href="{{ route('questions.show', $question->slug     ) }}" class="hover:text-blue-600">
-                                    {{ $question->title }}
-                                </a>
-                            </h2>
+                        <svg class="w-5 h-5 text-gray-600 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="open" x-transition class="border-t border-gray-200">
+                        <div class="py-2">
+                            <a href="{{ route('questions.index') }}"
+                                class="block px-4 py-2 text-gray-700 hover:bg-blue-50/80 hover:text-blue-800 transition-colors">
+                                <div class="flex items-center justify-between">
+                                    <span>Tất cả danh mục</span>
+                                    <span class="text-sm text-gray-600">{{ $questions->total() }}</span>
+                                </div>
+                            </a>
+                            @foreach($categories as $category)
+                            <a href="{{ route('category.show', $category->slug) }}"
+                                class="block px-4 py-2 text-gray-700 hover:bg-blue-50/80 hover:text-blue-800 transition-colors">
+                                <div class="flex items-center justify-between">
+                                    <span>{{ $category->name }}</span>
+                                    <span class="text-sm text-gray-600">{{ $category->questions_count }}</span>
+                                </div>
+                            </a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
 
-                            <div class="flex items-center gap-4 text-sm text-gray-500">
-                                <a href="/category/{{ $question->category->slug }}"
-                                    class="bg-gray-100 px-3 py-1 rounded-full hover:bg-gray-200">
-                                    {{ $question->category->name }}
+                <!-- Tags Dropdown -->
+                <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm overflow-hidden" x-data="{ open: false }">
+                    <button @click="open = !open" class="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-gray-50/80 transition-colors">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-gray-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                            </svg>
+                            <h3 class="text-lg font-bold text-gray-800">Tags phổ biến</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-600 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="open" x-transition class="border-t border-gray-200">
+                        <div class="p-4">
+                            <div class="flex flex-wrap gap-2">
+                                @foreach($tags as $tag)
+                                <a href="{{ route('tag.show', $tag->slug) }}"
+                                    class="inline-block px-3 py-1 rounded-full text-sm bg-gray-100/80 text-gray-700 hover:bg-blue-100/80 hover:text-blue-800 transition-colors">
+                                    #{{ $tag->name }}
                                 </a>
-                                <span>{{ $question->comments->count() }} câu trả lời</span>
-                                <span>{{ number_format($question->views) }} lượt xem</span>
-                                <span>{{ \Carbon\Carbon::parse($question->created_at)->diffForHumans() }}</span>
+                                @endforeach
                             </div>
                         </div>
                     </div>
                 </div>
-                @endforeach
-            </div>
-        </div>
-
-        <!-- Sidebar -->
-        <div class="space-y-8 lg:col-span-1">
-            <!-- Categories Filter -->
-            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-                <h3 class="text-lg font-bold mb-4">Danh mục</h3>
-                <select id="categorySelect" class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Tất cả danh mục</option>
-                    @foreach($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }} ({{ $category->posts->count() }})</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <!-- Latest Posts -->
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h3 class="text-lg font-bold mb-4">Bài viết mới nhất</h3>
-                <div class="space-y-4">
-                    @foreach($latestPosts as $post)
-                    <div class="flex gap-4">
-                        <img src="{{ $post->image   }}"
-                            alt="{{ $post->title }}"
-                            class="w-20 h-20 object-cover rounded-lg">
-                        <div>
-                            <h4 class="font-medium text-sm mb-1 line-clamp-2">
-                                <a href="{{ route('posts.show', $post->slug) }}" class="hover:text-blue-600">
-                                    {{ $post->title }}
-                                </a>
-                            </h4>
-                            <div class="text-xs text-gray-500">
-                                <span>{{ $post->creator->name }}</span>
-                                <span class="mx-1">•</span>
-                                <span>{{ \Carbon\Carbon::parse($post->created_at)->diffForHumans() }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
+            </aside>
         </div>
     </div>
 </div>
-
-@push('scripts')
-
-@endpush
 @endsection

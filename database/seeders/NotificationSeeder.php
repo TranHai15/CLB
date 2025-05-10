@@ -11,6 +11,6 @@ class NotificationSeeder extends Seeder
     public function run(): void
     {
         // Get all users
-        Notification::factory(8)->create();
+        Notification::factory(5)->create();
     }
 }

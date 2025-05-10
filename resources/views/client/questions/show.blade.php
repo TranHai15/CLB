@@ -151,7 +151,6 @@
 </div>
 
 @push('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     function toggleCommentForm() {
         const form = document.getElementById('commentForm');
@@ -159,9 +158,8 @@
     }
 
     // Handle reply button clicks
-    $(document).on('click', '[onclick^="toggleReplyForm"]', function(e) {
-        e.preventDefault();
-        const commentId = $(this).closest('[id^="comment-"]').attr('id').replace('comment-', '');
+    $(document).on('click', '.reply-toggle-btn', function() {
+        const commentId = $(this).data('comment-id');
         $(`#replyForm${commentId}`).toggleClass('hidden');
     });
 

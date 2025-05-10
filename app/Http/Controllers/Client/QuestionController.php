@@ -19,12 +19,12 @@ class QuestionController extends BaseController
         $questions = Post::with('category', 'tags', 'creator')->where('type', 'question')->orderBy('created_at', 'desc')->paginate(10);
         // Mock data for categories
         $categories = Category::all();
-
+        $tags = Tag::all();
         // Mock data for latest posts
         $latestPosts = Post::with('category', 'tags', 'creator')->where('type', 'post')->orderBy('created_at', 'desc')->take(5)->get();
 
 
-        return view('client.questions.index', compact('questions', 'categories', 'latestPosts'));
+        return view('client.questions.index', compact('questions', 'categories', 'latestPosts', 'tags'));
     }
 
     public function create()

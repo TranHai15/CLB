@@ -93,18 +93,18 @@
                 <h3 class="text-xl font-bold mb-4 text-gray-900">Câu hỏi mới nhất</h3>
                 <div class="divide-y divide-gray-100">
                     @foreach($topPosts as $post)
-                    <a href="{{ route('questions.show', $post['id']) }}"
+                    <a href="{{ route('questions.show', $post->slug) }}"
                         class="block py-4 hover:bg-gray-50 transition-colors first:pt-0 last:pb-0">
                         <div class="flex items-center space-x-4">
-                            <img src="{{ $post['thumbnail'] }}"
+                            <img src="{{ $post->image }}"
                                 alt=""
                                 class="h-12 w-12 rounded-lg object-cover">
                             <div>
                                 <h4 class="text-sm font-medium text-gray-900 line-clamp-2">
-                                    {{ $post['title'] }}
+                                    {{ $post->title }}
                                 </h4>
                                 <p class="text-xs text-gray-500 mt-1">
-                                    {{ \Carbon\Carbon::parse($post['createdAt'])->diffForHumans() }}
+                                    {{ \Carbon\Carbon::parse($post->created_at)->diffForHumans() }}
                                 </p>
                             </div>
                         </div>

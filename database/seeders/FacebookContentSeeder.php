@@ -13,6 +13,6 @@ class FacebookContentSeeder extends Seeder
     {
         // Get all posts and users
 
-        FacebookContent::factory(5)->create();
+        FacebookContent::factory(3)->create();
     }
 }

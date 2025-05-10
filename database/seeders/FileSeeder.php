@@ -12,6 +12,6 @@ class FileSeeder extends Seeder
     {
 
 
-        File::factory(7)->create();
+        File::factory(3)->create();
     }
 }

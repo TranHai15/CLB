@@ -18,10 +18,13 @@ class GoogleController extends Controller
 
     public function handleGoogleCallback()
     {
+
         try {
             $googleUser = Socialite::driver('google')->user();
             $user = User::where('email', $googleUser->getEmail())->first();
+
             if (!$user) {
+
                 $user = User::create([
                     'google_id' => $googleUser->getId(),
                     'name' => $googleUser->getName(),
@@ -31,6 +34,7 @@ class GoogleController extends Controller
                     'status' => 1
                 ]);
             } else {
+
                 $user->update([
                     'google_id' => $googleUser->getId(),
                     'name' => $googleUser->getName(),

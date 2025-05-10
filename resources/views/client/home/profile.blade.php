@@ -23,7 +23,7 @@
             <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
                 <!-- Avatar -->
                 <div class="relative -mt-20 md:-mt-24">
-                    <img src="{{ $user->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($user->name).'&background=random' }}"
+                    <img src="{{ $user->avatar_url ?? 'https://ui-avatars.com/api/?name='.urlencode($user->name).'&background=random' }}"
                         alt="{{ $user->name }}"
                         class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white shadow-lg">
                 </div>

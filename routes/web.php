@@ -6,11 +6,12 @@ use App\Http\Controllers\Client\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\CommentController;
 use App\Http\Controllers\Client\LikeController;
+use App\Http\Controllers\Client\CategoryController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::middleware('login.with.return')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/create-post', [HomeController::class, 'createPost'])->name('create.post');
     Route::post('/content', [HomeController::class, 'store'])->name('content.store');
@@ -41,7 +42,7 @@ Route::get('/questions', [QuestionController::class, 'index'])->name('questions.
 Route::get('/questions/{post}', [QuestionController::class, 'show'])->name('questions.show');
 Route::get('/notifications', [HomeController::class, 'notifications'])->name('notifications');
 Route::get('blog', [HomeController::class, 'blog'])->name('blog');
-Route::get('/category/{slug}', [HomeController::class, 'category'])->name('category.show');
+Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('category.show');
 Route::get('/tag/{slug}', [HomeController::class, 'tag'])->name('tag.show');
 Route::get('/user/{user}', [HomeController::class, 'user'])->name('user.show');
 Route::get('/post-retry', function () {

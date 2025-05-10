@@ -33,7 +33,8 @@ class User extends Authenticatable
         'phone',
         'gender',
         'account_type',
-        'remember_token'
+        'remember_token',
+        'bio'
     ];
 
     /**
