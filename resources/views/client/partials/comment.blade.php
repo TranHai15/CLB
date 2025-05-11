@@ -79,9 +79,9 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        // Sử dụng event delegation để xử lý click cho tất cả nút xóa
-        $(document).on('click', '.comment-delete-btn', function() {
-            const $button = $(this);
+        // Function to handle comment deletion
+        function handleCommentDelete(button) {
+            const $button = $(button);
 
             // Disable button to prevent multiple clicks
             if ($button.prop('disabled')) return;
@@ -120,8 +120,20 @@
             } else {
                 $button.prop('disabled', false);
             }
+        }
+
+        // Sử dụng event delegation để xử lý click cho tất cả nút xóa
+        $(document).on('click', '.comment-delete-btn', function(e) {
+            e.preventDefault();
+            handleCommentDelete(this);
         });
 
+        // Nếu bạn có hàm để thêm comment mới, hãy gọi handleCommentDelete cho nút xóa mới
+        // Ví dụ:
+        // function addNewComment(commentHtml) {
+        //     $('#comments-container').append(commentHtml);
+        //     // Không cần gắn lại sự kiện vì đã dùng event delegation
+        // }
     });
 </script>
 @endpush

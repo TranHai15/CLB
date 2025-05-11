@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('image')->nullable();
             $table->enum('type', ['question', 'post'])->default('post');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->text('content');
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
             $table->bigInteger('views')->default(0);

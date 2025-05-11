@@ -37,10 +37,8 @@ class GoogleController extends Controller
 
                 $user->update([
                     'google_id' => $googleUser->getId(),
-                    'name' => $googleUser->getName(),
                     'slug' => str_replace('-', '', Str::slug($googleUser->getName())),
                     'email' => $googleUser->getEmail(),
-                    'avatar_url' => $googleUser->getAvatar(),
                     'email_verified_at' => now(),
                     'status' => 1
                 ]);
