@@ -11,7 +11,7 @@
 
         <!-- Right: Actions -->
         <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-            <a href="{{ route('admin.posts.index') }}" class="btn border-gray-200 hover:border-gray-300 text-gray-600">
+            <a href="{{ route('admin.posts.index') }}" class=" flex items-center        btn border-gray-200 hover:border-gray-300 text-gray-600">
                 <svg class="w-4 h-4 fill-current text-gray-400 shrink-0" viewBox="0 0 16 16">
                     <path d="M9.4 13.4l1.4-1.4-4-4 4-4-1.4-1.4L4 8z"></path>
                 </svg>
@@ -131,7 +131,7 @@
 
                 <!-- Submit Button -->
                 <div class="flex justify-end">
-                    <button type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">Tạo bài đăng</button>
+                    <button type="submit" class=" flex items-center btn bg-indigo-500 hover:bg-indigo-600 text-white">Tạo bài đăng</button>
                 </div>
             </div>
         </form>

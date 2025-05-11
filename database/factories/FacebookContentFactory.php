@@ -10,12 +10,14 @@ class FacebookContentFactory extends Factory
 {
     public function definition(): array
     {
+        $userId = User::inRandomOrder()->value('id');  // lấy ngẫu nhiên 1 user đang có trong DB
+
         return [
             'prompt' => fake()->sentence(),
             'content' => fake()->paragraph(),
             'image_url' => fake()->imageUrl(),
-            'created_by' => User::factory(),
-            'updated_by' => User::factory(),
+            'created_by' => $userId,
+            'updated_by' => $userId,
         ];
     }
 }

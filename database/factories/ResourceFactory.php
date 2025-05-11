@@ -12,13 +12,14 @@ class ResourceFactory extends Factory
 {
     public function definition(): array
     {
+        $userId = User::inRandomOrder()->value('id');  // lấy ngẫu nhiên 1 user đang có trong DB
         return [
             'title' => fake()->sentence(),
             'description' => fake()->paragraph(),
             'url' => 'resources/' . fake()->uuid() . '.pdf',
             'status' => fake()->randomElement(['draft', 'published']),
-            'created_by' => User::factory(),
-            'updated_by' => User::factory(),
+            'created_by' => $userId,
+            'updated_by' => $userId,
         ];
     }
 

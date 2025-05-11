@@ -11,13 +11,13 @@
 
         <!-- Right: Actions -->
         <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-            <a href="{{ route('admin.plans.show', $task->plan_id) }}" class="btn border-gray-200 hover:border-gray-300 text-gray-600">
+            <a href="{{ route('admin.plans.show', $task->plan_id) }}" class=" flex items-center btn border-gray-200 hover:border-gray-300 text-gray-600">
                 <svg class="w-4 h-4 fill-current text-gray-400 shrink-0" viewBox="0 0 16 16">
                     <path d="M9.4 13.4l1.4-1.4-4-4 4-4-1.4-1.4L4 8z"></path>
                 </svg>
                 <span class="ml-2">Quay lại kế hoạch</span>
             </a>
-            <a href="{{ route('admin.tasks.edit', $task) }}" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+            <a href="{{ route('admin.tasks.edit', $task) }}" class=" flex items-center btn bg-indigo-500 hover:bg-indigo-600 text-white">
                 <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
                     <path d="M11.7.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM4.6 14H2v-2.6l6-6L10.6 8l-6 6zM12 6.6L9.4 4 11 2.4 13.6 5 12 6.6z" />
                 </svg>
@@ -247,13 +247,13 @@
             <!-- Action Buttons -->
             <div class="mt-8 border-t pt-6 flex items-center justify-between">
                 <div class="flex space-x-3">
-                    <a href="{{ route('admin.plans.show', $task->plan_id) }}" class="btn border-gray-200 hover:border-gray-300 text-gray-600">
+                    <a href="{{ route('admin.plans.show', $task->plan_id) }}" class=" flex items-center         btn border-gray-200 hover:border-gray-300 text-gray-600">
                         <svg class="w-4 h-4 fill-current text-gray-400 shrink-0 mr-2" viewBox="0 0 16 16">
                             <path d="M9.4 13.4l1.4-1.4-4-4 4-4-1.4-1.4L4 8z"></path>
                         </svg>
                         Trở về kế hoạch
                     </a>
-                    <a href="{{ route('admin.tasks.edit', $task) }}" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                    <a href="{{ route('admin.tasks.edit', $task) }}" class=" flex items-center btn bg-indigo-500 hover:bg-indigo-600 text-white">
                         Chỉnh sửa nhiệm vụ
                     </a>
                 </div>
@@ -261,7 +261,7 @@
                     <form action="{{ route('admin.tasks.destroy', $task) }}" method="POST" class="inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa nhiệm vụ này?');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn border-red-200 hover:border-red-300 text-red-600">
+                        <button type="submit" class=" flex items-center btn border-red-200 hover:border-red-300 text-red-600">
                             <svg class="w-4 h-4 fill-current shrink-0 mr-2" viewBox="0 0 16 16">
                                 <path d="M5 7h2v6H5V7zm4 0h2v6H9V7zm3-6v2h4v2h-1v10c0 .6-.4 1-1 1H2c-.6 0-1-.4-1-1V5H0V3h4V1c0-.6.4-1 1-1h6c.6 0 1 .4 1 1zM6 2v1h4V2H6zm7 3H3v9h10V5z" />
                             </svg>

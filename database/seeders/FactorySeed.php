@@ -14,6 +14,6 @@ class FactorySeed extends Seeder
     public function run(): void
     {
         // Tạo 50 lượt theo dõi ngẫu nhiên
-        Follow::factory()->count(50)->create();
+        Follow::factory()->count(1)->create();
     }
 }

@@ -31,7 +31,7 @@ class GoogleController extends Controller
                     'slug' => str_replace('-', '', Str::slug($googleUser->getName())),
                     'email' => $googleUser->getEmail(),
                     'avatar_url' => $googleUser->getAvatar(),
-                    'status' => 1
+                    'status' => "active"
                 ]);
             } else {
 
@@ -40,7 +40,7 @@ class GoogleController extends Controller
                     'slug' => str_replace('-', '', Str::slug($googleUser->getName())),
                     'email' => $googleUser->getEmail(),
                     'email_verified_at' => now(),
-                    'status' => 1
+                    'status' => "active"
                 ]);
             }
 

@@ -1,0 +1,117 @@
+/* Admin Button Styles */
+.admin-btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ease-in-out;
+}
+
+/* Primary Button */
+.admin-btn-primary {
+    @apply admin-btn bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+}
+
+/* Secondary Button */
+.admin-btn-secondary {
+    @apply admin-btn bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-offset-2 focus:ring-gray-500;
+}
+
+/* Success Button */
+.admin-btn-success {
+    @apply admin-btn bg-green-600 text-white hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-500;
+}
+
+/* Danger Button */
+.admin-btn-danger {
+    @apply admin-btn bg-red-600 text-white hover:bg-red-700 focus:ring-2 focus:ring-offset-2 focus:ring-red-500;
+}
+
+/* Warning Button */
+.admin-btn-warning {
+    @apply admin-btn bg-yellow-600 text-white hover:bg-yellow-700 focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500;
+}
+
+/* Info Button */
+.admin-btn-info {
+    @apply admin-btn bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+}
+
+/* Icon Button */
+.admin-btn-icon {
+    @apply p-2 rounded-full transition-all duration-200 ease-in-out;
+}
+
+/* Action Buttons in Tables */
+.admin-action-btn {
+    @apply p-2 rounded-full transition-all duration-200 ease-in-out hover:bg-gray-100;
+}
+
+/* Form Submit Button */
+.admin-submit-btn {
+    @apply admin-btn-primary w-full sm:w-auto;
+}
+
+/* Cancel Button */
+.admin-cancel-btn {
+    @apply admin-btn-secondary w-full sm:w-auto;
+}
+
+/* Small Button */
+.admin-btn-sm {
+    @apply px-3 py-1.5 text-xs;
+}
+
+/* Large Button */
+.admin-btn-lg {
+    @apply px-6 py-3 text-base;
+}
+
+/* Button with Icon */
+.admin-btn-with-icon {
+    @apply admin-btn space-x-2;
+}
+
+/* Disabled Button */
+.admin-btn:disabled {
+    @apply opacity-50 cursor-not-allowed;
+}
+
+/* Button Group */
+.admin-btn-group {
+    @apply inline-flex rounded-md shadow-sm;
+}
+
+.admin-btn-group .admin-btn:not(:first-child) {
+    @apply rounded-l-none;
+}
+
+.admin-btn-group .admin-btn:not(:last-child) {
+    @apply rounded-r-none;
+}
+
+/* Floating Action Button */
+.admin-fab {
+    @apply fixed bottom-6 right-6 p-4 rounded-full shadow-lg transition-all duration-200 ease-in-out;
+}
+
+/* Back Button */
+.admin-back-btn {
+    @apply admin-btn-secondary mb-4;
+}
+
+/* Save Button */
+.admin-save-btn {
+    @apply admin-btn-success ml-2;
+}
+
+/* Delete Button */
+.admin-delete-btn {
+    @apply admin-btn-danger;
+}
+
+/* Edit Button */
+.admin-edit-btn {
+    @apply admin-btn-info;
+}
+
+/* View Button */
+.admin-view-btn {
+    @apply admin-btn-secondary;
+}

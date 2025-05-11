@@ -10,11 +10,13 @@ class NotificationFactory extends Factory
 {
     public function definition(): array
     {
+        $userId = User::inRandomOrder()->value('id');  // lấy ngẫu nhiên 1 user đang có trong DB
+        $postId = Post::inRandomOrder()->value('id');
         return [
-            'user_id' => User::factory(),
-            'to_user_id' => User::factory(), // Đổi từ to_user
+            'user_id' => $userId,
+            'to_user_id' => $userId, // Đổi từ to_user
             'title' => fake()->sentence(),
-            'post_id' => Post::factory(), // Thêm post_id
+            'post_id' => $postId, // Thêm post_id
             'type' => fake()->randomElement(['info', 'success', 'warning', 'error']),
             'is_read' => fake()->boolean(),
         ];

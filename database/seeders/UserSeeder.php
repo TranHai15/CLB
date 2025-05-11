@@ -18,6 +18,6 @@ class UserSeeder extends Seeder
         // ]);
 
         // Create regular users
-        User::factory(1)->create();
+        User::factory(10)->create();
     }
 }

@@ -11,7 +11,7 @@
 
         <!-- Right: Actions -->
         <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-            <a href="{{ route('admin.account.index') }}" class="btn border-gray-200 hover:border-gray-300 text-gray-600">
+            <a href="{{ route('admin.account.index') }}" class="admin-btn-secondary admin-btn-with-icon">
                 <svg class="w-4 h-4 fill-current text-gray-400 shrink-0" viewBox="0 0 16 16">
                     <path d="M9.4 13.4l1.4-1.4-4-4 4-4-1.4-1.4L4 8z"></path>
                 </svg>
@@ -105,7 +105,12 @@
 
                 <!-- Submit Button -->
                 <div class="flex justify-end pt-5">
-                    <button type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">Tạo người dùng</button>
+                    <button type="submit" class="admin-btn-primary admin-btn-with-icon">
+                        <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
+                            <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
+                        </svg>
+                        <span class="ml-2">Tạo người dùng</span>
+                    </button>
                 </div>
             </div>
         </form>

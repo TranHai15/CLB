@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CommentController extends Controller
 {
@@ -13,9 +15,15 @@ class CommentController extends Controller
      */
     public function index()
     {
-        $comments = Comment::with(['post', 'creator'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        // Debug: Check raw data
+        $rawComments = DB::table('comments')->get();
+        Log::info('Raw comments:', ['data' => $rawComments->toArray()]);
+
+        // Debug: Check model data
+        $comments = Comment::with(['creator', 'post'])
+            ->latest()
+            ->paginate(10);
+        Log::info('Model comments:', ['data' => $comments->toArray()]);
 
         return view('admin.comments.index', compact('comments'));
     }

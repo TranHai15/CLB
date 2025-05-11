@@ -1,7 +1,5 @@
 @extends('layouts.admin')
 
-
-
 @section('content')
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     <!-- Stats Cards -->
@@ -29,7 +27,7 @@
         </div>
         <div class="bg-gray-50 px-5 py-3">
             <div class="text-sm">
-                <a href="#" class="font-medium text-indigo-600 hover:text-indigo-900">
+                <a href="{{ route('admin.account.index') }}" class="font-medium text-indigo-600 hover:text-indigo-900">
                     Xem tất cả
                 </a>
             </div>
@@ -60,7 +58,7 @@
         </div>
         <div class="bg-gray-50 px-5 py-3">
             <div class="text-sm">
-                <a href="#" class="font-medium text-indigo-600 hover:text-indigo-900">
+                <a href="{{ route('admin.posts.index') }}" class="font-medium text-indigo-600 hover:text-indigo-900">
                     Xem tất cả
                 </a>
             </div>
@@ -91,7 +89,7 @@
         </div>
         <div class="bg-gray-50 px-5 py-3">
             <div class="text-sm">
-                <a href="#" class="font-medium text-indigo-600 hover:text-indigo-900">
+                <a href="{{ route('admin.transactions.index') }}" class="font-medium text-indigo-600 hover:text-indigo-900">
                     Xem tất cả
                 </a>
             </div>
@@ -130,7 +128,7 @@
             @endforeach
         </ul>
         <div class="bg-gray-50 px-4 py-4 sm:px-6">
-            <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-900">Xem tất cả người dùng</a>
+            <a href="{{ route('admin.account.index') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-900">Xem tất cả người dùng</a>
         </div>
     </div>
 
@@ -161,7 +159,7 @@
             @endforeach
         </ul>
         <div class="bg-gray-50 px-4 py-4 sm:px-6">
-            <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-900">Xem tất cả giao dịch</a>
+            <a href="{{ route('admin.transactions.index') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-900">Xem tất cả giao dịch</a>
         </div>
     </div>
 </div>
@@ -208,7 +206,7 @@
             @endforeach
         </ul>
         <div class="bg-gray-50 px-4 py-4 sm:px-6">
-            <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-900">Xem tất cả bài viết</a>
+            <a href="{{ route('admin.posts.index') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-900">Xem tất cả bài viết</a>
         </div>
     </div>
 
@@ -218,7 +216,7 @@
             <h3 class="text-lg font-medium leading-6 text-gray-900">Kế hoạch sắp tới</h3>
         </div>
         <ul class="divide-y divide-gray-200">
-            @foreach($upcoming_plans as $plan)
+            @forelse($upcoming_plans as $plan)
             <li>
                 <div class="px-4 py-4 sm:px-6">
                     <div class="flex items-center justify-between">
@@ -243,10 +241,16 @@
                     </div>
                 </div>
             </li>
-            @endforeach
+            @empty
+            <li>
+                <div class="px-4 py-4 sm:px-6 text-center text-gray-500">
+                    Không có kế hoạch sắp tới
+                </div>
+            </li>
+            @endforelse
         </ul>
         <div class="bg-gray-50 px-4 py-4 sm:px-6">
-            <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-900">Xem tất cả kế hoạch</a>
+            <a href="{{ route('admin.plans.index') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-900">Xem tất cả kế hoạch</a>
         </div>
     </div>
 </div>
@@ -268,26 +272,10 @@
         const ctx = document.getElementById('activityChart').getContext('2d');
 
         // Pass data from PHP to JavaScript
-        const labels = {
-            {
-                Js::from($activity_data['labels'])
-            }
-        };
-        const postsData = {
-            {
-                Js::from($activity_data['posts'])
-            }
-        };
-        const commentsData = {
-            {
-                Js::from($activity_data['comments'])
-            }
-        };
-        const usersData = {
-            {
-                Js::from($activity_data['users'])
-            }
-        };
+        const labels = @json($activity_data['labels']);
+        const postsData = @json($activity_data['posts']);
+        const commentsData = @json($activity_data['comments']);
+        const usersData = @json($activity_data['users']);
 
         new Chart(ctx, {
             type: 'line',

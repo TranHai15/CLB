@@ -13,6 +13,8 @@ class PostFactory extends Factory
 {
     public function definition(): array
     {
+        $userId = User::inRandomOrder()->value('id');  // lấy ngẫu nhiên 1 user đang có trong DB
+        $categoryId = Category::inRandomOrder()->value('id');
         $title = fake()->sentence();
         return [
             'title' => $title,
@@ -23,9 +25,9 @@ class PostFactory extends Factory
             'status' => fake()->randomElement(['draft', 'published', 'archived']),
             'views' => fake()->numberBetween(0, 1000),
             'likes' => fake()->numberBetween(0, 1000),
-            'created_by' => User::factory(),
-            'updated_by' => User::factory(),
-            'category_id' => Category::factory(),
+            'created_by' => $userId,
+            'updated_by' => $userId,
+            'category_id' => $categoryId,
         ];
     }
 

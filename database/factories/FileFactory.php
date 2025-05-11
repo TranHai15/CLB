@@ -10,10 +10,12 @@ class FileFactory extends Factory
 {
     public function definition(): array
     {
+        $userId = User::inRandomOrder()->value('id');  // lấy ngẫu nhiên 1 user đang có trong DB
+        $postId = Post::inRandomOrder()->value('id');
         return [
-            'created_by' => User::factory(),
+            'created_by' => $userId,
             'storage_path' => 'files/' . fake()->uuid() . '.' . fake()->fileExtension(),
-            'fileable_id' => Post::factory(), // Để null ban đầu
+            'fileable_id' => $postId, // Để null ban đầu
             'fileable_type' => $this->faker->randomElement(['post', 'resource', 'user_avatar']), // Để null ban đầu
         ];
     }

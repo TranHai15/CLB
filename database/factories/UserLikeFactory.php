@@ -18,9 +18,11 @@ class UserLikeFactory extends Factory
      */
     public function definition(): array
     {
+        $userId = User::inRandomOrder()->value('id');  // lấy ngẫu nhiên 1 user đang có trong DB
+        $postId = Post::inRandomOrder()->value('id');
         return [
-            'user_id' => User::factory(),
-            'post_id' => Post::factory(),
+            'user_id' => $userId,
+            'post_id' => $postId,
             'type' => fake()->randomElement(['post', 'comment']),
         ];
     }

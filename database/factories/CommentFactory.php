@@ -10,12 +10,15 @@ class CommentFactory extends Factory
 {
     public function definition(): array
     {
+        $userId = User::inRandomOrder()->value('id');  // lấy ngẫu nhiên 1 user đang có trong DB
+        $postId = Post::inRandomOrder()->value('id');  // tương tự với post
+
         return [
-            'comment' => fake()->paragraph(),
-            'created_by' => User::factory(),
-            'updated_by' => User::factory(),
-            'post_id' => Post::factory(),
-            'reply_to_username' => null,
+            'comment'            => $this->faker->paragraph(),
+            'created_by'         => $userId,
+            'updated_by'         => $userId,
+            'post_id'            => $postId,
+            'reply_to_username'  => null,
         ];
     }
 }

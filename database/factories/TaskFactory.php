@@ -10,6 +10,7 @@ class TaskFactory extends Factory
 {
     public function definition(): array
     {
+        $userId = User::inRandomOrder()->value('id');  // lấy ngẫu nhiên 1 user đang có trong DB
         return [
             'title' => fake()->sentence(),
             'plan_id' => Plan::factory(),
@@ -21,9 +22,9 @@ class TaskFactory extends Factory
             'issue_text' => fake()->optional()->sentence(), // Có thể null
             'solution_text' => fake()->optional()->sentence(), // Có thể null
             'evidence_url' => fake()->optional()->url(), // Có thể null
-            'created_by' => User::factory(),
-            'assignee_id' => User::factory(), // Người được giao nhiệm vụ
-            'updated_by' => User::factory(),
+            'created_by' => $userId,
+            'assignee_id' => $userId, // Người được giao nhiệm vụ
+            'updated_by' => $userId,
         ];
     }
 }
