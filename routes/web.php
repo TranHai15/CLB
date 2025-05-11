@@ -24,7 +24,7 @@ Route::middleware('login.with.return')->group(function () {
     Route::delete('/questions/{id}', [QuestionController::class, 'destroy'])->name('questions.destroy');
     Route::post('/user/{user}/follow', [HomeController::class, 'follow'])->name('user.follow');
     Route::delete('/user/{user}/unfollow', [HomeController::class, 'unfollow'])->name('user.unfollow');
-
+    Route::post('/questions/{post}', [QuestionController::class, 'show'])->name('questions.show');
     // Comment routes
     Route::post('/posts/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::post('/comments/{comment}/reply', [CommentController::class, 'storeReply'])->name('comments.storeReply');
