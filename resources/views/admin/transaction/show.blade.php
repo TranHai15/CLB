@@ -11,13 +11,13 @@
 
         <!-- Right: Actions -->
         <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-            <a href="{{ route('admin.transactions.index') }}" class="btn border-gray-200 hover:border-gray-300 text-gray-600">
+            <a href="{{ route('admin.transactions.index') }}" class="btn  p-[5px]  rounded-sm border-gray-200 hover:border-gray-300 text-gray-600">
                 <svg class="w-4 h-4 fill-current text-gray-400 shrink-0" viewBox="0 0 16 16">
                     <path d="M9.4 13.4l1.4-1.4-4-4 4-4-1.4-1.4L4 8z"></path>
                 </svg>
                 <span class="ml-2">Quay lại</span>
             </a>
-            <a href="{{ route('admin.transactions.edit', $transaction) }}" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+            <a href="{{ route('admin.transactions.edit', $transaction) }}" class="  p-[5px]  rounded-sm flex items-center btn bg-indigo-500 hover:bg-indigo-600 text-white">
                 <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
                     <path d="M11.7.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM4.6 14H2v-2.6l6-6L10.6 8l-6 6zM12 6.6L9.4 4 11 2.4 13.6 5 12 6.6z" />
                 </svg>
@@ -141,7 +141,7 @@
             <!-- Action Buttons -->
             <div class="mt-8 border-t pt-6 flex items-center justify-between">
                 <div>
-                    <a href="{{ route('admin.transactions.edit', $transaction) }}" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                    <a href="{{ route('admin.transactions.edit', $transaction) }}" class="  p-[5px]  rounded-smbtn bg-indigo-500 hover:bg-indigo-600 text-white">
                         Chỉnh sửa giao dịch
                     </a>
                 </div>

@@ -161,7 +161,7 @@
 
                 <!-- Submit Button -->
                 <div class="flex justify-end pt-5">
-                    <button type="submit" class=" flex items-center         btn bg-indigo-500 hover:bg-indigo-600 text-white">Cập nhật thành viên</button>
+                    <button type="submit" class=" flex items-center   p-[5px]  rounded-sm        btn bg-indigo-500 hover:bg-indigo-600 text-white">Cập nhật thành viên</button>
                 </div>
             </div>
         </form>

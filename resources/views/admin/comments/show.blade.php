@@ -52,7 +52,7 @@
                     <dt class="text-sm font-medium text-gray-500">Tác giả:</dt>
                     <dd class="mt-1 text-sm text-gray-900 md:mt-0 md:col-span-2">
                         @if($comment->creator)
-                        <a href="{{ route('admin.account.show', $comment->created_by) }}" class="text-indigo-600 hover:text-indigo-900">
+                        <a href="{{ route('user.show', $comment->creator->slug) }}" class="text-indigo-600 hover:text-indigo-900">
                             {{ $comment->creator->name }}
                         </a>
                         @else

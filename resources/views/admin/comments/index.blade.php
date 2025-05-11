@@ -3,73 +3,89 @@
 @section('title', 'Quản lý bình luận')
 
 @section('content')
-<div class="bg-white shadow rounded-lg">
-    <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
-        <h3 class="text-lg font-medium leading-6 text-gray-900">Quản lý bình luận</h3>
+
+<div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+    <!-- Page header -->
+    <div class="sm:flex sm:justify-between sm:items-center mb-8">
+        <!-- Left: Title -->
+        <div class="mb-4 sm:mb-0">
+            <h1 class="text-2xl md:text-3xl text-gray-800 font-bold">Quản lý bình luận</h1>
+        </div>
     </div>
 
-    <div class="border-t border-gray-200">
+    <!-- Table -->
+    <div class="bg-white shadow-lg rounded-sm border border-gray-200 mb-8">
+        <header class="px-5 py-4 border-b border-gray-100">
+            <h2 class="font-semibold text-gray-800">Danh sách bình luận <span class="text-gray-400 font-medium">{{ $comments->total() }}</span></h2>
+        </header>
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+            <table class="table-auto w-full">
+                <thead class="text-xs font-semibold uppercase text-gray-500 bg-gray-50 border-t border-b border-gray-200">
                     <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Người dùng
+                        <th class="px-4 py-3 whitespace-nowrap">
+                            <div class="font-semibold text-left">Người dùng</div>
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Bài viết
+                        <th class="px-4 py-3 whitespace-nowrap">
+                            <div class="font-semibold text-left">Bài viết</div>
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Nội dung
+                        <th class="px-4 py-3 whitespace-nowrap">
+                            <div class="font-semibold text-left">Nội dung</div>
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Thời gian
+                        <th class="px-4 py-3 whitespace-nowrap">
+                            <div class="font-semibold text-left">Thời gian</div>
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Thao tác
+                        <th class="px-4 py-3 whitespace-nowrap">
+                            <div class="font-semibold text-right">Hành động</div>
                         </th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody class="text-sm divide-y divide-gray-200">
                     @forelse($comments as $comment)
+
                     <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-4 py-3 whitespace-nowrap">
                             <div class="flex items-center">
-                                <div class="flex-shrink-0 h-10 w-10">
-                                    <img class="h-10 w-10 rounded-full" src="{{ $comment->creator->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($comment->creator->name) }}" alt="">
+                                <div class="w-10 h-10 shrink-0 mr-2 sm:mr-3">
+                                    <img class="rounded-full" src="{{ $comment->creator->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($comment->creator->name) }}" width="40" height="40" alt="{{ $comment->creator->name ?? "Lỗi"}}">
                                 </div>
-                                <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900">
-                                        {{ $comment->creator->name }}
-                                    </div>
-                                    <div class="text-sm text-gray-500">
-                                        {{ $comment->creator->email }}
-                                    </div>
+                                <div>
+                                    <div class="font-medium text-gray-800">{{ $comment->creator->name }}</div>
+                                    <div class="text-gray-500">{{ $comment->creator->email }}</div>
                                 </div>
                             </div>
                         </td>
-                        <td class="px-6 py-4">
-                            <div class="text-sm text-gray-900">{{ $comment->post->title }}</div>
+                        <td class="px-4 py-3">
+                            <div class="text-left">{{ $comment->post->title }}</div>
                         </td>
-                        <td class="px-6 py-4">
-                            <div class="text-sm text-gray-900">{{ Str::limit($comment->comment, 100) }}</div>
+                        <td class="px-4 py-3">
+                            <div class="text-left">{{ Str::limit($comment->comment, 100) }}</div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ $comment->created_at->format('d/m/Y H:i') }}
+                        <td class="px-4 py-3 whitespace-nowrap">
+                            <div class="text-left">{{ $comment->created_at->format('d/m/Y H:i') }}</div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <form action="{{ route('admin.comments.destroy', $comment) }}" method="POST" class="inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Bạn có chắc chắn muốn xóa bình luận này?')">
-                                    Xóa
-                                </button>
-                            </form>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                            <div class="text-right flex justify-end items-center space-x-2">
+                                <a href="{{ route('admin.comments.show', $comment) }}" class="admin-action-btn admin-view-btn" title="Xem chi tiết">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                    </svg>
+                                </a>
+                                <form action="{{ route('admin.comments.destroy', $comment) }}" method="POST" class="inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="admin-action-btn admin-delete-btn" title="Xóa">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                        <td colspan="5" class="px-4 py-3 text-center text-gray-500">
                             Không có bình luận nào
                         </td>
                     </tr>
@@ -77,80 +93,10 @@
                 </tbody>
             </table>
         </div>
-
-        <div class="px-4 py-3 border-t border-gray-200">
+        <!-- Pagination -->
+        <div class="px-5 py-3 border-t border-gray-200">
             {{ $comments->links() }}
         </div>
     </div>
 </div>
 @endsection
-
-@push('scripts')
-<script>
-    $(document).ready(function() {
-        $('#commentsTable').DataTable({
-            language: {
-                search: "Tìm kiếm:",
-                lengthMenu: "Hiển thị _MENU_ bản ghi",
-                info: "Hiển thị _START_ đến _END_ của _TOTAL_ bản ghi",
-                infoEmpty: "Hiển thị 0 đến 0 của 0 bản ghi",
-                infoFiltered: "(lọc từ _MAX_ bản ghi)",
-                zeroRecords: "Không tìm thấy bản ghi nào",
-                emptyTable: "Không có dữ liệu",
-                paginate: {
-                    first: "Đầu",
-                    previous: "Trước",
-                    next: "Tiếp",
-                    last: "Cuối"
-                }
-            },
-            responsive: true,
-            order: [
-                [0, 'desc']
-            ],
-            pageLength: 10,
-            lengthMenu: [
-                [10, 25, 50, 100, -1],
-                [10, 25, 50, 100, "Tất cả"]
-            ],
-            columnDefs: [{
-                orderable: false,
-                targets: 5
-            }],
-            initComplete: function() {
-                // Add a select filter for the author column (index 2)
-                this.api().columns(2).every(function() {
-                    var column = this;
-                    var select = $('<select class="ml-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm"><option value="">-- Tất cả tác giả --</option></select>')
-                        .appendTo($(column.header()).find('div'))
-                        .on('change', function() {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
-
-                            column
-                                .search(val ? val : '', true, false)
-                                .draw();
-                        });
-
-                    // Get unique author names and add to select options
-                    var authors = new Set();
-                    column.data().each(function(d, j) {
-                        var authorName = $(d).text().trim();
-                        if (authorName && authorName !== 'Ẩn danh') {
-                            authors.add(authorName);
-                        }
-                    });
-
-                    authors.forEach(function(author) {
-                        select.append('<option value="' + author + '">' + author + '</option>');
-                    });
-
-                    // Add an option for anonymous comments
-                    select.append('<option value="Ẩn danh">Ẩn danh</option>');
-                });
-            }
-        });
-    });
-</script>
-@endpush

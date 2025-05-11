@@ -114,7 +114,7 @@
 
                 <!-- Submit Button -->
                 <div class="flex justify-end">
-                    <button type="submit" class=" flex items-center btn bg-indigo-500 hover:bg-indigo-600 text-white">Cập nhật kế hoạch</button>
+                    <button type="submit" class=" p-[5px]  rounded-sm flex items-center btn bg-indigo-500 hover:bg-indigo-600 text-white">Cập nhật kế hoạch</button>
                 </div>
             </div>
         </form>

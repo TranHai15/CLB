@@ -17,7 +17,7 @@
                 </svg>
                 <span class="ml-2">Quay lại</span>
             </a>
-            <a href="{{ route('admin.plans.edit', $plan) }}" class=" flex items-center btn bg-indigo-500 hover:bg-indigo-600 text-white">
+            <a href="{{ route('admin.plans.edit', $plan) }}" class="  p-[5px]  rounded-sm flex items-center btn bg-indigo-500 hover:bg-indigo-600 text-white">
                 <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
                     <path d="M11.7.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM4.6 14H2v-2.6l6-6L10.6 8l-6 6zM12 6.6L9.4 4 11 2.4 13.6 5 12 6.6z" />
                 </svg>
@@ -99,7 +99,7 @@
             <div class="mb-6">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-medium text-gray-900">Danh sách nhiệm vụ ({{ $plan->tasks->count() }})</h3>
-                    <a href="{{ route('admin.plans.tasks.create', $plan) }}" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                    <a href="{{ route('admin.plans.tasks.create', $plan) }}" class="  p-[5px]  rounded-sm flex items-center btn bg-indigo-500 hover:bg-indigo-600 text-white">
                         <svg class="w-4 h-4 fill-current opacity-50 shrink-0 mr-1" viewBox="0 0 16 16">
                             <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
                         </svg>
@@ -308,7 +308,7 @@
             <!-- Action Buttons -->
             <div class="mt-8 border-t pt-6 flex items-center justify-between">
                 <div>
-                    <a href="{{ route('admin.plans.edit', $plan) }}" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                    <a href="{{ route('admin.plans.edit', $plan) }}" class="  p-[5px]  rounded-sm flex items-center btn bg-indigo-500 hover:bg-indigo-600 text-white">
                         Chỉnh sửa kế hoạch
                     </a>
                 </div>

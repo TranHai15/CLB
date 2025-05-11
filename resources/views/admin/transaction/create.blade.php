@@ -105,7 +105,7 @@
 
                 <!-- Submit Button -->
                 <div class="flex justify-end">
-                    <button type="submit" class=" flex items-center     btn bg-indigo-500 hover:bg-indigo-600 text-white">Tạo giao
+                    <button type="submit" class=" flex items-center   p-[5px]  rounded-sm    btn bg-indigo-500 hover:bg-indigo-600 text-white">Tạo giao
                         dịch</button>
                 </div>
             </div>

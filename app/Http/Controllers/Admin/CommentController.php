@@ -17,13 +17,13 @@ class CommentController extends Controller
     {
         // Debug: Check raw data
         $rawComments = DB::table('comments')->get();
-        Log::info('Raw comments:', ['data' => $rawComments->toArray()]);
+
 
         // Debug: Check model data
         $comments = Comment::with(['creator', 'post'])
             ->latest()
             ->paginate(10);
-        Log::info('Model comments:', ['data' => $comments->toArray()]);
+
 
         return view('admin.comments.index', compact('comments'));
     }
