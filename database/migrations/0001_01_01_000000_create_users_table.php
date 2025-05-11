@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('phone', 50)->nullable();
             $table->enum('gender', ['male', 'female', 'other'])->nullable();
             $table->enum('account_type', ['user', 'club_member'])->default('user');
+            $table->foreignId('department_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

@@ -34,7 +34,8 @@ class User extends Authenticatable
         'gender',
         'account_type',
         'remember_token',
-        'bio'
+        'bio',
+        'department_id',
     ];
 
     /**

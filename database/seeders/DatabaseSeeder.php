@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             PostTagSeeder::class,
             FactorySeed::class,
             UserLikeSeed::class,
+            DepartmentSeed::class,
         ]);
     }
 }
