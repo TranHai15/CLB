@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('departments', function (Blueprint $table) {
             $table->id(); // Khóa chính, tự động tăng
             $table->string('name')->unique(); // Tên phòng ban, duy nhất
+            $table->string('slug')->unique(); // Slug phòng ban, duy nhất
             $table->text('description')->nullable(); // Mô tả phòng ban, có thể null
             $table->timestamps(); // created_at và updated_at
         });
