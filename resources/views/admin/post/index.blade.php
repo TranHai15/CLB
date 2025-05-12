@@ -43,9 +43,9 @@
                         <th class="px-4 py-3 whitespace-nowrap">
                             <div class="font-semibold text-left">Tiêu đề</div>
                         </th>
-                        <th class="px-4 py-3 whitespace-nowrap">
+                        <!-- <th class="px-4 py-3 whitespace-nowrap">
                             <div class="font-semibold text-left">Danh mục</div>
-                        </th>
+                        </th> -->
                         <th class="px-4 py-3 whitespace-nowrap">
                             <div class="font-semibold text-left">Loại</div>
                         </th>
@@ -82,9 +82,9 @@
                                 <div class="font-medium text-gray-800 truncate max-w-xs">{{ $post->title }}</div>
                             </div>
                         </td>
-                        <td class="px-4 py-3 whitespace-nowrap">
+                        <!-- <td class="px-4 py-3 whitespace-nowrap">
                             <div class="text-left">{{ $post->category ? $post->category->name : 'Không có' }}</div>
-                        </td>
+                        </td> -->
                         <td class="px-4 py-3 whitespace-nowrap">
                             <div class="text-left">
                                 @if($post->type === 'post')
@@ -118,7 +118,7 @@
                         <td class="px-4 py-3 whitespace-nowrap">
                             <div class="text-left">
                                 @if($post->creator)
-                                <div class="flex items-center">
+                                <div class="flex items-center max-w-[10rem] overflow-hidden">
                                     <div class="w-6 h-6 shrink-0 mr-2">
                                         <img class="rounded-full" src="{{ $post->creator->avatar_url ?? '/images/default-avatar.png' }}" width="24" height="24" alt="{{ $post->creator->name }}">
                                     </div>

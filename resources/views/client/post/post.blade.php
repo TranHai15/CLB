@@ -1,48 +1,50 @@
 @extends('layouts.home')
 
-@section('css')
+
+
+@push('css')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/atom-one-dark.min.css">
 <style>
     #post-content {
         color: #2d3748;
         font-size: 1.125rem;
         line-height: 1.8;
-        max-width: 65ch;
+        max-width: 85ch;
         margin: 0 auto;
     }
 
-    #post-content h1 {
-        font-size: 2.25rem;
+    h1 {
+        font-size: 2.25rem !important;
         margin: 2rem 0 1rem;
         font-weight: 700;
         color: #1a202c;
         line-height: 1.2;
     }
 
-    #post-content h2 {
-        font-size: 1.875rem;
+    h2 {
+        font-size: 1.875rem !important;
         margin: 1.75rem 0 1rem;
         font-weight: 700;
         color: #1a202c;
         line-height: 1.3;
     }
 
-    #post-content h3 {
-        font-size: 1.5rem;
+    h3 {
+        font-size: 1.5rem !important;
         margin: 1.5rem 0 0.75rem;
         font-weight: 600;
         color: #1a202c;
     }
 
-    #post-content h4 {
-        font-size: 1.25rem;
+    h4 {
+        font-size: 1.25rem !important;
         margin: 1.25rem 0 0.75rem;
         font-weight: 600;
         color: #1a202c;
     }
 
     #post-content p {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.5rem !important;
         line-height: 1.8;
     }
 
@@ -155,7 +157,8 @@
         font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
     }
 </style>
-@endsection
+
+@endpush
 
 @section('content')
 

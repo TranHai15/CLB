@@ -18,7 +18,7 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @push('css')
+    @stack('css')
     <style>
         :root {
             --font-primary: 'Inter', sans-serif;
@@ -33,7 +33,6 @@
             font-family: var(--font-secondary);
         }
     </style>
-    @endpush
 </head>
 
 <body class="font-sans antialiased bg-gray-50" data-auth="{{ Auth::check() ? 'true' : 'false' }}" data-login-url="{{ route('login') }}">

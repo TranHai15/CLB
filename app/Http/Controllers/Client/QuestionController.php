@@ -52,10 +52,14 @@ class QuestionController extends BaseController
         $post->slug = $slug;
         $post->category_id = $validated['category_id'];
         $post->content = $validated['content'];
+
         $post->type = 'question';
         $post->created_by = Auth::id();
         $post->save();
 
+        if (isset($validated['tags'])) {
+            $post->tags()->sync($validated['tags']);
+        }
         // Chuyển hướng đến trang chi tiết câu hỏi vừa tạo
         return redirect()->route('questions.show', $post->slug)
             ->with('success', 'Câu hỏi đã được đăng thành công!');
