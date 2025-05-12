@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\RoleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
@@ -12,7 +13,7 @@ use App\Http\Controllers\Admin\CommentController;
 // use App\Http\Controllers\Admin\FinanceController;
 // use App\Http\Controllers\Admin\PostController;
 
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     // Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -92,6 +93,18 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::put('/{task}', [TaskController::class, 'update'])->name('update');
         Route::delete('/{task}', [TaskController::class, 'destroy'])->name('destroy');
         Route::post('/{task}/update-status', [TaskController::class, 'updateStatus'])->name('update-status');
+    });
+
+    // Role Management
+    Route::prefix('roles')->name('roles.')->group(function () {
+        Route::get('/', [RoleController::class, 'index'])->name('index');
+        Route::get('search', [RoleController::class, 'search'])->name('search');
+        Route::get('/create', [RoleController::class, 'create'])->name('create');
+        Route::get('{id}/show', [RoleController::class, 'show'])->name('show');
+        Route::post('/', [RoleController::class, 'store'])->name('store');
+        Route::get('/{user}/edit', [RoleController::class, 'edit'])->name('edit');
+        Route::put('/{user}', [RoleController::class, 'update'])->name('update');
+        Route::delete('/{user}', [RoleController::class, 'destroy'])->name('destroy');
     });
 
     // Resources Management
