@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             FactorySeed::class,
             UserLikeSeed::class,
             DepartmentSeed::class,
+            UserLikeCommentSeeder::class,
         ]);
     }
 }

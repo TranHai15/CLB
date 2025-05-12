@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\UserLike;
+use App\Models\UserLikeComment;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class UserLikeSeed extends Seeder
+class UserLikeCommentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class UserLikeSeed extends Seeder
     public function run(): void
     {
         //
-        UserLike::factory()->count(1)->create();
+        UserLikeComment::factory()->count(1)->create();
     }
 }

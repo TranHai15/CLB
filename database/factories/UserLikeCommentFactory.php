@@ -2,14 +2,14 @@
 
 namespace Database\Factories;
 
-use App\Models\Post;
+use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\UserLike>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\UserLikeComment>
  */
-class UserLikeFactory extends Factory
+class UserLikeCommentFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,11 +18,11 @@ class UserLikeFactory extends Factory
      */
     public function definition(): array
     {
-        $userId = User::inRandomOrder()->value('id');  // lấy ngẫu nhiên 1 user đang có trong DB
-        $postId = Post::inRandomOrder()->value('id');
+        $userId = User::inRandomOrder()->value('id');
+        $commentId = Comment::inRandomOrder()->value('id');
         return [
             'user_id' => $userId,
-            'post_id' => $postId,
+            'comment_id' => $commentId,
         ];
     }
 }
