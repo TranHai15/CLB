@@ -78,7 +78,6 @@ class HomeController extends BaseController
             $post->is_liked = DB::table('user_likes')
                 ->where('user_id', Auth::id())
                 ->where('post_id', $post->id)
-                ->where('type', 'post')
                 ->exists();
         }
 

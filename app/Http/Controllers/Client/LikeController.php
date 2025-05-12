@@ -63,16 +63,16 @@ class LikeController extends Controller
     {
         // Sử dụng bảng user_comment_likes để lưu thông tin người dùng đã like bình luận nào
 
-        $isLiked = DB::table('user_likes')
+        $isLiked = DB::table('user_like_comments')
             ->where('user_id', Auth::id())
-            ->where('post_id', $comment->post_id)
+            ->where('comment_id', $comment->id)
             ->exists();
 
         if ($isLiked) {
             // Đã like, giờ unlike
-            DB::table('user_likes')
+            DB::table('user_like_comments')
                 ->where('user_id', Auth::id())
-                ->where('post_id', $comment->post_id)
+                ->where('comment_id', $comment->id)
                 ->delete();
 
             // Giảm số lượt like trong bảng comments
@@ -81,9 +81,9 @@ class LikeController extends Controller
             $liked = false;
         } else {
             // Chưa like, giờ like
-            DB::table('user_likes')->insert([
+            DB::table('user_like_comments')->insert([
                 'user_id' => Auth::id(),
-                'post_id' => $comment->post_id,
+                'comment_id' => $comment->id,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
