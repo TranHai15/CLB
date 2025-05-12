@@ -125,8 +125,8 @@
                 <x-dropdown align="right" class="min-w-[10rem]">
                     <x-slot name="trigger">
                         <button class="flex items-center focus:outline-none">
-                            @if(Auth::user()->avatar)
-                            <img src="{{ Auth::user()->avatar }}" alt="Avatar"
+                            @if(Auth::user()->avatar_url)
+                            <img src="{{ Auth::user()->avatar_url }}" alt="Avatar"
                                 class="h-8 w-8 rounded-full object-cover">
                             @else
                             <div

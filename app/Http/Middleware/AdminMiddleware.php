@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
-
+use Spatie\Permission\Models\Role;
 
 class AdminMiddleware
 {
@@ -25,15 +25,17 @@ class AdminMiddleware
                 return $next($request);
             }
 
+
             // Nếu là trưởng phòng hoặc nhân viên của bất kỳ phòng ban nào
-            if ($user->hasAnyRole([
-                'head-truyen-thong',
-                'head-nhan-su',
-                'head-tai-nguyen',
-                'staff-truyen-thong',
-                'staff-nhan-su',
-                'staff-tai-nguyen',
-            ])) {
+            // Lấy tất cả role bắt đầu với "head-" hoặc "staff-" từ bảng roles
+            $roles = Role::where('name', 'like', '%head-%')
+                ->orWhere('name', 'like', '%staff-%')
+                ->get()
+                ->pluck('name')
+                ->toArray(); // Lấy tên các role
+
+            // Kiểm tra xem user có bất kỳ role nào trong danh sách trên không
+            if ($user->hasAnyRole($roles)) {
                 return $next($request);
             }
         }

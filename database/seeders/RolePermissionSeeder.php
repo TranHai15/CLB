@@ -36,11 +36,11 @@ class RolePermissionSeeder extends Seeder
             $permissions = Permission::where('name', 'like', "%-{$slug}")->get();
             $headRole->syncPermissions($permissions);
 
-            // Gán quyền giới hạn cho nhân viên
-            $limitedPermissions = $permissions->filter(function ($perm) {
-                return str_contains($perm->name, 'read') || str_contains($perm->name, 'update');
-            });
-            $staffRole->syncPermissions($limitedPermissions);
+            // // Gán quyền giới hạn cho nhân viên
+            // $limitedPermissions = $permissions->filter(function ($perm) {
+            //     return str_contains($perm->name, 'read') || str_contains($perm->name, 'update');
+            // });
+            // $staffRole->syncPermissions($limitedPermissions);
         }
 
         // Tạo role admin và gán tất cả quyền

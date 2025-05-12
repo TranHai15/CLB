@@ -105,7 +105,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/{user}/edit', [RoleController::class, 'edit'])->name('edit');
         Route::put('/{user}', [RoleController::class, 'update'])->name('update');
         Route::delete('/{user}', [RoleController::class, 'destroy'])->name('destroy');
-    });
+    })->middleware('role:admin');
 
     // Resources Management
     // Route::resource('resources', ResourceController::class);

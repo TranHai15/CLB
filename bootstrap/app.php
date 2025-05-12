@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'login.with.return' => EnsureLoggedInWithReturn::class,
             'admin' => AdminMiddleware::class,
+            'dept.permission' => \App\Http\Middleware\CheckDeptPermission::class,
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
