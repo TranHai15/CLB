@@ -18,7 +18,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     // User Management
-    Route::prefix('account')->name('account.')->group(function () {
+    Route::middleware(['role:head-phong-nhan-su|staff-phong-nhan-su|admin'])->prefix('account')->name('account.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('/create', [UserController::class, 'create'])->name('create');
         Route::post('/', [UserController::class, 'store'])->name('store');
@@ -30,7 +30,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     });
 
     // Club Member Management
-    Route::prefix('member')->name('member.')->group(function () {
+    Route::middleware(['role:head-phong-nhan-su|staff-phong-nhan-su|admin'])->prefix('member')->name('member.')->group(function () {
         Route::get('/', [UserController::class, 'memberIndex'])->name('index');
         Route::get('/create', [UserController::class, 'memberCreate'])->name('create');
         Route::post('/', [UserController::class, 'memberStore'])->name('store');
@@ -41,7 +41,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     });
 
     // Posts Management
-    Route::prefix('posts')->name('posts.')->group(function () {
+    Route::middleware(['role:head-phong-truyen-thong|staff-phong-truyen-thong|admin'])->prefix('posts')->name('posts.')->group(function () {
         Route::get('/', [PostController::class, 'index'])->name('index');
         Route::get('/create', [PostController::class, 'create'])->name('create');
         Route::post('/', [PostController::class, 'store'])->name('store');
@@ -53,14 +53,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     });
 
     // Comments Management
-    Route::prefix('comments')->name('comments.')->group(function () {
+    Route::middleware(['role:head-phong-truyen-thong|staff-phong-truyen-thong|admin'])->prefix('comments')->name('comments.')->group(function () {
         Route::get('/', [CommentController::class, 'index'])->name('index');
         Route::get('/{comment}', [CommentController::class, 'show'])->name('show');
         Route::delete('/{comment}', [CommentController::class, 'destroy'])->name('destroy');
     });
 
     // Transactions Management
-    Route::prefix('transactions')->name('transactions.')->group(function () {
+    Route::middleware(['role:staff-phong-quy-tien|staff-phong-truyen-thong|admin'])->prefix('transactions')->name('transactions.')->group(function () {
         Route::get('/', [TransactionController::class, 'index'])->name('index');
         Route::get('/create', [TransactionController::class, 'create'])->name('create');
         Route::post('/', [TransactionController::class, 'store'])->name('store');
@@ -71,7 +71,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     });
 
     // Plans Management with nested Tasks
-    Route::prefix('plans')->name('plans.')->group(function () {
+    Route::middleware(['role:head-phong-truyen-thong|staff-phong-truyen-thong|admin'])->prefix('plans')->name('plans.')->group(function () {
         Route::get('/', [PlanController::class, 'index'])->name('index');
         Route::get('/create', [PlanController::class, 'create'])->name('create');
         Route::post('/', [PlanController::class, 'store'])->name('store');
@@ -87,7 +87,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     });
 
     // Individual Task Management (for existing tasks)
-    Route::prefix('tasks')->name('tasks.')->group(function () {
+    Route::middleware(['role:head-phong-truyen-thong|staff-phong-truyen-thong|admin'])->prefix('tasks')->name('tasks.')->group(function () {
         Route::get('/{task}', [TaskController::class, 'show'])->name('show');
         Route::get('/{task}/edit', [TaskController::class, 'edit'])->name('edit');
         Route::put('/{task}', [TaskController::class, 'update'])->name('update');
@@ -96,7 +96,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     });
 
     // Role Management
-    Route::prefix('roles')->name('roles.')->group(function () {
+    Route::middleware(['role:admin'])->prefix('roles')->name('roles.')->group(function () {
         Route::get('/', [RoleController::class, 'index'])->name('index');
         Route::get('search', [RoleController::class, 'search'])->name('search');
         Route::get('/create', [RoleController::class, 'create'])->name('create');
@@ -105,7 +105,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/{user}/edit', [RoleController::class, 'edit'])->name('edit');
         Route::put('/{user}', [RoleController::class, 'update'])->name('update');
         Route::delete('/{user}', [RoleController::class, 'destroy'])->name('destroy');
-    })->middleware('role:admin');
+    });
 
     // Resources Management
     // Route::resource('resources', ResourceController::class);

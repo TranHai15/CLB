@@ -45,6 +45,10 @@ class RolePermissionSeeder extends Seeder
 
         // Tạo role admin và gán tất cả quyền
         $admin = Role::firstOrCreate(['name' => 'admin']);
+        $permissionMoney = Permission::firstOrCreate(['name' => 'money']);
+        $quyTien = Role::firstOrCreate(['name' => 'staff-phong-quy-tien']);
+
+        $quyTien->givePermissionTo($permissionMoney);
         $admin->syncPermissions(Permission::all());
     }
 }
