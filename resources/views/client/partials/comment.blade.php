@@ -122,18 +122,14 @@
             }
         }
 
-        // Sử dụng event delegation để xử lý click cho tất cả nút xóa
+        // Remove any existing event handlers before attaching new ones
+        $(document).off('click', '.comment-delete-btn');
+
+        // Attach event handler using event delegation
         $(document).on('click', '.comment-delete-btn', function(e) {
             e.preventDefault();
             handleCommentDelete(this);
         });
-
-        // Nếu bạn có hàm để thêm comment mới, hãy gọi handleCommentDelete cho nút xóa mới
-        // Ví dụ:
-        // function addNewComment(commentHtml) {
-        //     $('#comments-container').append(commentHtml);
-        //     // Không cần gắn lại sự kiện vì đã dùng event delegation
-        // }
     });
 </script>
 @endpush
