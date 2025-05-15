@@ -18,81 +18,82 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     // User Management
-    Route::middleware(['role:head-phong-nhan-su|staff-phong-nhan-su|admin'])->prefix('account')->name('account.')->group(function () {
+    Route::prefix('account')->name('account.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
-        Route::get('/create', [UserController::class, 'create'])->name('create');
-        Route::post('/', [UserController::class, 'store'])->name('store');
-        Route::get('/{user}', [UserController::class, 'show'])->name('show');
-        Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
-        Route::put('/{user}', [UserController::class, 'update'])->name('update');
-        Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
-        Route::post('/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('toggle-status');
+        Route::middleware(['permission:create-phong-nhan-su|role:head-phong-nhan-su|admin'])->get('/create', [UserController::class, 'create'])->name('create');
+        Route::middleware(['permission:create-phong-nhan-su|role:head-phong-nhan-su|admin|staff-phong-nhan-su'])->post('/', [UserController::class, 'store'])->name('store');
+        Route::middleware(['permission:read-phong-nhan-su|role:head-phong-nhan-su|admin|staff-phong-nhan-su'])->get('/{user}', [UserController::class, 'show'])->name('show');
+        Route::middleware(['permission:update-phong-nhan-su|role:head-phong-nhan-su|admin|staff-phong-nhan-su'])->get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
+        Route::middleware(['permission:update-phong-nhan-su|role:head-phong-nhan-su|admin|staff-phong-nhan-su'])->put('/{user}', [UserController::class, 'update'])->name('update');
+        Route::middleware(['permission:delete-phong-nhan-su|role:head-phong-nhan-su|admin|staff-phong-nhan-su'])->delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
+        Route::middleware(['permission:update-phong-nhan-su|role:head-phong-nhan-su|admin|staff-phong-nhan-su'])->post('/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('toggle-status');
     });
 
     // Club Member Management
-    Route::middleware(['role:head-phong-nhan-su|staff-phong-nhan-su|admin'])->prefix('member')->name('member.')->group(function () {
+    Route::prefix('member')->name('member.')->group(function () {
         Route::get('/', [UserController::class, 'memberIndex'])->name('index');
-        Route::get('/create', [UserController::class, 'memberCreate'])->name('create');
-        Route::post('/', [UserController::class, 'memberStore'])->name('store');
-        Route::get('/{member}', [UserController::class, 'memberShow'])->name('show');
-        Route::get('/{member}/edit', [UserController::class, 'memberEdit'])->name('edit');
-        Route::put('/{member}', [UserController::class, 'memberUpdate'])->name('update');
-        Route::delete('/{member}', [UserController::class, 'memberDestroy'])->name('destroy');
+        Route::get('/meb', [UserController::class, 'listmeb'])->name('meb');
+        Route::middleware(['permission:create-phong-nhan-su|role:head-phong-nhan-su|admin|staff-phong-nhan-su'])->get('/create', [UserController::class, 'memberCreate'])->name('create');
+        Route::middleware(['permission:create-phong-nhan-su|role:head-phong-nhan-su|admin|staff-phong-nhan-su'])->post('/', [UserController::class, 'memberStore'])->name('store');
+        Route::middleware(['permission:read-phong-nhan-su|role:head-phong-nhan-su|admin|staff-phong-nhan-su'])->get('/{member}', [UserController::class, 'memberShow'])->name('show');
+        Route::middleware(['permission:update-phong-nhan-su|role:head-phong-nhan-su|admin|staff-phong-nhan-su'])->get('/{member}/edit', [UserController::class, 'memberEdit'])->name('edit');
+        Route::middleware(['permission:update-phong-nhan-su|role:head-phong-nhan-su|admin|staff-phong-nhan-su'])->put('/{member}', [UserController::class, 'memberUpdate'])->name('update');
+        Route::middleware(['permission:delete-phong-nhan-su|role:head-phong-nhan-su|admin|staff-phong-nhan-su'])->delete('/{member}', [UserController::class, 'memberDestroy'])->name('destroy');
     });
 
     // Posts Management
-    Route::middleware(['role:head-phong-truyen-thong|staff-phong-truyen-thong|admin'])->prefix('posts')->name('posts.')->group(function () {
+    Route::prefix('posts')->name('posts.')->group(function () {
         Route::get('/', [PostController::class, 'index'])->name('index');
-        Route::get('/create', [PostController::class, 'create'])->name('create');
-        Route::post('/', [PostController::class, 'store'])->name('store');
+        Route::middleware(['permission:create-phong-truyen-thong|role:head-phong-truyen-thong|admin'])->get('/create', [PostController::class, 'create'])->name('create');
+        Route::middleware(['permission:create-phong-truyen-thong|role:head-phong-truyen-thong|admin'])->post('/', [PostController::class, 'store'])->name('store');
         Route::get('/{post}', [PostController::class, 'show'])->name('show');
-        Route::get('/{post}/edit', [PostController::class, 'edit'])->name('edit');
-        Route::put('/{post}', [PostController::class, 'update'])->name('update');
-        Route::delete('/{post}', [PostController::class, 'destroy'])->name('destroy');
-        Route::post('/{post}/toggle-status', [PostController::class, 'toggleStatus'])->name('toggle-status');
+        Route::middleware(['permission:update-phong-truyen-thong|role:head-phong-truyen-thong|admin'])->get('/{post}/edit', [PostController::class, 'edit'])->name('edit');
+        Route::middleware(['permission:update-phong-truyen-thong|role:head-phong-truyen-thong|admin'])->put('/{post}', [PostController::class, 'update'])->name('update');
+        Route::middleware(['permission:delete-phong-truyen-thong|role:head-phong-truyen-thong|admin'])->delete('/{post}', [PostController::class, 'destroy'])->name('destroy');
+        Route::middleware(['permission:update-phong-truyen-thong|role:head-phong-truyen-thong|admin'])->post('/{post}/toggle-status', [PostController::class, 'toggleStatus'])->name('toggle-status');
     });
 
     // Comments Management
-    Route::middleware(['role:head-phong-truyen-thong|staff-phong-truyen-thong|admin'])->prefix('comments')->name('comments.')->group(function () {
+    Route::prefix('comments')->name('comments.')->group(function () {
         Route::get('/', [CommentController::class, 'index'])->name('index');
         Route::get('/{comment}', [CommentController::class, 'show'])->name('show');
-        Route::delete('/{comment}', [CommentController::class, 'destroy'])->name('destroy');
+        Route::middleware(['permission:delete-phong-truyen-thong|role:head-phong-truyen-thong|admin'])->delete('/{comment}', [CommentController::class, 'destroy'])->name('destroy');
     });
 
     // Transactions Management
-    Route::middleware(['role:staff-phong-quy-tien|staff-phong-truyen-thong|admin'])->prefix('transactions')->name('transactions.')->group(function () {
+    Route::prefix('transactions')->name('transactions.')->group(function () {
         Route::get('/', [TransactionController::class, 'index'])->name('index');
-        Route::get('/create', [TransactionController::class, 'create'])->name('create');
-        Route::post('/', [TransactionController::class, 'store'])->name('store');
+        Route::middleware(['role:head-phong-quy-tien|admin'])->get('/create', [TransactionController::class, 'create'])->name('create');
+        Route::middleware(['role:head-phong-quy-tien|admin'])->post('/', [TransactionController::class, 'store'])->name('store');
         Route::get('/{transaction}', [TransactionController::class, 'show'])->name('show');
-        Route::get('/{transaction}/edit', [TransactionController::class, 'edit'])->name('edit');
-        Route::put('/{transaction}', [TransactionController::class, 'update'])->name('update');
-        Route::delete('/{transaction}', [TransactionController::class, 'destroy'])->name('destroy');
+        Route::middleware(['role:head-phong-quy-tien|admin'])->get('/{transaction}/edit', [TransactionController::class, 'edit'])->name('edit');
+        Route::middleware(['role:head-phong-quy-tien|admin'])->put('/{transaction}', [TransactionController::class, 'update'])->name('update');
+        Route::middleware(['role:head-phong-quy-tien|admin'])->delete('/{transaction}', [TransactionController::class, 'destroy'])->name('destroy');
     });
 
     // Plans Management with nested Tasks
-    Route::middleware(['role:head-phong-truyen-thong|staff-phong-truyen-thong|admin'])->prefix('plans')->name('plans.')->group(function () {
+    Route::prefix('plans')->name('plans.')->group(function () {
         Route::get('/', [PlanController::class, 'index'])->name('index');
-        Route::get('/create', [PlanController::class, 'create'])->name('create');
-        Route::post('/', [PlanController::class, 'store'])->name('store');
+        Route::middleware(['permission:create-phong-truyen-thong|role:head-phong-truyen-thong|admin'])->get('/create', [PlanController::class, 'create'])->name('create');
+        Route::middleware(['permission:create-phong-truyen-thong|role:head-phong-truyen-thong|admin'])->post('/', [PlanController::class, 'store'])->name('store');
         Route::get('/{plan}', [PlanController::class, 'show'])->name('show');
-        Route::get('/{plan}/edit', [PlanController::class, 'edit'])->name('edit');
-        Route::put('/{plan}', [PlanController::class, 'update'])->name('update');
-        Route::delete('/{plan}', [PlanController::class, 'destroy'])->name('destroy');
+        Route::middleware(['permission:update-phong-truyen-thong|role:head-phong-truyen-thong|admin'])->get('/{plan}/edit', [PlanController::class, 'edit'])->name('edit');
+        Route::middleware(['permission:update-phong-truyen-thong|role:head-phong-truyen-thong|admin '])->put('/{plan}', [PlanController::class, 'update'])->name('update');
+        Route::middleware(['permission:delete-phong-truyen-thong|role:head-phong-truyen-thong|admin'])->delete('/{plan}', [PlanController::class, 'destroy'])->name('destroy');
 
         // Nested Tasks within Plan
         Route::get('/{plan}/tasks', [TaskController::class, 'indexByPlan'])->name('tasks.index');
-        Route::get('/{plan}/tasks/create', [TaskController::class, 'createForPlan'])->name('tasks.create');
-        Route::post('/{plan}/tasks', [TaskController::class, 'storeForPlan'])->name('tasks.store');
+        Route::middleware(['permission:create-phong-truyen-thong|role:head-phong-truyen-thong|admin'])->get('/{plan}/tasks/create', [TaskController::class, 'createForPlan'])->name('tasks.create');
+        Route::middleware(['permission:create-phong-truyen-thong|role:head-phong-truyen-thong|admin'])->post('/{plan}/tasks', [TaskController::class, 'storeForPlan'])->name('tasks.store');
     });
 
     // Individual Task Management (for existing tasks)
-    Route::middleware(['role:head-phong-truyen-thong|staff-phong-truyen-thong|admin'])->prefix('tasks')->name('tasks.')->group(function () {
+    Route::prefix('tasks')->name('tasks.')->group(function () {
         Route::get('/{task}', [TaskController::class, 'show'])->name('show');
-        Route::get('/{task}/edit', [TaskController::class, 'edit'])->name('edit');
-        Route::put('/{task}', [TaskController::class, 'update'])->name('update');
-        Route::delete('/{task}', [TaskController::class, 'destroy'])->name('destroy');
-        Route::post('/{task}/update-status', [TaskController::class, 'updateStatus'])->name('update-status');
+        Route::middleware(['permission:update-phong-truyen-thong|role:head-phong-truyen-thong|admin'])->get('/{task}/edit', [TaskController::class, 'edit'])->name('edit');
+        Route::middleware(['permission:update-phong-truyen-thong|role:head-phong-truyen-thong|admin '])->put('/{task}', [TaskController::class, 'update'])->name('update');
+        Route::middleware(['permission:delete-phong-truyen-thong|role:head-phong-truyen-thong|admin     '])->delete('/{task}', [TaskController::class, 'destroy'])->name('destroy');
+        Route::middleware(['permission:update-phong-truyen-thong|role:head-phong-truyen-thong|admin'])->post('/{task}/update-status', [TaskController::class, 'updateStatus'])->name('update-status');
     });
 
     // Role Management
@@ -105,6 +106,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/{user}/edit', [RoleController::class, 'edit'])->name('edit');
         Route::put('/{user}', [RoleController::class, 'update'])->name('update');
         Route::delete('/{user}', [RoleController::class, 'destroy'])->name('destroy');
+        //
+        Route::get('/listRole', [RoleController::class, 'role'])->name('role');
     });
 
     // Resources Management

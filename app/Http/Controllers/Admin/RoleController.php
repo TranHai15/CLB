@@ -80,7 +80,9 @@ class RoleController extends Controller
             // Gán quyền nếu có
 
             if ($request->has('permissions')) {
+
                 // Lấy tất cả Permission model theo ID
+
                 $permissionModels = Permission::whereIn('id', $request->permissions)->get();
 
                 // Trích ra mảng name
@@ -125,7 +127,7 @@ class RoleController extends Controller
             DB::beginTransaction();
 
             // Cập nhật vai trò mới (radio button nên chỉ có 1 giá trị)
-            // Gán vai trò mới (radio button nên chỉ có 1 giá trị)
+
             $roleId = $request->roles[0];
             $role = Role::findOrFail($roleId); // lấy tên từ id
 
@@ -134,6 +136,8 @@ class RoleController extends Controller
             // Gán quyền nếu có
 
             if ($request->has('permissions')) {
+                // xóa hết quyền cũ đi
+                $user->syncPermissions([]);
                 // Lấy tất cả Permission model theo ID
                 $permissionModels = Permission::whereIn('id', $request->permissions)->get();
 
@@ -178,5 +182,10 @@ class RoleController extends Controller
             return redirect()->back()
                 ->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
         }
+    }
+    public function role()
+    {
+        $roles = Role::all();
+        return view('admin.role.role', compact('roles'));
     }
 }

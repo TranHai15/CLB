@@ -30,6 +30,8 @@ class DatabaseSeeder extends Seeder
             UserLikeSeed::class,
             DepartmentSeed::class,
             UserLikeCommentSeeder::class,
+            RolePermissionSeeder::class,
+            fakeAccountSeed::class,
         ]);
     }
 }

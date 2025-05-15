@@ -7,6 +7,10 @@
     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
             <h3 class="text-lg font-semibold text-gray-900">Danh sách phân quyền</h3>
+            <a href="{{ route('admin.roles.role') }}"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                <i class="fas fa-plus mr-2"></i> Danh sách role
+            </a>
             <a href="{{ route('admin.roles.create') }}"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                 <i class="fas fa-plus mr-2"></i> Thêm quyền mới

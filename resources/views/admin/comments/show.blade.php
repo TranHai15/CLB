@@ -17,6 +17,7 @@
     <div class="bg-white rounded-lg shadow-md overflow-hidden">
         <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex justify-between items-center">
             <h2 class="text-lg font-medium text-gray-800">Bình luận #{{ $comment->id }}</h2>
+            @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('head-phong-truyen-thong') || auth()->user()->hasRole('staff-phong-truyen-thong'))
             <form action="{{ route('admin.comments.destroy', $comment) }}" method="POST">
                 @csrf
                 @method('DELETE')
@@ -27,6 +28,7 @@
                     Xóa bình luận
                 </button>
             </form>
+            @endif
         </div>
         <div class="p-6">
             <dl>

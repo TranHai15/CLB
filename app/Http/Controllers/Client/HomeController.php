@@ -15,6 +15,9 @@ use App\Models\Notification;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+
 
 class HomeController extends BaseController
 {
@@ -39,6 +42,41 @@ class HomeController extends BaseController
             ->get();
 
         return view('client.home.home', compact('topPosts', 'posts', 'categories'));
+    }
+    public function meb()
+    {
+        return view('client.home.member');
+    }
+    public function storeMembers(Request $request)
+    {
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'student_code' => 'required|string|max:100|unique:users,student_code',
+            'enrollment_year' => 'required|string|max:20',
+            'major' => 'required|string|max:255',
+            'phone' => 'required|string|max:50',
+            'gender' => ['required', Rule::in(['male', 'female', 'other'])],
+            'department_id' => 'nullable|exists:departments,id',
+        ]);
+
+        // Thêm các giá trị mặc định
+        $validated['account_type'] = 'club_member';  // Mặc định là club_member
+        $validated['status'] = 'inactive';           // Mặc định là inactive
+        $validated['slug'] = Str::slug($validated['name']) . '-' . Str::random(5);
+        $validated['avatar_url'] = env('DEFAULT_AVATAR');
+
+        // Tạo mật khẩu mặc định hoặc tự động
+
+
+
+        // Tạo user mới
+        $user = User::create($validated);
+
+        // Thông báo thành công và quay lại trang danh sách
+        return redirect()->route(route: 'home')
+            ->with('success', 'Thêm thành viên thành công!');
     }
 
     public function blog()

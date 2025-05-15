@@ -19,10 +19,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('avatar_url', 512)->default(env('DEFAULT_AVATAR'));
             $table->string('bio', 500)->nullable();
-            $table->enum('status', ['inactive', 'active', 'suspended'])->default('active');
+            $table->enum('status', ['inactive', 'active', 'not_active'])->default('active');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('student_code', 100)->unique()->nullable();
-            $table->integer('enrollment_year')->nullable();
+            $table->string('enrollment_year', 20)->nullable();
             $table->string('major')->nullable();
             $table->string('phone', 50)->nullable();
             $table->enum('gender', ['male', 'female', 'other'])->nullable();

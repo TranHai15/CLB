@@ -21,6 +21,11 @@ class UserController extends Controller
 
         return view('admin.account.index', compact('users'));
     }
+    public function listmeb()
+    {
+        $members = User::where('status', 'like', 'inactive')->paginate(10);
+        return view('admin.member.list', compact('members'));
+    }
 
     public function create()
     {
@@ -155,7 +160,7 @@ class UserController extends Controller
 
     public function toggleStatus(User $user)
     {
-        $user->status = $user->status === 'active' ? 'inactive' : 'active';
+        $user->status = $user->status === 'active' ? 'not_active' : 'active';
         $user->save();
 
         return back()->with('success', 'Trạng thái người dùng đã được cập nhật.');

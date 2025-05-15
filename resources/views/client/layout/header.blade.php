@@ -17,6 +17,9 @@
                 <a href="#" class="text-gray-700 hover:text-blue-600 transition">
                     Tài liệu
                 </a>
+                <a href="{{ route('meb') }}" class="text-gray-700 hover:text-blue-600 transition">
+                    Thành Viên
+                </a>
             </nav>
         </div>
 

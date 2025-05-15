@@ -12,12 +12,14 @@
         <!-- Right: Actions -->
         <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
             <!-- Add button -->
+            @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('head-phong-truyen-thong') || auth()->user()->hasRole('staff-phong-truyen-thong'))
             <a href="{{ route('admin.plans.create') }}" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
                 <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
                     <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
                 </svg>
                 <span class="hidden xs:block ml-2">Thêm kế hoạch</span>
             </a>
+            @endif
         </div>
     </div>
 
@@ -55,9 +57,11 @@
                         <th class="px-4 py-3 whitespace-nowrap">
                             <div class="font-semibold text-left">Người tạo</div>
                         </th>
+                        @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('head-phong-truyen-thong') || auth()->user()->hasRole('staff-phong-truyen-thong'))
                         <th class="px-4 py-3 whitespace-nowrap">
                             <div class="font-semibold text-right">Hành động</div>
                         </th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody class="text-sm divide-y divide-gray-200">
@@ -121,6 +125,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                     </svg>
                                 </a>
+                                @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('head-phong-truyen-thong') || auth()->user()->hasRole('staff-phong-truyen-thong'))
                                 <a href="{{ route('admin.plans.edit', $plan) }}" class="text-blue-600 hover:text-blue-900" title="Chỉnh sửa">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -135,6 +140,7 @@
                                         </svg>
                                     </button>
                                 </form>
+                                @endif
                             </div>
                         </td>
                     </tr>

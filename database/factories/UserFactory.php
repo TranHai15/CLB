@@ -25,7 +25,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
             'avatar_url' => env('DEFAULT_AVATAR'),
-            'status' => fake()->randomElement(['active', 'inactive', 'suspended']),
+            'status' => fake()->randomElement(['active', 'inactive', 'not_active']),
             'student_code' => fake()->unique()->numerify('SV####'),
             'enrollment_year' => fake()->numberBetween(2018, 2024),
             'major' => fake()->randomElement(['Computer Science', 'Information Technology', 'Software Engineering']),

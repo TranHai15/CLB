@@ -12,12 +12,20 @@
         <!-- Right: Actions -->
         <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
             <!-- Add button -->
+            @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('head-phong-nhan-su') || auth()->user()->hasRole('staff-phong-nhan-su'))
             <a href="{{ route('admin.member.create') }}" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
                 <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
                     <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
                 </svg>
                 <span class="hidden xs:block ml-2">Thêm thành viên</span>
             </a>
+            <a href="{{ route('admin.member.meb') }}" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
+                    <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
+                </svg>
+                <span class="hidden xs:block ml-2">Duyệt Thành Viên</span>
+            </a>
+            @endif
         </div>
     </div>
 
@@ -55,9 +63,11 @@
                         <th class="px-4 py-3 whitespace-nowrap">
                             <div class="font-semibold text-left">Trạng thái</div>
                         </th>
+                        @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('head-phong-nhan-su') || auth()->user()->hasRole('staff-phong-nhan-su'))
                         <th class="px-4 py-3 whitespace-nowrap">
                             <div class="font-semibold text-right">Hành động</div>
                         </th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody class="text-sm divide-y divide-gray-200">
@@ -96,6 +106,7 @@
                                 @endif
                             </div>
                         </td>
+                        @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('head-phong-nhan-su') || auth()->user()->hasRole('staff-phong-nhan-su'))
                         <td class="px-4 py-3 whitespace-nowrap">
                             <div class="text-right flex justify-end items-center space-x-2">
                                 <a href="{{ route('admin.member.show', $member) }}" class="text-indigo-600 hover:text-indigo-900" title="Xem chi tiết">
@@ -120,6 +131,7 @@
                                 </form>
                             </div>
                         </td>
+                        @endif
                     </tr>
                     @endforeach
                 </tbody>

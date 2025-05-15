@@ -18,6 +18,7 @@ class EnsureLoggedInWithReturn
     public function handle(Request $request, Closure $next)
     {
         if (!Auth::check()) {
+
             if ($request->isMethod('get')) {
                 Session::put('url.intended', $request->fullUrl());
             } elseif ($request->isMethod('post')) {
@@ -30,7 +31,14 @@ class EnsureLoggedInWithReturn
 
             return redirect()->route('login');
         }
+        if (Auth::user()->status == 'not_active') {
+            Auth::guard('web')->logout();
 
+            $request->session()->invalidate();
+
+            $request->session()->regenerateToken();
+            return redirect('/login')->withErrors(['msg' => 'Tài khoản của bạn đã bị khóa.']);
+        }
         return $next($request);
     }
 }

@@ -23,6 +23,8 @@ class GoogleController extends Controller
             $googleUser = Socialite::driver('google')->user();
             $user = User::where('email', $googleUser->getEmail())->first();
 
+
+
             if (!$user) {
 
                 $user = User::create([
@@ -35,26 +37,26 @@ class GoogleController extends Controller
                 ]);
             } else {
 
-                $user->update([
-                    'google_id' => $googleUser->getId(),
-                    'slug' => str_replace('-', '', Str::slug($googleUser->getName())),
-                    'email' => $googleUser->getEmail(),
-                    'email_verified_at' => now(),
-                    'status' => "active"
-                ]);
+                if ($user->status == "not_active") {
+                    return redirect('/login')->withErrors(['msg' => 'Tài khoản của bạn đã bị khóa.']);
+                } else {
+
+                    $user->update([
+                        'google_id' => $googleUser->getId(),
+                        'slug' => str_replace('-', '', Str::slug($googleUser->getName())),
+                        'email' => $googleUser->getEmail(),
+                        'email_verified_at' => now(),
+                        'status' => "active"
+                    ]);
+                }
             }
 
-            // Gán vai trò mặc định nếu cần
-            // $user->assignRole('user'); // hoặc 'student', 'teacher' tùy theo logic của bạn
-
+            // ✅ Xử lý redirect sau khi đăng nhập
             Auth::login($user);
             session()->regenerate();
-
-            // ✅ Xử lý redirect sau khi đăng nhập
             if (Session::has('post.action')) {
                 return redirect(Session::get('post.action')['from']);
             }
-
             return redirect()->intended('/');
         } catch (\Exception $e) {
             return redirect('/login')->withErrors(['msg' => 'Đăng nhập bằng Google thất bại.']);

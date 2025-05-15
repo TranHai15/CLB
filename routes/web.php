@@ -38,6 +38,8 @@ Route::middleware('login.with.return')->group(function () {
 Route::get('/posts/{post:slug}', [HomeController::class, 'show'])->name('posts.show');
 Route::get('/search', [HomeController::class, 'search'])->name('home.search');
 Route::get('/questions', [QuestionController::class, 'index'])->name('questions.index');
+Route::get('/meb', [HomeController::class, 'meb'])->name('meb');
+Route::post('/storeMembers', [HomeController::class, 'storeMembers'])->name('club.members.store');
 
 Route::get('/questions/{post}', [QuestionController::class, 'show'])->name('questions.show');
 Route::get('/notifications', [HomeController::class, 'notifications'])->name('notifications');

@@ -89,8 +89,7 @@
                         $deptSlug = array_pop($parts);
                         @endphp
                         <label class="inline-flex items-center permission-item" data-department="{{ $deptSlug }}">
-                            <input type="checkbox" name="permissions[]" value="{{ $permission->id }}" class="form-checkbox"
-                                {{ $user->hasPermissionTo($permission) ? 'checked' : '' }}>
+                            <input type="checkbox" name="permissions[]" value="{{ $permission->id }}" class="form-checkbox">
                             <span class="ml-2">{{ $permission->name }}</span>
                         </label>
                         @endforeach
@@ -121,8 +120,9 @@
                 // lấy slug phòng từ role name
                 const slug = selected.dataset.rolename.split('-')[3]
                 permItems.forEach(item => {
-                    console.log(item.dataset.department)
+
                     if (item.dataset.department === slug) {
+                        console.log(item.dataset.department)
                         item.classList.remove('hidden');
                         item.querySelector('input').checked = false;
                     } else {

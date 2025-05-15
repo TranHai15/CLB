@@ -12,6 +12,7 @@
       </div>
 
       <nav class="mt-4 px-2 space-y-1">
+
           <a href="{{ route('admin.dashboard') }}"
               class="group flex items-center px-3 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.dashboard') ? 'text-white bg-gray-900' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
               <svg class="mr-3 h-5 w-5 {{ request()->routeIs('admin.dashboard') ? 'text-white' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -20,6 +21,8 @@
               </svg>
               Dashboard
           </a>
+
+
 
           <a href="{{ route('admin.account.index') }}"
               class="group flex items-center px-3 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.account.*') ? 'text-white bg-gray-900' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
@@ -30,6 +33,7 @@
               Quản lý người dùng
           </a>
 
+
           <a href="{{ route('admin.member.index') }}"
               class="group flex items-center px-3 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.member.*') ? 'text-white bg-gray-900' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
               <svg class="mr-3 h-5 w-5 {{ request()->routeIs('admin.member.*') ? 'text-white' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -39,6 +43,8 @@
               Thành viên CLB
           </a>
 
+
+
           <a href="#"
               class="group flex items-center px-3 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.documents.*') ? 'text-white bg-gray-900' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
               <svg class="mr-3 h-5 w-5 {{ request()->routeIs('admin.documents.*') ? 'text-white' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -46,6 +52,15 @@
                       d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
               </svg>
               Tài liệu học tập
+          </a>
+
+          <a href="{{ route('admin.transactions.index') }}"
+              class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">
+              <svg class="mr-3 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              Quản lý quỹ
           </a>
 
           <a href="{{ route('admin.plans.index') }}"
@@ -57,14 +72,7 @@
               Kế hoạch
           </a>
 
-          <a href="{{ route('admin.transactions.index') }}"
-              class="group flex items-center px-3 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.transactions.*') ? 'text-white bg-gray-900' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
-              <svg class="mr-3 h-5 w-5 {{ request()->routeIs('admin.transactions.*') ? 'text-white' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-              Quản lý quỹ
-          </a>
+
 
           <a href="{{ route('admin.posts.index') }}"
               class="group flex items-center px-3 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.posts.*') ? 'text-white bg-gray-900' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
@@ -75,6 +83,8 @@
               Bài viết
           </a>
 
+
+
           <a href="{{ route('admin.comments.index') }}"
               class="group flex items-center px-3 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.comments.*') ? 'text-white bg-gray-900' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
               <svg class="mr-3 h-5 w-5 {{ request()->routeIs('admin.comments.*') ? 'text-white' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -83,6 +93,9 @@
               </svg>
               Bình luận
           </a>
+
+
+          @if (auth()->user()->hasRole('admin'))
           <a href="{{ route('admin.roles.index') }}"
               class="group flex items-center px-3 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.comments.*') ? 'text-white bg-gray-900' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
               <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512" width="24" height="24">
@@ -93,6 +106,7 @@
 
               Phân Quyền
           </a>
+          @endif
       </nav>
 
       <!-- Logout Button -->
