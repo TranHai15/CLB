@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Quản lý bình luận')
+<!-- @section('title', 'Quản lý bình luận') -->
 
 @section('content')
 
