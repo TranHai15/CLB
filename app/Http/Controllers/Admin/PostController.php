@@ -93,7 +93,7 @@ class PostController extends Controller
             'updated_by'  => Auth::id(),
         ]);
 
-        $apiKey = 'AIzaSyAyx8wMLqp6YYzTMFPkQAu0VINA9HGwbGI'; // Thay YOUR_API_KEY bằng khóa API của bạn
+        $apiKey = env("GEMINI_API_KEY"); // Thay YOUR_API_KEY bằng khóa API của bạn
         $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$apiKey";
         $data = [
             "system_instruction" => [
@@ -142,7 +142,7 @@ Email: Beeit.fpoly@gmail.com
 Lịch hỗ trợ học tập: Tối thứ 3&5 hàng tuần
 —-----------------------------------------------------------------------------",
             'published'=>True,
-            'access_token' => "EAAjABRz9GMgBO6M5LQRwZBIWiZBZBq0i7ZCkm2bBLWCkMnZCgHEnGSGprq5LjvDZBewvX06BAKBMKSZCMSB0w4SvJscB3cUIcUC9yPo72lAOTHKeHQ6vgSLS7xyRloaXhmqoPvHUo1JJWwFvmVUoDzLr7c4rZCHyt9UrAQFJdMfKtD0MlTd7au92T8q7CxMZD",
+            'access_token' => env("FACEBOOK_ACCESS_TOKEN"),
         ]);
         }
 
