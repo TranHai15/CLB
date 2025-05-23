@@ -19,10 +19,11 @@ class PostTagFactory extends Factory
      */
     public function definition(): array
     {
+        $tag_id = Tag::inRandomOrder()->value('id');
         return [
             //
             'post_id' => Post::factory(),
-            'tag_id' => Tag::factory(),
+            'tag_id' => $tag_id
         ];
     }
 }

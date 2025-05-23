@@ -61,11 +61,11 @@
                     <div class="flex flex-wrap gap-2">
                         {{-- Assuming you have a $tags variable passed to the view --}}
                         @php
-                        $sampleTags = ['Laravel', 'PHP', 'JavaScript', 'VueJS', 'React', 'TailwindCSS', 'API', 'Tutorial'];
+
                         @endphp
                         @foreach($sampleTags as $tag)
-                        <a href="#" class="category-badge text-xs font-semibold px-3 py-1.5 rounded-full">
-                            {{ $tag }}
+                        <a href="{{ route('tag.show',$tag->slug) }}" class="category-badge text-xs font-semibold px-3 py-1.5 rounded-full">
+                            {{ $tag->name }}
                         </a>
                         @endforeach
                     </div>

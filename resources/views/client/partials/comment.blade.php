@@ -1,13 +1,13 @@
-<div class="border-b border-gray-200  last:border-0 last:pb-0 bg-white rounded-lg shadow-sm  post-card p-5" id="comment-{{ $comment->id }}">
+<div class="border-b border-gray-200  last:border-0   rounded-lg shadow-sm  post-card p-5" id="comment-{{ $comment->id }}">
     <div class="flex items-center space-x-3">
         <img class="h-10 w-10 rounded-full object-cover border-2 border-gray-100" src="{{ $comment->creator->avatar_url }}" alt="{{ $comment->creator->name }}">
         <div>
-            <p class="text-sm font-medium text-gray-900">{{ $comment->creator->name }}</p>
+            <p class="text-sm font-medium  text-white">{{ $comment->creator->name }}</p>
             <p class="text-sm text-gray-500">{{ $comment->created_at->diffForHumans() }}</p>
         </div>
     </div>
 
-    <div class="mt-4 prose max-w-none bg-gray-50 p-4 rounded-lg">
+    <div class="mt-4 prose max-w-none  p-4 rounded-lg">
         @if(strpos($comment->comment, '@') === 0)
         {!! preg_replace('/@(\w+)/', '<span class="text-blue-600 font-medium">@$1</span>', $comment->comment, 1) !!}
         @else

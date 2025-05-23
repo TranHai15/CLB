@@ -1,15 +1,44 @@
 @extends('layouts.home')
+<style>
+    .post-card {
+        background-color: var(--dark-card-bg);
+        border-radius: 0.75rem;
 
+    }
+
+
+
+    .post-card .post-title {
+        color: var(--text-light);
+
+    }
+
+    .post-card:hover .post-title {
+        color: var(--primary-color);
+    }
+
+    .category-badge {
+        transition: all 0.2s ease;
+        background-color: var(--primary-color);
+        color: var(--text-dark);
+    }
+
+
+    .category-badge:hover {
+        transform: scale(1.05);
+        background-color: var(--primary-hover-color);
+    }
+</style>
 @section('content')
 <div class="space-y-8 container mx-auto max-w-7xl px-4 py-8">
     <!-- Question Header -->
-    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div class="rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300  post-card ">
         <div class="p-6">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
-                    <img class="h-10 w-10 rounded-full object-cover" src="{{ $question->creator->avatar_url  }}" alt="{{ $question->creator->name }}">
+                    <img class="h-10 w-10 rounded-full object-cover text-white" src="{{ $question->creator->avatar_url  }}" alt="{{ $question->creator->name }}">
                     <div>
-                        <p class="text-sm font-medium text-gray-900">{{ $question->creator->name }}</p>
+                        <p class="text-sm font-medium  text-white">{{ $question->creator->name }}</p>
                         <p class="text-sm text-gray-500">{{ $question->created_at->diffForHumans() }}</p>
                     </div>
                 </div>
@@ -43,7 +72,7 @@
                 </div>
             </div>
 
-            <h1 class="mt-4 text-2xl font-bold text-gray-900">{{ $question->title }}</h1>
+            <h1 class="mt-4 text-2xl font-bold post-title">{{ $question->title }}</h1>
 
             <div class="mt-4 prose max-w-none">
                 {!! $question->content !!}
@@ -119,13 +148,13 @@
     </div>
 
     <!-- Related Questions -->
-    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div class=" rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 post-card">
         <div class="p-6">
-            <h3 class="text-lg font-medium text-gray-900">Câu hỏi liên quan</h3>
+            <h3 class="text-lg font-medium text-white">Câu hỏi liên quan</h3>
             <div class="mt-4 space-y-4 divide-y divide-gray-100">
                 @foreach($relatedQuestions as $relatedQuestion)
                 <div class="flex items-center justify-between pt-4 first:pt-0">
-                    <a href="{{ route('questions.show', $relatedQuestion->slug) }}" class="text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors duration-200">
+                    <a href="{{ route('questions.show', $relatedQuestion->slug) }}" class="text-sm font-medium text-white hover:text-blue-600 transition-colors duration-200">
                         {{ $relatedQuestion->title }}
                     </a>
                     <div class="flex items-center space-x-4">

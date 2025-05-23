@@ -10,9 +10,10 @@ class ResourceCategoryFactory extends Factory
 {
     public function definition(): array
     {
+        $category_id = Category::inRandomOrder()->value('id');
         return [
             'resource_id' => Resource::factory(),
-            'category_id' => Category::factory(),
+            'category_id' => $category_id,
         ];
     }
 }

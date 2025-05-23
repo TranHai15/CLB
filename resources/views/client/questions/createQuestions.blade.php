@@ -21,11 +21,13 @@
 
         .form-group input,
         .form-group textarea,
+
         .form-group select {
             width: 100%;
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
+            background-color: var(--dark-card-bg);
         }
 
         .btn {
@@ -43,10 +45,12 @@
 
         .select2-container {
             width: 100% !important;
+            background-color: var(--dark-card-bg);
         }
 
         .select2-container .select2-selection--multiple {
             min-height: 38px;
+            background-color: var(--dark-card-bg);
         }
     </style>
 </head>

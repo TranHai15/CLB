@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/atom-one-dark.min.css">
 <style>
     #post-content {
-        color: #2d3748;
+        color: #fff;
         font-size: 1.125rem;
         line-height: 1.8;
         max-width: 85ch;
@@ -160,18 +160,9 @@
     .post-card {
         background-color: var(--dark-card-bg);
         border-radius: 0.75rem;
-        transition: all 0.3s ease-in-out;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-            0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        border: 1px solid transparent;
     }
 
-    .post-card:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
-        border-color: var(--primary-color);
-        background-color: var(--dark-card-bg-hover);
-    }
+
 
     .post-card .post-title {
         color: var(--text-light);
@@ -207,22 +198,22 @@
                 <!-- Categories and Tags -->
                 <div class="flex flex-wrap gap-2 mb-4">
                     @if($post->category)
-                    <a href="/category/{{ $post->category->slug }}"
-                        class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-blue-200 transition">
+                    <a href="{{ route('category.show', $post->category->slug) }}"
+                        class="category-badge inline-block text-xs font-semibold px-3 py-1.5 rounded-full transition-colors duration-200">
                         {{ $post->category->name }}
                     </a>
                     @endif
 
-                    @foreach($post->tags as $tag)
+                    <!-- @foreach($post->tags as $tag)
                     <a href="/tag/{{ $tag->slug }}"
                         class="inline-block bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-gray-200 transition">
                         #{{ $tag->name }}
                     </a>
-                    @endforeach
+                    @endforeach -->
                 </div>
 
                 <!-- Title -->
-                <h1 class="text-4xl font-bold mb-6">{{ $post->title }}</h1>
+                <h1 class="text-4xl font-bold mb-6 text-white">{{ $post->title }}</h1>
 
                 <!-- Author Info -->
                 <div class="flex items-center mb-8 border-b pb-6">
@@ -232,7 +223,7 @@
                             class="h-14 w-14 rounded-full object-cover mr-4">
                     </a>
                     <div>
-                        <a href="{{ $post->creator->id }}" class="text-lg font-medium text-gray-900 hover:underline">
+                        <a href="{{ $post->creator->id }}" class="text-lg font-medium text-white hover:underline">
                             {{ $post->creator->name }}
                         </a>
 
@@ -256,7 +247,7 @@
                 @endif
 
                 <!-- Content -->
-                <div class="max-w-none mb-8" id="post-content">
+                <div class="max-w-none mb-8 text-white" id="post-content">
                     {!! $post->content !!}
                 </div>
 
@@ -362,11 +353,11 @@
     </div>
 
     <!-- Related Posts -->
-    <div class="bg-white rounded-lg shadow-lg p-6">
-        <h2 class="text-2xl font-bold mb-6">Bài viết liên quan</h2>
+    <div class=" rounded-lg shadow-lg p-6 mt-10 ">
+        <h2 class="text-2xl font-bold mb-6 text-white">Bài viết liên quan</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($relatedPosts as $relatedPost)
-            <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
+            <div class="post-card rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
                 <a href="/posts/{{ $relatedPost->slug }}">
                     <img src="{{ $relatedPost->image }}"
                         alt="{{ $relatedPost->title }}"
@@ -374,11 +365,11 @@
                 </a>
                 <div class="p-4">
                     <a href="/posts/{{ $relatedPost->slug }}">
-                        <h3 class="font-medium text-lg mb-2 line-clamp-2 hover:text-blue-600">
+                        <h3 class="font-medium text-lg mb-2 line-clamp-2 text-white hover:text-[var(--primary-color)]">
                             {{ $relatedPost->title }}
                         </h3>
                     </a>
-                    <div class="flex items-center text-sm text-gray-500 mb-2">
+                    <div class="flex items-center text-sm text-white mb-2">
                         <img src="{{ $relatedPost->creator->avatar_url }}"
                             alt="{{ $relatedPost->creator->name }}"
                             class="w-6 h-6 rounded-full mr-2">

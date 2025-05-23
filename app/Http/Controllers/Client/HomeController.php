@@ -43,6 +43,7 @@ class HomeController extends BaseController
         $categories = Category::withCount('posts')
             ->orderBy('posts_count', 'desc')
             ->get();
+        $sampleTags = Tag::all();
 
         // Sử dụng SEOTools facade (tất cả trong một)
         SEOTools::setTitle('Trang chủ');
@@ -50,7 +51,7 @@ class HomeController extends BaseController
         SEOTools::opengraph()->setUrl('https://scontent.fhan14-5.fna.fbcdn.net/v/t39.30808-1/356893364_106371362513103_5755489272171968894_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=y-rWDAO1JhkQ7kNvwEL5pMk&_nc_oc=AdmbyNCqso5lMur4PBbecz7nq_s6hy-XkqCcrKiM1NzoQn0h0cy5oOGy83mh8QS7aR2xV7H6-tCwc4VYwjbMnIOD&_nc_zt=24&_nc_ht=scontent.fhan14-5.fna&_nc_gid=V8zWbWTW1M8DbSK9kgI-lg&oh=00_AfL1IFzTjMADLGfzHAC5qVrFh8e7gN1HIbLnrhSkMh44Pw&oe=683694C5');
         // SEOTools::twitter()->setSite('@YourTwitterHandle');
         SEOTools::jsonLd()->addImage('https://scontent.fhan14-5.fna.fbcdn.net/v/t39.30808-1/356893364_106371362513103_5755489272171968894_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=y-rWDAO1JhkQ7kNvwEL5pMk&_nc_oc=AdmbyNCqso5lMur4PBbecz7nq_s6hy-XkqCcrKiM1NzoQn0h0cy5oOGy83mh8QS7aR2xV7H6-tCwc4VYwjbMnIOD&_nc_zt=24&_nc_ht=scontent.fhan14-5.fna&_nc_gid=V8zWbWTW1M8DbSK9kgI-lg&oh=00_AfL1IFzTjMADLGfzHAC5qVrFh8e7gN1HIbLnrhSkMh44Pw&oe=683694C5');
-        return view('client.home.home', compact('topPosts', 'posts', 'categories'));
+        return view('client.home.home', compact('topPosts', 'posts', 'categories', 'sampleTags'));
     }
     public function meb()
     {

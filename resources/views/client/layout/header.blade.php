@@ -1,7 +1,7 @@
 <header class="bg-[var(--dark-card-bg)] shadow-lg sticky top-0 z-50 border-b border-gray-700/50">
     <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
         <!-- Mobile Menu Toggle -->
-        <div x-data="{ openMobile: false }" class="relative w-[52px] flex justify-center items-center">
+        <div x-data="{ openMobile: false }" class="relative w-[52px]  justify-center items-center flex sm:hidden">
             <button @click="openMobile = !openMobile" class="md:hidden text-gray-300 hover:text-white focus:outline-none">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />

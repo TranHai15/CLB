@@ -26,7 +26,7 @@ class ResourceFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (Resource $resource) {
-            $categories = Category::factory()->count(2)->create(); // Tạo 2 categories
+            $categories = Category::factory()->count(0)->create(); // Tạo 2 categories
             $resource->categories()->attach($categories); // Gán categories
         });
     }
