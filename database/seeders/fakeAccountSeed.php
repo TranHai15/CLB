@@ -19,7 +19,7 @@ class fakeAccountSeed extends Seeder
         // 2. Chuẩn bị map role → email mẫu
         //    Bạn chỉ việc sửa các email trong 3 mảng này
         $adminEmails = [
-            'hairobet15092005@gmail.com',
+            'antrc2gamer@gmail.com',
         ];
 
         $headEmails = [

@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+// use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -39,6 +41,7 @@ class PostController extends Controller
     /**
      * Store a newly created post in storage.
      */
+
     public function store(Request $request)
     {
         // Xác thực dữ liệu đầu vào
@@ -90,6 +93,61 @@ class PostController extends Controller
             'updated_by'  => Auth::id(),
         ]);
 
+        $apiKey = env("GEMINI_API_KEY"); // Thay YOUR_API_KEY bằng khóa API của bạn
+        $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$apiKey";
+        $data = [
+            "system_instruction" => [
+                "parts" => [
+                    [
+                        "text" => "Tên của bạn là Bee IT. Bạn là trợ lí ảo của câu lạc bộ Bee IT của trường Cao đẳng FPT Polytechnic"
+                    ]
+                ]
+            ],
+            "contents" => [
+                [
+                    "parts" => [
+                        [
+                            "text" => "Viết 1 bài post, giữ nguyên thông tin của bài viết cho tôi. Đưa ra dữ liệu ở dạng normal text giống viết văn, không được đưa ra ở dạng markdown: ". $validated['content']
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        $ch = curl_init($url);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+        ]);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+        $response = curl_exec($ch);
+
+        $result = json_decode($response, true); // Decode chuỗi JSON thành mảng
+            // echo "Response: \n";
+        curl_close($ch);
+        $content = $result['candidates'][0]['content']['parts'][0]['text'] ?? 'No response text found';
+        $url = "https://graph.facebook.com/v22.0/109867448827091/feed";
+
+        if ($content == "No response text found"){
+
+        } else {
+        $response = Http::post($url, [
+            'message' => $content . "\n—----------------------------------------------------------------------------
+BEE IT CLUB - Code hard, play harder
+Facebook: https://www.facebook.com/Bee.IT.Fpoly
+Community: https://zalo.me/g/gcqslb945 (Zalo)
+Email: Beeit.fpoly@gmail.com
+Lịch hỗ trợ học tập: Tối thứ 3&5 hàng tuần
+—-----------------------------------------------------------------------------",
+            'published'=>True,
+            'access_token' => env("FACEBOOK_ACCESS_TOKEN"),
+        ]);
+        }
+
+
+        // Http()
         // Gắn thẻ (tags) nếu có
         if (!empty($validated['tags'])) {
             $post->tags()->attach($validated['tags']);
