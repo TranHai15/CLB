@@ -156,17 +156,54 @@
         color: #24292e;
         font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
     }
+
+    .post-card {
+        background-color: var(--dark-card-bg);
+        border-radius: 0.75rem;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border: 1px solid transparent;
+    }
+
+    .post-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+        border-color: var(--primary-color);
+        background-color: var(--dark-card-bg-hover);
+    }
+
+    .post-card .post-title {
+        color: var(--text-light);
+        transition: color 0.3s ease;
+    }
+
+    .post-card:hover .post-title {
+        color: var(--primary-color);
+    }
+
+    .category-badge {
+        transition: all 0.2s ease;
+        background-color: var(--primary-color);
+        color: var(--text-dark);
+    }
+
+
+    .category-badge:hover {
+        transform: scale(1.05);
+        background-color: var(--primary-hover-color);
+    }
 </style>
 
 @endpush
 
 @section('content')
 
-<div class="container mx-auto max-w-7xl px-4 py-8">
-    <div class="flex flex-col lg:flex-row gap-8">
+<div class="container mx-auto max-w-7xl px-4 py-8 ">
+    <div class="flex flex-col lg:flex-row gap-8 ">
         <!-- Main Content -->
-        <div class="lg:w-3/4">
-            <article class="bg-white rounded-lg shadow-lg p-6 mb-8">
+        <div class="lg:w-3/4 ">
+            <article class="bg-white rounded-lg shadow-lg p-6 mb-8 post-card">
                 <!-- Categories and Tags -->
                 <div class="flex flex-wrap gap-2 mb-4">
                     @if($post->category)
@@ -314,10 +351,10 @@
         </div>
 
         <!-- Table of Contents Sidebar -->
-        <div class="lg:w-1/4">
-            <div class="bg-white rounded-lg shadow-lg p-6 sticky top-4">
-                <h3 class="text-lg font-bold mb-4">Mục lục</h3>
-                <nav id="table-of-contents" class="space-y-2">
+        <div class="lg:w-1/4 ">
+            <div class="rounded-lg shadow-lg p-6 sticky top-4 post-card text-white">
+                <h3 class="text-lg font-bold mb-4  text-[var(--primary-color)] ">Mục lục</h3>
+                <nav id="table-of-contents" class="space-y-2  text-[var(--primary-color)]">
                     <!-- Will be populated by JavaScript -->
                 </nav>
             </div>

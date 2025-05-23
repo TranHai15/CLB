@@ -60,7 +60,7 @@
                             <div class="text-left">{{ $comment->post->title }}</div>
                         </td>
                         <td class="px-4 py-3">
-                            <div class="text-left">{{ Str::limit($comment->comment, 100) }}</div>
+                            <div class="text-left">{{ Illuminate\Support\Str::limit($comment->comment, 100) }}</div>
                         </td>
                         <td class="px-4 py-3 whitespace-nowrap">
                             <div class="text-left">{{ $comment->created_at->format('d/m/Y H:i') }}</div>

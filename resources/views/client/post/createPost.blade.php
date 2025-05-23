@@ -1,44 +1,38 @@
 @extends('layouts.home')
 
 @section('content')
-<!DOCTYPE html>
-<html>
+<style>
+    .form-group {
+        margin-bottom: 20px;
+    }
 
-<head>
-    <meta charset="utf-8">
-    <link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
-    <style>
-        .form-group {
-            margin-bottom: 20px;
-        }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
 
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
 
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-right: 10px;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            color: white;
-        }
-    </style>
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+</style>
 </head>
 
 <body>

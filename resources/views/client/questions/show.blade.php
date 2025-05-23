@@ -15,7 +15,7 @@
                 </div>
                 <div class="flex items-center space-x-2">
                     @auth
-                    @if(Auth::id() === $question->creator->id)
+                    @if(auth()->id() === $question->creator->id)
                     <a href="{{ route('questions.edit', $question->slug) }}" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
                         <svg class="-ml-0.5 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -52,7 +52,7 @@
             <div class="mt-6 flex items-center space-x-4">
                 @auth
                 <button id="post-like-btn" data-post-id="{{ $question->id }}" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                    <svg id="like-icon" class="-ml-0.5 mr-2 h-4 w-4 {{ DB::table('user_likes')->where('user_id', Auth::id())->where('post_id', $question->id)->exists() ? 'text-red-500 fill-current' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg id="like-icon" class="-ml-0.5 mr-2 h-4 w-4 {{ \Illuminate\Support\Facades\DB::table('user_likes')->where('user_id', auth()->id())->where('post_id', $question->id)->exists() ? 'text-red-500 fill-current' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path>
                     </svg>
                     <span>
@@ -99,7 +99,7 @@
                 @else
                 <div class="text-center py-4">
                     <p class="text-gray-600 mb-3">Vui lòng đăng nhập để bình luận</p>
-                    <form action="{{ route('auth.demo') }}" method="get">
+                    <form action="{{ route('questions.show',$question->slug) }}" method="get">
                         @csrf
                         <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
                             Đăng nhập

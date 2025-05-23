@@ -1,4 +1,4 @@
-<div class="border-b border-gray-200  last:border-0 last:pb-0 bg-white rounded-lg shadow-sm  p-5" id="comment-{{ $comment->id }}">
+<div class="border-b border-gray-200  last:border-0 last:pb-0 bg-white rounded-lg shadow-sm  post-card p-5" id="comment-{{ $comment->id }}">
     <div class="flex items-center space-x-3">
         <img class="h-10 w-10 rounded-full object-cover border-2 border-gray-100" src="{{ $comment->creator->avatar_url }}" alt="{{ $comment->creator->name }}">
         <div>
@@ -39,7 +39,7 @@
         </button>
 
         @auth
-        @if(Auth::id() === $comment->creator->id)
+        @if(auth()->id() === $comment->creator->id)
         <button class="comment-delete-btn inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-red-500 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200" data-comment-id="{{ $comment->id }}">
             <svg class="-ml-0.5 mr-1.5 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -53,7 +53,7 @@
     <!-- Reply Form (Hidden by default) -->
     <div id="replyForm{{ $comment->id }}" class="mt-4 mb-4 hidden">
         @auth
-        <form class="reply-form bg-gray-50 p-4 rounded-lg" data-comment-id="{{ $comment->id }}">
+        <form class="reply-form post-card p-4 rounded-lg" data-comment-id="{{ $comment->id }}">
             @csrf
             <input type="hidden" name="type" value="post">
             <div>

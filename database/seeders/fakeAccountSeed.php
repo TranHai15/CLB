@@ -20,6 +20,7 @@ class fakeAccountSeed extends Seeder
         //    Bạn chỉ việc sửa các email trong 3 mảng này
         $adminEmails = [
             'antrc2gamer@gmail.com',
+            'hairobet15092005@gmail.com'
         ];
 
         $headEmails = [

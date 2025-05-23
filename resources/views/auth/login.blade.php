@@ -3,49 +3,6 @@
 <div class="min-h-screen flex flex-col items-center justify-center px-4">
     <div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
         <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Login</h1>
-
-        <!-- <form method="POST" action="{{ route('login') }}" class="space-y-6">
-            @csrf
-
-            <!-- Email Address -->
-        <!-- <div>
-                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                @error('email')
-                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div> -->
-
-        <!-- Password -->
-        <!-- <div>
-                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                <input id="password" type="password" name="password" required autocomplete="current-password"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                @error('password')
-                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div> -->
-
-        <!-- Remember Me -->
-        <!-- <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <input id="remember_me" name="remember" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                    <label for="remember_me" class="ml-2 block text-sm text-gray-900">Remember me</label>
-                </div>
-                @if (Route::has('password.request'))
-                <a class="text-sm text-blue-600 hover:text-blue-500" href="{{ route('password.request') }}">
-                    Forgot your password?
-                </a>
-                @endif
-            </div> -->
-
-        <!-- <div>
-                <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    Log in
-                </button>
-            </div> -->
-        <!-- </form> -->
         @if($errors->has('msg'))
         <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
             <p>{{ $errors->first('msg') }}</p>
@@ -76,13 +33,7 @@
             </a>
         </div>
 
-        <!-- Register Link -->
-        <!-- <p class="mt-6 text-center text-sm text-gray-600">
-            Don't have an account?
-            <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:text-blue-500">
-                Register here
-            </a>
-        </p> -->
+
     </div>
 </div>
 @endsection

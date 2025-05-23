@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
+use Artesaos\SEOTools\Facades\SEOTools;
+
+
 
 class HomeController extends BaseController
 {
@@ -41,6 +44,12 @@ class HomeController extends BaseController
             ->orderBy('posts_count', 'desc')
             ->get();
 
+        // Sử dụng SEOTools facade (tất cả trong một)
+        SEOTools::setTitle('Trang chủ');
+        SEOTools::setDescription('Bee IT, Bee IT là một cộng đồng năng động, nơi các bạn có thể giao lưu, học hỏi và chia sẻ kiến thức trong lĩnh vực CNTT');
+        SEOTools::opengraph()->setUrl('https://scontent.fhan14-5.fna.fbcdn.net/v/t39.30808-1/356893364_106371362513103_5755489272171968894_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=y-rWDAO1JhkQ7kNvwEL5pMk&_nc_oc=AdmbyNCqso5lMur4PBbecz7nq_s6hy-XkqCcrKiM1NzoQn0h0cy5oOGy83mh8QS7aR2xV7H6-tCwc4VYwjbMnIOD&_nc_zt=24&_nc_ht=scontent.fhan14-5.fna&_nc_gid=V8zWbWTW1M8DbSK9kgI-lg&oh=00_AfL1IFzTjMADLGfzHAC5qVrFh8e7gN1HIbLnrhSkMh44Pw&oe=683694C5');
+        // SEOTools::twitter()->setSite('@YourTwitterHandle');
+        SEOTools::jsonLd()->addImage('https://scontent.fhan14-5.fna.fbcdn.net/v/t39.30808-1/356893364_106371362513103_5755489272171968894_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=y-rWDAO1JhkQ7kNvwEL5pMk&_nc_oc=AdmbyNCqso5lMur4PBbecz7nq_s6hy-XkqCcrKiM1NzoQn0h0cy5oOGy83mh8QS7aR2xV7H6-tCwc4VYwjbMnIOD&_nc_zt=24&_nc_ht=scontent.fhan14-5.fna&_nc_gid=V8zWbWTW1M8DbSK9kgI-lg&oh=00_AfL1IFzTjMADLGfzHAC5qVrFh8e7gN1HIbLnrhSkMh44Pw&oe=683694C5');
         return view('client.home.home', compact('topPosts', 'posts', 'categories'));
     }
     public function meb()
@@ -100,7 +109,11 @@ class HomeController extends BaseController
             ->get();
 
         // Lấy thông báo
-
+        SEOTools::setTitle('Blog');
+        SEOTools::setDescription('Bee IT, Bee IT là một cộng đồng năng động, nơi các bạn có thể giao lưu, học hỏi và chia sẻ kiến thức trong lĩnh vực CNTT');
+        SEOTools::opengraph()->setUrl('https://scontent.fhan14-5.fna.fbcdn.net/v/t39.30808-1/356893364_106371362513103_5755489272171968894_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=y-rWDAO1JhkQ7kNvwEL5pMk&_nc_oc=AdmbyNCqso5lMur4PBbecz7nq_s6hy-XkqCcrKiM1NzoQn0h0cy5oOGy83mh8QS7aR2xV7H6-tCwc4VYwjbMnIOD&_nc_zt=24&_nc_ht=scontent.fhan14-5.fna&_nc_gid=V8zWbWTW1M8DbSK9kgI-lg&oh=00_AfL1IFzTjMADLGfzHAC5qVrFh8e7gN1HIbLnrhSkMh44Pw&oe=683694C5');
+        // SEOTools::twitter()->setSite('@YourTwitterHandle');
+        SEOTools::jsonLd()->addImage('https://scontent.fhan14-5.fna.fbcdn.net/v/t39.30808-1/356893364_106371362513103_5755489272171968894_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=y-rWDAO1JhkQ7kNvwEL5pMk&_nc_oc=AdmbyNCqso5lMur4PBbecz7nq_s6hy-XkqCcrKiM1NzoQn0h0cy5oOGy83mh8QS7aR2xV7H6-tCwc4VYwjbMnIOD&_nc_zt=24&_nc_ht=scontent.fhan14-5.fna&_nc_gid=V8zWbWTW1M8DbSK9kgI-lg&oh=00_AfL1IFzTjMADLGfzHAC5qVrFh8e7gN1HIbLnrhSkMh44Pw&oe=683694C5');
         return view('client.home.blog', compact('topPosts', 'posts', 'categories'));
     }
 
@@ -135,7 +148,12 @@ class HomeController extends BaseController
                 ->take(4)
                 ->get();
         }
-
+        SEOTools::setTitle($post->title);
+        SEOTools::setDescription(Str::limit(strip_tags($post->content), 160));
+        SEOTools::opengraph()->setUrl(route('questions.show', $post->slug));
+        SEOTools::opengraph()->addProperty('type', 'article');
+        SEOTools::twitter()->setSite('@YourTwitterHandle');
+        SEOTools::jsonLd()->addImage($post->image ?? 'https://example.com/default.jpg');
         return view('client.post.post', compact('post', 'relatedPosts'));
     }
 
@@ -153,7 +171,11 @@ class HomeController extends BaseController
 
         $unreadNotifications = $notifications->where('read', false)->count();
         $latestNotifications = $notifications->take(5);
-
+        SEOTools::setTitle('Create Post');
+        SEOTools::setDescription('Bee IT, Bee IT là một cộng đồng năng động, nơi các bạn có thể giao lưu, học hỏi và chia sẻ kiến thức trong lĩnh vực CNTT');
+        SEOTools::opengraph()->setUrl('https://scontent.fhan14-5.fna.fbcdn.net/v/t39.30808-1/356893364_106371362513103_5755489272171968894_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=y-rWDAO1JhkQ7kNvwEL5pMk&_nc_oc=AdmbyNCqso5lMur4PBbecz7nq_s6hy-XkqCcrKiM1NzoQn0h0cy5oOGy83mh8QS7aR2xV7H6-tCwc4VYwjbMnIOD&_nc_zt=24&_nc_ht=scontent.fhan14-5.fna&_nc_gid=V8zWbWTW1M8DbSK9kgI-lg&oh=00_AfL1IFzTjMADLGfzHAC5qVrFh8e7gN1HIbLnrhSkMh44Pw&oe=683694C5');
+        // SEOTools::twitter()->setSite('@YourTwitterHandle');
+        SEOTools::jsonLd()->addImage('https://scontent.fhan14-5.fna.fbcdn.net/v/t39.30808-1/356893364_106371362513103_5755489272171968894_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=y-rWDAO1JhkQ7kNvwEL5pMk&_nc_oc=AdmbyNCqso5lMur4PBbecz7nq_s6hy-XkqCcrKiM1NzoQn0h0cy5oOGy83mh8QS7aR2xV7H6-tCwc4VYwjbMnIOD&_nc_zt=24&_nc_ht=scontent.fhan14-5.fna&_nc_gid=V8zWbWTW1M8DbSK9kgI-lg&oh=00_AfL1IFzTjMADLGfzHAC5qVrFh8e7gN1HIbLnrhSkMh44Pw&oe=683694C5');
         return view('client.post.createPost', compact('categories', 'unreadNotifications', 'latestNotifications'));
     }
 
@@ -236,12 +258,22 @@ class HomeController extends BaseController
     public function category(Category $category)
     {
         $posts = $category->posts()->paginate(10);
+        SEOTools::setTitle($category->slug);
+        SEOTools::setDescription('Bee IT, Bee IT là một cộng đồng năng động, nơi các bạn có thể giao lưu, học hỏi và chia sẻ kiến thức trong lĩnh vực CNTT');
+        SEOTools::opengraph()->setUrl('https://scontent.fhan14-5.fna.fbcdn.net/v/t39.30808-1/356893364_106371362513103_5755489272171968894_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=y-rWDAO1JhkQ7kNvwEL5pMk&_nc_oc=AdmbyNCqso5lMur4PBbecz7nq_s6hy-XkqCcrKiM1NzoQn0h0cy5oOGy83mh8QS7aR2xV7H6-tCwc4VYwjbMnIOD&_nc_zt=24&_nc_ht=scontent.fhan14-5.fna&_nc_gid=V8zWbWTW1M8DbSK9kgI-lg&oh=00_AfL1IFzTjMADLGfzHAC5qVrFh8e7gN1HIbLnrhSkMh44Pw&oe=683694C5');
+        // SEOTools::twitter()->setSite('@YourTwitterHandle');
+        SEOTools::jsonLd()->addImage('https://scontent.fhan14-5.fna.fbcdn.net/v/t39.30808-1/356893364_106371362513103_5755489272171968894_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=y-rWDAO1JhkQ7kNvwEL5pMk&_nc_oc=AdmbyNCqso5lMur4PBbecz7nq_s6hy-XkqCcrKiM1NzoQn0h0cy5oOGy83mh8QS7aR2xV7H6-tCwc4VYwjbMnIOD&_nc_zt=24&_nc_ht=scontent.fhan14-5.fna&_nc_gid=V8zWbWTW1M8DbSK9kgI-lg&oh=00_AfL1IFzTjMADLGfzHAC5qVrFh8e7gN1HIbLnrhSkMh44Pw&oe=683694C5');
         return view('client.home.search', compact('category', 'posts'));
     }
 
     public function tag(Tag $tag)
     {
         $posts = $tag->posts()->paginate(10);
+        SEOTools::setTitle($tag->slug);
+        SEOTools::setDescription('Bee IT, Bee IT là một cộng đồng năng động, nơi các bạn có thể giao lưu, học hỏi và chia sẻ kiến thức trong lĩnh vực CNTT');
+        SEOTools::opengraph()->setUrl('https://scontent.fhan14-5.fna.fbcdn.net/v/t39.30808-1/356893364_106371362513103_5755489272171968894_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=y-rWDAO1JhkQ7kNvwEL5pMk&_nc_oc=AdmbyNCqso5lMur4PBbecz7nq_s6hy-XkqCcrKiM1NzoQn0h0cy5oOGy83mh8QS7aR2xV7H6-tCwc4VYwjbMnIOD&_nc_zt=24&_nc_ht=scontent.fhan14-5.fna&_nc_gid=V8zWbWTW1M8DbSK9kgI-lg&oh=00_AfL1IFzTjMADLGfzHAC5qVrFh8e7gN1HIbLnrhSkMh44Pw&oe=683694C5');
+        // SEOTools::twitter()->setSite('@YourTwitterHandle');
+        SEOTools::jsonLd()->addImage('https://scontent.fhan14-5.fna.fbcdn.net/v/t39.30808-1/356893364_106371362513103_5755489272171968894_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=y-rWDAO1JhkQ7kNvwEL5pMk&_nc_oc=AdmbyNCqso5lMur4PBbecz7nq_s6hy-XkqCcrKiM1NzoQn0h0cy5oOGy83mh8QS7aR2xV7H6-tCwc4VYwjbMnIOD&_nc_zt=24&_nc_ht=scontent.fhan14-5.fna&_nc_gid=V8zWbWTW1M8DbSK9kgI-lg&oh=00_AfL1IFzTjMADLGfzHAC5qVrFh8e7gN1HIbLnrhSkMh44Pw&oe=683694C5');
         return view('client.home.search', compact('tag', 'posts'));
     }
 
@@ -263,7 +295,11 @@ class HomeController extends BaseController
         $user->questions_count = $user->posts()->where('type', 'question')->count();
         $user->following_count = $following->count();
         $user->followers_count = $followers->count();
-
+        SEOTools::setTitle($user->slug);
+        SEOTools::setDescription('Bee IT, Bee IT là một cộng đồng năng động, nơi các bạn có thể giao lưu, học hỏi và chia sẻ kiến thức trong lĩnh vực CNTT');
+        SEOTools::opengraph()->setUrl('https://scontent.fhan14-5.fna.fbcdn.net/v/t39.30808-1/356893364_106371362513103_5755489272171968894_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=y-rWDAO1JhkQ7kNvwEL5pMk&_nc_oc=AdmbyNCqso5lMur4PBbecz7nq_s6hy-XkqCcrKiM1NzoQn0h0cy5oOGy83mh8QS7aR2xV7H6-tCwc4VYwjbMnIOD&_nc_zt=24&_nc_ht=scontent.fhan14-5.fna&_nc_gid=V8zWbWTW1M8DbSK9kgI-lg&oh=00_AfL1IFzTjMADLGfzHAC5qVrFh8e7gN1HIbLnrhSkMh44Pw&oe=683694C5');
+        // SEOTools::twitter()->setSite('@YourTwitterHandle');
+        SEOTools::jsonLd()->addImage('https://scontent.fhan14-5.fna.fbcdn.net/v/t39.30808-1/356893364_106371362513103_5755489272171968894_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=y-rWDAO1JhkQ7kNvwEL5pMk&_nc_oc=AdmbyNCqso5lMur4PBbecz7nq_s6hy-XkqCcrKiM1NzoQn0h0cy5oOGy83mh8QS7aR2xV7H6-tCwc4VYwjbMnIOD&_nc_zt=24&_nc_ht=scontent.fhan14-5.fna&_nc_gid=V8zWbWTW1M8DbSK9kgI-lg&oh=00_AfL1IFzTjMADLGfzHAC5qVrFh8e7gN1HIbLnrhSkMh44Pw&oe=683694C5');
         return view('client.home.profile', compact('user', 'questions', 'following', 'followers'));
     }
 
@@ -281,6 +317,11 @@ class HomeController extends BaseController
             ->orderBy('posts_count', 'desc')
             ->get();
 
+        SEOTools::setTitle($posts->slug ?? "");
+        SEOTools::setDescription('Bee IT, Bee IT là một cộng đồng năng động, nơi các bạn có thể giao lưu, học hỏi và chia sẻ kiến thức trong lĩnh vực CNTT');
+        SEOTools::opengraph()->setUrl('https://scontent.fhan14-5.fna.fbcdn.net/v/t39.30808-1/356893364_106371362513103_5755489272171968894_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=y-rWDAO1JhkQ7kNvwEL5pMk&_nc_oc=AdmbyNCqso5lMur4PBbecz7nq_s6hy-XkqCcrKiM1NzoQn0h0cy5oOGy83mh8QS7aR2xV7H6-tCwc4VYwjbMnIOD&_nc_zt=24&_nc_ht=scontent.fhan14-5.fna&_nc_gid=V8zWbWTW1M8DbSK9kgI-lg&oh=00_AfL1IFzTjMADLGfzHAC5qVrFh8e7gN1HIbLnrhSkMh44Pw&oe=683694C5');
+        // SEOTools::twitter()->setSite('@YourTwitterHandle');
+        SEOTools::jsonLd()->addImage('https://scontent.fhan14-5.fna.fbcdn.net/v/t39.30808-1/356893364_106371362513103_5755489272171968894_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=y-rWDAO1JhkQ7kNvwEL5pMk&_nc_oc=AdmbyNCqso5lMur4PBbecz7nq_s6hy-XkqCcrKiM1NzoQn0h0cy5oOGy83mh8QS7aR2xV7H6-tCwc4VYwjbMnIOD&_nc_zt=24&_nc_ht=scontent.fhan14-5.fna&_nc_gid=V8zWbWTW1M8DbSK9kgI-lg&oh=00_AfL1IFzTjMADLGfzHAC5qVrFh8e7gN1HIbLnrhSkMh44Pw&oe=683694C5');
         return view('client.home.search', compact('posts', 'categories'));
     }
 

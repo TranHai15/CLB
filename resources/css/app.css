@@ -1,3 +1,172 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+  Define your color palette as CSS variables.
+  This makes it easy to manage and switch themes.
+*/
+:root {
+    /* Light Theme (Default) */
+    --color-primary: #f59e0b; /* Amber-500 */
+    --color-primary-hover: #d97706; /* Amber-600 */
+    --color-primary-content: #ffffff; /* White text on primary */
+
+    --color-secondary: #0ea5e9; /* Sky-500 */
+    --color-secondary-hover: #0284c7; /* Sky-600 */
+    --color-secondary-content: #ffffff;
+
+    --color-text-base: #1f2937; /* Gray-800 */
+    --color-text-muted: #6b7280; /* Gray-500 */
+    --color-text-inverted: #f3f4f6; /* Gray-100 */
+
+    --color-bg-base: #f9fafb; /* Gray-50 */
+    --color-bg-surface: #ffffff; /* White */
+    --color-bg-muted: #f3f4f6; /* Gray-100 */
+
+    --color-border-base: #e5e7eb; /* Gray-200 */
+    --color-border-muted: #d1d5db; /* Gray-300 */
+
+    --color-success: #10b981; /* Emerald-500 */
+    --color-error: #ef4444; /* Red-500 */
+    --color-warning: #f59e0b; /* Amber-500 */
+    --color-info: #3b82f6; /* Blue-500 */
+
+    /* Font families (assuming you have these set up) */
+    /* --font-primary: 'Inter', sans-serif; */
+    /* --font-secondary: 'Orbitron', sans-serif; */
+}
+
+html.dark {
+    /* Dark Theme Overrides */
+    --color-primary: #f59e0b; /* Amber-500 - can be same or different */
+    --color-primary-hover: #fbbf24; /* Amber-400 */
+    --color-primary-content: #1f2937; /* Dark text on primary for dark mode if needed */
+
+    --color-secondary: #38bdf8; /* Sky-400 */
+    --color-secondary-hover: #7dd3fc; /* Sky-300 */
+
+    --color-text-base: #f3f4f6; /* Gray-100 */
+    --color-text-muted: #9ca3af; /* Gray-400 */
+    --color-text-inverted: #1f2937; /* Gray-800 */
+
+    --color-bg-base: #111827; /* Gray-900 */
+    --color-bg-surface: #1f2937; /* Gray-800 */
+    --color-bg-muted: #374151; /* Gray-700 */
+
+    --color-border-base: #374151; /* Gray-700 */
+    --color-border-muted: #4b5563; /* Gray-600 */
+
+    /* Success, error, etc., might need slight adjustments for dark mode contrast */
+    --color-success: #34d399; /* Emerald-400 */
+    --color-error: #f87171; /* Red-400 */
+    --color-warning: #fbbf24; /* Amber-400 */
+    --color-info: #60a5fa; /* Blue-400 */
+}
+
+/* Apply base background and text color */
+body {
+    background-color: var(--color-bg-base);
+    color: var(--color-text-base);
+    font-family: var(
+        --font-primary,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        "Helvetica Neue",
+        Arial,
+        "Noto Sans",
+        sans-serif,
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji"
+    );
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Example of using variables with Tailwind's @apply (optional) */
+.btn-primary {
+    @apply px-4 py-2 rounded-md font-semibold shadow-sm transition-colors duration-200;
+    background-color: var(--color-primary);
+    color: var(--color-primary-content);
+}
+.btn-primary:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.card {
+    @apply rounded-lg shadow-md;
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border-base);
+}
+.card-header {
+    @apply p-4 border-b;
+    border-color: var(--color-border-muted);
+}
+.card-body {
+    @apply p-4;
+}
+.card-footer {
+    @apply p-4 border-t;
+    border-color: var(--color-border-muted);
+}
+
+/* Custom scrollbar for dark mode (optional, but nice) */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: var(--color-bg-muted);
+    border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--color-text-muted);
+    border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
+}
+
+/* General input styling */
+.form-input {
+    @apply block w-full px-3 py-2 rounded-md shadow-sm sm:text-sm;
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border-muted);
+    color: var(--color-text-base);
+}
+.form-input:focus {
+    @apply ring-2;
+    outline: none;
+    border-color: var(--color-primary);
+    --tw-ring-color: var(--color-primary); /* For Tailwind focus ring */
+}
+.form-input::placeholder {
+    color: var(--color-text-muted);
+    opacity: 0.7;
+}
+
+.form-select {
+    @apply block w-full pl-3 pr-10 py-2 text-base rounded-md shadow-sm sm:text-sm;
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border-muted);
+    color: var(--color-text-base);
+}
+.form-select:focus {
+    @apply ring-2;
+    outline: none;
+    border-color: var(--color-primary);
+    --tw-ring-color: var(--color-primary);
+}
+
+/* You can also use Tailwind's dark: prefix directly in your Blade files
+   e.g., <div class="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+   This is often preferred for component-level styling.
+   The CSS variables are great for global defaults and reusable component classes.
+*/

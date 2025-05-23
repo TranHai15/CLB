@@ -195,7 +195,8 @@
                         <!-- Content Preview -->
                         @if($question->content)
                         <p class="text-gray-600 mb-4 line-clamp-3">
-                            {{ Str::limit(strip_tags($question->content), 200) }}
+                            {{ \Illuminate\Support\Str::limit(strip_tags($question->content), 200) }}
+
                         </p>
                         @endif
 

@@ -1,12 +1,12 @@
-<footer class="bg-gray-900 text-gray-300 mt-12">
+<footer class="bg-gray-900 text-gray-300 border-t-2 border-[#f59e0b]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Company Info -->
             <div class="space-y-4">
                 <h3 class="text-white text-lg font-semibold">Về Chúng Tôi</h3>
-                <p class="text-sm">Chúng tôi cung cấp những giải pháp tốt nhất cho khách hàng với đội ngũ chuyên nghiệp và tận tâm.</p>
+                <p class="text-sm text-justify">Câu lạc bộ BeeIT thành lập vào ngày 01/07/2023. Bee IT là một cộng đồng năng động, nơi các bạn có thể giao lưu, học hỏi và chia sẻ kiến thức trong lĩnh vực CNTT</p>
                 <div class="flex space-x-4">
-                    <a href="https://facebook.com" target="_blank" class="text-gray-400 hover:text-white transition-colors">
+                    <a href="https://www.facebook.com/Bee.IT.Fpoly/" target="_blank" class="text-gray-400 hover:text-white transition-colors">
                         <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M18.77 7.46H14.5v-1.9c0-.9.6-1.1 1-1.1h3V.5h-4.33C10.24.5 9.5 3.44 9.5 5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4z" />
                         </svg>
@@ -24,7 +24,7 @@
                 </div>
             </div>
 
-            <!-- Quick Links -->
+            <!-- Quick Links
             <div class="space-y-4">
                 <h3 class="text-white text-lg font-semibold">Liên Kết Nhanh</h3>
                 <ul class="space-y-2">
@@ -34,7 +34,7 @@
                     <li><a href="#" class="text-sm hover:text-white transition-colors">Tin Tức</a></li>
                     <li><a href="#" class="text-sm hover:text-white transition-colors">Liên Hệ</a></li>
                 </ul>
-            </div>
+            </div> -->
 
             <!-- Contact Info -->
             <div class="space-y-4">
@@ -64,8 +64,8 @@
 
             <!-- Newsletter -->
             <div class="space-y-4">
-                <h3 class="text-white text-lg font-semibold">Đăng Ký Nhận Tin</h3>
-                <p class="text-sm">Đăng ký để nhận thông tin mới nhất về sản phẩm và dịch vụ của chúng tôi.</p>
+                <h3 class="text-white text-lg font-semibold">Đăng Ký Tham Gia</h3>
+                <p class="text-sm">Đăng ký để tham gia cùng chúng tôi.</p>
                 <form class="space-y-2">
                     <input type="email" placeholder="Email của bạn" class="w-full px-4 py-2 rounded-md bg-gray-800 border border-gray-700 focus:outline-none focus:border-blue-500 text-sm">
                     <button type="submit" class="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm">

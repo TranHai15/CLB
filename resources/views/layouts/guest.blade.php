@@ -17,6 +17,7 @@
     @push('css')
 
     @endpush
+    {!! SEOTools::generate() !!}
 </head>
 
 <body class="font-sans antialiased bg-gray-50">

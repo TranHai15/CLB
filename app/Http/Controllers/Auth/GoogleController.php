@@ -59,6 +59,7 @@ class GoogleController extends Controller
             }
             return redirect()->intended('/');
         } catch (\Exception $e) {
+
             return redirect('/login')->withErrors(['msg' => 'Đăng nhập bằng Google thất bại.']);
         }
     }
