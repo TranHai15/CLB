@@ -54,9 +54,19 @@
                 </div>
 
                 <div class="grid gap-4">
-                    @foreach($questions as $question)
+                    @forelse ( $questions as $question )
                     @include('client.partials.question-card', ['question' => $question])
-                    @endforeach
+                    @empty
+                    <div class="text-center py-12">
+                        <svg class="mx-auto h-12 w-12 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                        </svg>
+                        <h3 class="mt-2 text-lg font-medium text-gray-300">Không có câu hỏi nào</h3>
+                        <p class="mt-1 text-sm text-gray-500">
+                            Hiện tại chưa có câu hỏi nào được đăng. Quay lại sau nhé!
+                        </p>
+                    </div>
+                    @endforelse
                 </div>
 
                 <div class="mt-8">
@@ -67,7 +77,7 @@
             <!-- Sidebar -->
             <aside class="lg:col-span-1 space-y-6 hidden sm:block">
                 <!-- Categories Dropdown -->
-                <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm overflow-hidden post-card" x-data="{ open: false }">
+                <div class=" backdrop-blur-sm rounded-xl shadow-sm overflow-hidden post-card" x-data="{ open: false }">
                     <button @click="open = !open" class="w-full px-4 py-3 flex items-center justify-between text-left  transition-colors">
                         <div class="flex items-center">
                             <svg class="w-5 h-5 text-gray-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,16 +91,16 @@
                     </button>
                     <div x-show="open" x-transition class="border-t border-gray-200">
                         <div class="py-2">
-                            <a href="{{ route('questions.index') }}"
+                            <!-- <a href="{{ route('questions.index') }}"
                                 class="block px-4 py-2  post-title text-gray-700 hover:bg-blue-50/80 hover:text-blue-800 transition-colors">
                                 <div class="flex items-center justify-between">
                                     <span>Tất cả danh mục</span>
                                     <span class="text-sm text-gray-600">{{ $questions->total() }}</span>
                                 </div>
-                            </a>
+                            </a> -->
                             @foreach($categories as $category)
                             <a href="{{ route('category.show', $category->slug) }}"
-                                class="block post-title px-4 py-2 hover:text-blue-800  hover:bg-blue-100/80   transition-colors">
+                                class="block post-title px-4 py-2 hover:bg-[#1f2937]  transition-colors">
                                 <div class="flex items-center justify-between">
                                     <span>{{ $category->name }}</span>
                                     <span class="text-sm text-gray-600">{{ $category->questions_count }}</span>
@@ -102,7 +112,7 @@
                 </div>
 
                 <!-- Tags Dropdown -->
-                <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm overflow-hidden post-card" x-data="{ open: false }">
+                <div class="backdrop-blur-sm rounded-xl shadow-sm overflow-hidden post-card" x-data="{ open: false }">
                     <button @click="open = !open" class="w-full px-4 py-3 flex items-center justify-between text-left  transition-colors">
                         <div class="flex items-center">
                             <svg class="w-5 h-5 text-gray-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -119,7 +129,7 @@
                             <div class="flex flex-wrap gap-2">
                                 @foreach($tags as $tag)
                                 <a href="{{ route('tag.show', $tag->slug) }}"
-                                    class="inline-block px-3 py-1 rounded-full text-sm post-title hover:bg-blue-100/80 hover:text-blue-800 transition-colors">
+                                    class="inline-block px-3 py-1 rounded-full text-sm post-title hover:bg-[#1f2937]  transition-colors">
                                     #{{ $tag->name }}
                                 </a>
                                 @endforeach

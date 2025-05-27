@@ -1,9 +1,24 @@
 @extends('layouts.home')
+<style>
+    .post-title {
+        color: white !important;
+    }
 
+    .post-input {
+        background: #1f2937 !important;
+    }
+
+    .post-card {
+        background-color: var(--dark-card-bg);
+        border-radius: 0.75rem;
+        /* 12px */
+        border: 1px solid transparent;
+    }
+</style>
 @section('content')
 <div class="container max-w-7xl  mx-auto px-4 py-8">
     <!-- Profile Header -->
-    <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
+    <div class=" rounded-lg shadow-sm overflow-hidden mb-8 post-card">
         <!-- Cover Image -->
         <div class="h-48 bg-gradient-to-r from-blue-500 to-purple-600 relative">
             @if($user->cover_image)
@@ -19,7 +34,7 @@
         </div>
 
         <!-- Profile Info -->
-        <div class="px-6 py-8">
+        <div class="px-6 py-8 post-card ">
             <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
                 <!-- Avatar -->
                 <div class="relative -mt-20 md:-mt-24">
@@ -32,7 +47,7 @@
                 <div class="flex-1">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>
-                            <h1 class="text-2xl font-bold text-gray-900">{{ $user->name }}</h1>
+                            <h1 class="text-2xl font-bold post-title ">{{ $user->name }}</h1>
                             @if($user->title)
                             <p class="text-gray-600 mt-1">{{ $user->title }}</p>
                             @endif
@@ -68,15 +83,15 @@
                         <!-- Stats -->
                         <div class="flex gap-6">
                             <div class="text-center">
-                                <div class="text-2xl font-bold text-gray-900">{{ $user->questions_count }}</div>
+                                <div class="text-2xl font-bold post-title ">{{ $user->questions_count }}</div>
                                 <div class="text-sm text-gray-500">Câu hỏi</div>
                             </div>
                             <div class="text-center">
-                                <div class="text-2xl font-bold text-gray-900">{{ $user->following_count }}</div>
+                                <div class="text-2xl font-bold post-title ">{{ $user->following_count }}</div>
                                 <div class="text-sm text-gray-500">Đang theo dõi</div>
                             </div>
                             <div class="text-center">
-                                <div class="text-2xl font-bold text-gray-900">{{ $user->followers_count }}</div>
+                                <div class="text-2xl font-bold post-title ">{{ $user->followers_count }}</div>
                                 <div class="text-sm text-gray-500">Người theo dõi</div>
                             </div>
                         </div>
@@ -91,17 +106,17 @@
                     @if($user->social_links)
                     <div class="flex gap-4 mt-4">
                         @if($user->social_links['github'] ?? false)
-                        <a href="{{ $user->social_links['github'] }}" target="_blank" class="text-gray-600 hover:text-gray-900">
+                        <a href="{{ $user->social_links['github'] }}" target="_blank" class="text-gray-600 hover:post-title ">
                             <i class="fab fa-github text-xl"></i>
                         </a>
                         @endif
                         @if($user->social_links['twitter'] ?? false)
-                        <a href="{{ $user->social_links['twitter'] }}" target="_blank" class="text-gray-600 hover:text-gray-900">
+                        <a href="{{ $user->social_links['twitter'] }}" target="_blank" class="text-gray-600 hover:post-title ">
                             <i class="fab fa-twitter text-xl"></i>
                         </a>
                         @endif
                         @if($user->social_links['linkedin'] ?? false)
-                        <a href="{{ $user->social_links['linkedin'] }}" target="_blank" class="text-gray-600 hover:text-gray-900">
+                        <a href="{{ $user->social_links['linkedin'] }}" target="_blank" class="text-gray-600 hover:post-title ">
                             <i class="fab fa-linkedin text-xl"></i>
                         </a>
                         @endif
@@ -115,8 +130,8 @@
     <!-- Following and Followers -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
         <!-- Following -->
-        <div class="bg-white rounded-lg shadow-sm p-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Đang theo dõi</h2>
+        <div class="post-card rounded-lg shadow-sm p-6">
+            <h2 class="text-xl font-semibold post-title  mb-4">Đang theo dõi</h2>
             <div class="space-y-4">
                 @forelse($following as $followedUser)
                 <div class="flex items-center justify-between">
@@ -146,8 +161,8 @@
         </div>
 
         <!-- Followers -->
-        <div class="bg-white rounded-lg shadow-sm p-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Người theo dõi</h2>
+        <div class="post-card rounded-lg shadow-sm p-6">
+            <h2 class="text-xl font-semibold post-title  mb-4">Người theo dõi</h2>
             <div class="space-y-4">
                 @forelse($followers as $follower)
                 <div class="flex items-center justify-between">
@@ -178,15 +193,15 @@
     </div>
 
     <!-- Questions List -->
-    <div class="bg-white rounded-lg shadow-sm mb-8">
+    <div class="post-card rounded-lg shadow-sm mb-8">
         <div class="p-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-6">Danh sách câu hỏi</h2>
+            <h2 class="text-xl font-semibold post-title  mb-6">Danh sách câu hỏi</h2>
             <div class="space-y-6">
                 @forelse($questions as $question)
                 <div class="bg-white rounded-lg border border-gray-100 p-6 hover:shadow-md transition-shadow">
                     <div class="flex flex-col">
                         <!-- Title -->
-                        <h2 class="text-xl font-semibold text-gray-800 mb-3">
+                        <h2 class="text-xl font-semibold post-title  mb-3">
                             <a href="{{ route('questions.show', $question->slug) }}" class="hover:text-blue-600 transition-colors">
                                 {{ $question->title }}
                             </a>

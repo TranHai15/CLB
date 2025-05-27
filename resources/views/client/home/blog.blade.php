@@ -339,51 +339,37 @@
         </main>
 
         <!-- Sidebar -->
-        <aside class="lg:col-span-1 space-y-8">
-            <!-- Categories -->
-            <div class="bg-white rounded-xl shadow-sm p-6" x-data="{ isOpen: false }">
-                <div class="flex items-center justify-between cursor-pointer" @click="isOpen = !isOpen">
-                    <h3 class="text-xl font-bold text-gray-900">Danh mục</h3>
-                    <svg class="w-5 h-5 transition-transform" :class="{ 'rotate-180': isOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <aside class="lg:col-span-1 space-y-6 hidden sm:block">
+            <!-- Categories Dropdown -->
+            <div class=" backdrop-blur-sm rounded-xl shadow-sm overflow-hidden post-card" x-data="{ open: false }">
+                <button @click="open = !open" class="w-full px-4 py-3 flex items-center justify-between text-left  transition-colors">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 text-gray-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                        <h3 class="text-lg font-bold post-title">Danh mục</h3>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-600 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
-                </div>
-                <div class="space-y-2 mt-4" x-show="isOpen" x-transition>
-                    @foreach($categories as $category)
-                    <a href="#" class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                        <span class="text-gray-700">{{ $category['name'] }}</span>
-                        <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                            {{ $category['count'] }}
-                        </span>
-                    </a>
-                    @endforeach
+                </button>
+                <div x-show="open" x-transition class="border-t border-gray-200">
+                    <div class="py-2">
+
+                        @foreach($categories as $category)
+                        <a href="{{ route('category.show', $category->slug) }}"
+                            class="block post-title px-4 py-2 hover:bg-[#1f2937]  transition-colors">
+                            <div class="flex items-center justify-between">
+                                <span>{{ $category->name }}</span>
+                                <span class="text-sm text-gray-600">{{ $category->questions_count }}</span>
+                            </div>
+                        </a>
+                        @endforeach
+                    </div>
                 </div>
             </div>
 
-            <!-- Recent Questions -->
-            <div class="bg-white rounded-xl shadow-sm p-6">
-                <h3 class="text-xl font-bold mb-4 text-gray-900">Câu hỏi mới nhất</h3>
-                <div class="divide-y divide-gray-100">
-                    @foreach($topPosts as $post)
-                    <a href="{{ route('questions.show', $post->slug) }}"
-                        class="block py-4 hover:bg-gray-50 transition-colors first:pt-0 last:pb-0">
-                        <div class="flex items-center space-x-4">
-                            <img src="{{ $post->image }}"
-                                alt=""
-                                class="h-12 w-12 rounded-lg object-cover">
-                            <div>
-                                <h4 class="text-sm font-medium text-gray-900 line-clamp-2">
-                                    {{ $post->title }}
-                                </h4>
-                                <p class="text-xs text-gray-500 mt-1">
-                                    {{ \Carbon\Carbon::parse($post->created_at)->diffForHumans() }}
-                                </p>
-                            </div>
-                        </div>
-                    </a>
-                    @endforeach
-                </div>
-            </div>
+
         </aside>
     </div>
 </div>

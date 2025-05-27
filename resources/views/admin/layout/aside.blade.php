@@ -97,7 +97,7 @@
 
           @if (auth()->user()->hasRole('admin'))
           <a href="{{ route('admin.roles.index') }}"
-              class="group flex items-center px-3 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.comments.*') ? 'text-white bg-gray-900' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
+              class="group flex items-center px-3 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.roles.*') ? 'text-white bg-gray-900' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
               <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512" width="24" height="24">
                   <circle fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="5" cx="256" cy="56" r="40" />
                   <path fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"

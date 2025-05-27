@@ -1,5 +1,20 @@
 @extends('layouts.home')
+<style>
+    .post-title {
+        color: white !important;
+    }
 
+    .post-input {
+        background: #1f2937 !important;
+    }
+
+    .post-card {
+        background-color: var(--dark-card-bg);
+        border-radius: 0.75rem;
+        /* 12px */
+        border: 1px solid transparent;
+    }
+</style>
 @section('content')
 <div class="container mx-auto max-w-7xl px-4 py-8">
     @if(session('success'))
@@ -10,15 +25,15 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
         <!-- Main Content -->
-        <div class="lg:col-span-3">
-            <div class="bg-white rounded-lg shadow-lg p-6">
+        <div class="lg:col-span-3 ">
+            <div class="post-card rounded-lg shadow-lg p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-bold">Thông tin cá nhân</h2>
                     <button id="editToggleBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition flex items-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                         </svg>
-                        <span>Chỉnh sửa</span>
+                        <span class="hidden sm:inline">Chỉnh sửa</span>
                     </button>
                 </div>
 
@@ -47,12 +62,12 @@
 
                         <!-- Name Input -->
                         <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Tên hiển thị</label>
+                            <label for="name" class="block text-sm font-medium post-title mb-2">Tên hiển thị</label>
                             <input type="text"
                                 name="name"
                                 id="name"
                                 value="{{ auth()->user()->name }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 edit-only hidden"
+                                class="w-full px-4 py-2 border post-input border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 edit-only hidden"
                                 disabled>
                             <div class="view-only py-2">{{ auth()->user()->name }}</div>
                             @error('name')
@@ -62,11 +77,11 @@
 
                         <!-- Bio Input -->
                         <div>
-                            <label for="bio" class="block text-sm font-medium text-gray-700 mb-2">Giới thiệu</label>
+                            <label for="bio" class="block text-sm font-medium post-title mb-2">Giới thiệu</label>
                             <textarea name="bio"
                                 id="bio"
                                 rows="4"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 edit-only hidden"
+                                class="w-full px-4 py-2 border post-input border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 edit-only hidden"
                                 disabled>{{ auth()->user()->bio }}</textarea>
                             <div class="view-only py-2">{{ auth()->user()->bio ?: 'Chưa có thông tin giới thiệu' }}</div>
                             @error('bio')
@@ -82,7 +97,7 @@
                                 </svg>
                                 <span>Cập nhật</span>
                             </button>
-                            <button type="button" id="cancelEditBtn" class="text-gray-600 hover:text-gray-800 transition">
+                            <button type="button" id="cancelEditBtn" class="text-gray-600 bg-indigo-200 p-2 rounded-sm hover:text-gray-800 hover:bg-white transition">
                                 Hủy
                             </button>
                         </div>
@@ -93,22 +108,22 @@
 
         <!-- Right Sidebar -->
         <div class="lg:col-span-1">
-            <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="post-card rounded-lg shadow-lg p-6">
                 <h3 class="text-lg font-bold mb-4">Menu</h3>
                 <nav class="space-y-2">
-                    <a href="{{ route('user.show', auth()->user()->slug) }}" class="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition">
+                    <a href="{{ route('user.show', auth()->user()->slug) }}" class="flex items-center gap-3 px-4 py-2 post-title hover:bg-gray-50 rounded-lg transition">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                         <span>Danh sách câu hỏi</span>
                     </a>
-                    <a href="{{ route('questions.create') }}" class="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition">
+                    <a href="{{ route('questions.create') }}" class="flex items-center gap-3 px-4 py-2 post-title hover:bg-gray-50 rounded-lg transition">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                         </svg>
                         <span>Đặt câu hỏi mới</span>
                     </a>
-                    <a href="{{ route('notifications') }}" class="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition">
+                    <a href="{{ route('notifications') }}" class="flex items-center gap-3 px-4 py-2 post-title hover:bg-gray-50 rounded-lg transition">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                         </svg>
@@ -128,7 +143,7 @@
                     <div class="space-y-3">
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
-                            <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-2 text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                            <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-2 text-black bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                                 </svg>

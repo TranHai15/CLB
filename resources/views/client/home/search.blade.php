@@ -1,19 +1,34 @@
 @extends('layouts.home')
+<style>
+    .post-title {
+        color: white !important;
+    }
 
+    .post-input {
+        background: #1f2937 !important;
+    }
+
+    .post-card {
+        background-color: var(--dark-card-bg);
+        border-radius: 0.75rem;
+        /* 12px */
+        border: 1px solid transparent;
+    }
+</style>
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <!-- Search Header -->
-    <div class="mb-8 bg-white rounded-lg shadow-sm p-6">
-        <h1 class="text-3xl font-bold text-gray-800 mb-4">
+    <div class="mb-8 rounded-lg shadow-sm p-6 post-card">
+        <h1 class="text-3xl font-bold mb-4 post-title">
             @if(request('search'))
-            <i class="fas fa-search text-blue-500 mr-2"></i>Kết quả tìm kiếm cho: "{{ request('search') }}"
+            <i class="fas fa-search post-title mr-2"></i>Kết quả tìm kiếm cho: "{{ request('search') }}"
             @elseif(request('category'))
-            <i class="fas fa-folder text-blue-500 mr-2"></i>Danh mục: {{ request('category') }}
+            <i class="fas fa-folder post-title mr-2"></i>Danh mục: {{ request('category') }}
             @elseif(request('tag'))
-            <i class="fas fa-tags text-blue-500 mr-2"></i>Tag: {{ request('tag') }}
+            <i class="fas fa-tags post-title mr-2"></i>Tag: {{ request('tag') }}
             @endif
         </h1>
-        <div class="flex items-center gap-4 text-sm text-gray-500">
+        <div class="flex items-center gap-4 text-sm post-card">
             <span><i class="fas fa-list-ul mr-2"></i>Tổng số: {{ $posts->total() }} kết quả</span>
             @if(request('search'))
             <span><i class="fas fa-clock mr-2"></i>Thời gian tìm kiếm: {{ number_format(microtime(true) - LARAVEL_START, 2) }}s</span>
@@ -24,32 +39,32 @@
     <div class="flex flex-col lg:flex-row gap-8">
         <!-- Sidebar -->
         <div class="lg:w-1/4">
-            <div class="bg-white rounded-lg shadow-sm p-6 sticky top-4">
-                <h2 class="text-lg font-semibold text-gray-800 mb-4">Bộ lọc tìm kiếm</h2>
+            <div class="post-card rounded-lg shadow-sm p-6 sticky top-4">
+                <h2 class="text-lg font-semibold post-title  mb-4">Bộ lọc tìm kiếm</h2>
 
                 <!-- Search Form -->
                 <form id="search-form" action="{{ route('home.search') }}" method="GET" class="mb-6">
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Tìm kiếm</label>
+                        <label class="block text-sm font-medium post-title  mb-2">Tìm kiếm</label>
                         <input type="text" name="search" value="{{ request('search') }}"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            class="w-full px-3 py-2 border border-gray-300 post-input rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Nhập từ khóa...">
                     </div>
 
                     <!-- Type Filter -->
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Loại nội dung</label>
+                        <label class="block text-sm font-medium post-title  mb-2">Loại nội dung</label>
                         <div class="space-y-2">
                             <label class="flex items-center">
                                 <input type="checkbox" name="type[]" value="post"
                                     {{ in_array('post', request('type', [])) ? 'checked' : '' }}
-                                    class="rounded text-blue-500 focus:ring-blue-500">
+                                    class="rounded text-red-600 post-input focus:ring-white">
                                 <span class="ml-2 text-sm text-gray-600">Bài viết</span>
                             </label>
                             <label class="flex items-center">
                                 <input type="checkbox" name="type[]" value="question"
                                     {{ in_array('question', request('type', [])) ? 'checked' : '' }}
-                                    class="rounded text-blue-500 focus:ring-blue-500">
+                                    class="rounded text-blue-500 post-input focus:ring-blue-500">
                                 <span class="ml-2 text-sm text-gray-600">Câu hỏi</span>
                             </label>
                         </div>
@@ -57,8 +72,8 @@
 
                     <!-- Category Filter -->
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Danh mục</label>
-                        <select name="category" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <label class="block text-sm font-medium post-title  mb-2">Danh mục</label>
+                        <select name="category" class="w-full px-3 py-2 border post-input border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             <option value="">Tất cả danh mục</option>
                             @foreach($categories ?? [] as $category)
                             <option value="{{ $category->slug }}" {{ request('category') == $category->slug ? 'selected' : '' }}>
@@ -70,8 +85,8 @@
 
                     <!-- Sort Options -->
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Sắp xếp theo</label>
-                        <select name="sort" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <label class="block text-sm font-medium post-title  mb-2">Sắp xếp theo</label>
+                        <select name="sort" class="w-full px-3 py-2 border post-input border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Mới nhất</option>
                             <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Phổ biến nhất</option>
                             <option value="views" {{ request('sort') == 'views' ? 'selected' : '' }}>Lượt xem nhiều nhất</option>
@@ -81,8 +96,8 @@
 
                     <!-- Time Filter -->
                     <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Thời gian</label>
-                        <select name="time" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <label class="block text-sm font-medium post-title  mb-2">Thời gian</label>
+                        <select name="time" class="w-full px-3 py-2 border post-input border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             <option value="">Tất cả thời gian</option>
                             <option value="day" {{ request('time') == 'day' ? 'selected' : '' }}>Hôm nay</option>
                             <option value="week" {{ request('time') == 'week' ? 'selected' : '' }}>Tuần này</option>
@@ -106,7 +121,7 @@
             <!-- Search Results -->
             <div class="space-y-6">
                 @forelse($posts as $post)
-                <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-6 border border-gray-100">
+                <div class="post-card rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-6 border border-gray-100">
                     <div class="flex flex-col">
                         <!-- Post Type Badge -->
                         <div class="mb-3">
@@ -194,7 +209,7 @@
                     </div>
                 </div>
                 @empty
-                <div class="text-center py-12 bg-white rounded-lg shadow-sm">
+                <div class="text-center py-12 post-card rounded-lg shadow-sm post-card">
                     <div class="text-gray-500 text-lg">
                         <i class="fas fa-search mb-4 text-4xl text-gray-400"></i>
                         <p class="text-xl">Không tìm thấy kết quả phù hợp</p>
@@ -214,30 +229,6 @@
     </div>
 </div>
 @endsection
-
-@push('styles')
-<style>
-    .line-clamp-3 {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    /* Custom pagination styles */
-    .pagination {
-        @apply flex justify-center space-x-2;
-    }
-
-    .pagination>* {
-        @apply px-4 py-2 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow;
-    }
-
-    .pagination .active {
-        @apply bg-blue-500 text-white;
-    }
-</style>
-@endpush
 
 @push('scripts')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -345,7 +336,7 @@
                     resultsContainer.append(post.element.clone());
                 });
             } else {
-                resultsContainer.html('<div class="text-center py-12 bg-white rounded-lg shadow-sm"><div class="text-gray-500 text-lg"><i class="fas fa-search mb-4 text-4xl text-gray-400"></i><p class="text-xl">Không tìm thấy kết quả phù hợp</p><p class="text-sm mt-2">Hãy thử tìm kiếm với từ khóa khác</p></div></div>');
+                resultsContainer.html('<div class="text-center py-12  rounded-lg shadow-sm post-card"><div class="text-gray-500 post-card text-lg"><i class="fas fa-search mb-4 text-4xl text-gray-400"></i><p class="text-xl">Không tìm thấy kết quả phù hợp</p><p class="text-sm mt-2">Hãy thử tìm kiếm với từ khóa khác</p></div></div>');
             }
 
             // Update search header

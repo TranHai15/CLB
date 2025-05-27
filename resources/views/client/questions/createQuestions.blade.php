@@ -21,13 +21,23 @@
 
         .form-group input,
         .form-group textarea,
-
         .form-group select {
             width: 100%;
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
             background-color: var(--dark-card-bg);
+        }
+
+        .select2-dropdown {
+
+            background-color: var(--dark-card-bg) !important;
+
+        }
+
+        .select2-selection__choice {
+            color: black;
+            background: white;
         }
 
         .btn {
@@ -50,6 +60,34 @@
 
         .select2-container .select2-selection--multiple {
             min-height: 38px;
+            background-color: var(--dark-card-bg);
+        }
+
+        .fr-box .fr-element {
+            background-color: var(--dark-card-bg);
+
+            color: #fff !important;
+
+        }
+
+        /* Nếu muốn viền vùng soạn thảo cũng đen */
+        .fr-box {
+            background-color: var(--dark-card-bg);
+        }
+
+        .fr-svg {
+            color: white !important;
+            background: white;
+        }
+
+        .fr-second-toolbar {
+            background-color: var(--dark-card-bg);
+        }
+
+
+
+        /* Optional: sửa màu thanh toolbar */
+        .fr-toolbar {
             background-color: var(--dark-card-bg);
         }
     </style>

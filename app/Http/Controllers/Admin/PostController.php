@@ -107,7 +107,7 @@ class PostController extends Controller
                 [
                     "parts" => [
                         [
-                            "text" => "Viết 1 bài post, giữ nguyên thông tin của bài viết cho tôi. Đưa ra dữ liệu ở dạng normal text giống viết văn, không được đưa ra ở dạng markdown: ". $validated['content']
+                            "text" => "Viết 1 bài post, giữ nguyên thông tin của bài viết cho tôi. Đưa ra dữ liệu ở dạng normal text giống viết văn, không được đưa ra ở dạng markdown: " . $validated['content']
                         ]
                     ]
                 ]
@@ -125,25 +125,24 @@ class PostController extends Controller
         $response = curl_exec($ch);
 
         $result = json_decode($response, true); // Decode chuỗi JSON thành mảng
-            // echo "Response: \n";
+        // echo "Response: \n";
         curl_close($ch);
         $content = $result['candidates'][0]['content']['parts'][0]['text'] ?? 'No response text found';
         $url = "https://graph.facebook.com/v22.0/109867448827091/feed";
 
-        if ($content == "No response text found"){
-
+        if ($content == "No response text found") {
         } else {
-        $response = Http::post($url, [
-            'message' => $content . "\n—----------------------------------------------------------------------------
-BEE IT CLUB - Code hard, play harder
-Facebook: https://www.facebook.com/Bee.IT.Fpoly
-Community: https://zalo.me/g/gcqslb945 (Zalo)
-Email: Beeit.fpoly@gmail.com
-Lịch hỗ trợ học tập: Tối thứ 3&5 hàng tuần
-—-----------------------------------------------------------------------------",
-            'published'=>True,
-            'access_token' => env("FACEBOOK_ACCESS_TOKEN"),
-        ]);
+            $response = Http::post($url, [
+                'message' => $content . "\n—----------------------------------------------------------------------------
+        BEE IT CLUB - Code hard, play harder
+        Facebook: https://www.facebook.com/Bee.IT.Fpoly
+        Community: https://zalo.me/g/gcqslb945 (Zalo)
+        Email: Beeit.fpoly@gmail.com
+        Lịch hỗ trợ học tập: Tối thứ 3&5 hàng tuần
+        —-----------------------------------------------------------------------------",
+                'published' => True,
+                'access_token' => env("FACEBOOK_ACCESS_TOKEN"),
+            ]);
         }
 
 
